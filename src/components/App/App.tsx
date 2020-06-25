@@ -11,7 +11,7 @@ export const App: React.FunctionComponent = () => {
         horizontalAlign="center"
         verticalAlign="center"
         verticalFill
-        gap={15}
+        tokens={{ childrenGap: 15 }}
       >
         <Switch>
           <Route exact path="/login">

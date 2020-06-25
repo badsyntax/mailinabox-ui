@@ -1,6 +1,15 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Action, ThunkAction } from '@reduxjs/toolkit';
+import { userApi } from '../api';
+
+import { MeResponseStatusEnum } from 'mailinabox-api';
+import { authUpdate } from './authSlice';
+import { RootState } from '../store';
+
+export interface LoginState {
+  loginError: string | null;
+  isLoggedIn: boolean;
+  isLoggingIn: boolean;
+}
 
 export const loginSlice = createSlice({
   name: 'login',
@@ -8,7 +17,7 @@ export const loginSlice = createSlice({
     loginError: null,
     isLoggedIn: false,
     isLoggingIn: false,
-  },
+  } as LoginState,
   reducers: {
     loginStart: (state) => {
       state.isLoggingIn = true;
@@ -26,10 +35,6 @@ export const loginSlice = createSlice({
     resetLoginError: (state) => {
       state.loginError = null;
     },
-    // loginState: (state, action) => {
-    //   state.isLoggingIn = false;
-    //   state.isLoggedIn = action.payload;
-    // },
   },
 });
 
@@ -40,15 +45,38 @@ export const {
   resetLoginError,
 } = loginSlice.actions;
 
-export const performLogin = () => (dispatch: any) => {
+export const performLogin = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch) => {
   dispatch(loginStart());
-  setTimeout(() => {
-    dispatch(loginError('Invalida credentials'));
-  }, 1000);
+  try {
+    const result = await userApi.me();
+    if (result.status !== MeResponseStatusEnum.Ok) {
+      dispatch(loginError(result.reason));
+    } else if (!result.apiKey) {
+      dispatch(loginError('You are not an administrator on this system.'));
+    } else {
+      dispatch(
+        authUpdate({
+          username: result.email,
+          password: result.apiKey,
+        })
+      );
+      alert('logged in!');
+    }
+  } catch (err) {
+    dispatch(loginError(`Request error: ${err.message}`));
+  }
 };
 
-export const selectIsLoggedIn = (state: any) => state.login.isLoggedIn;
-export const selectIsLoggingIn = (state: any) => state.login.isLoggingIn;
-export const selectLoginError = (state: any) => state.login.loginError;
+export const selectIsLoggedIn = (state: RootState): boolean =>
+  state.login.isLoggedIn;
+export const selectIsLoggingIn = (state: RootState): boolean =>
+  state.login.isLoggingIn;
+export const selectLoginError = (state: RootState): string | null =>
+  state.login.loginError;
 
 export const { reducer: loginReducer } = loginSlice;

@@ -21,7 +21,7 @@ export const Home: React.FunctionComponent = () => {
           color: '#605e5c',
         },
       }}
-      gap={15}
+      tokens={{ childrenGap: 15 }}
     >
       <img src={logo} alt="logo" />
       <Text variant="xxLarge" styles={boldStyle}>
@@ -34,7 +34,7 @@ export const Home: React.FunctionComponent = () => {
       <Text variant="large" styles={boldStyle}>
         Essential Links
       </Text>
-      <Stack horizontal gap={15} horizontalAlign="center">
+      <Stack horizontal tokens={{ childrenGap: 15 }} horizontalAlign="center">
         <Link href="https://developer.microsoft.com/en-us/fabric">Docs</Link>
         <Link href="https://stackoverflow.com/questions/tagged/office-ui-fabric">
           Stack Overflow
@@ -47,7 +47,7 @@ export const Home: React.FunctionComponent = () => {
       <Text variant="large" styles={boldStyle}>
         Design System
       </Text>
-      <Stack horizontal gap={15} horizontalAlign="center">
+      <Stack horizontal tokens={{ childrenGap: 15 }} horizontalAlign="center">
         <Link href="https://developer.microsoft.com/en-us/fabric#/styles/icons">
           Icons
         </Link>

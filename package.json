@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "@fluentui/react": "^7.121.2",
+    "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5.10.1",
     "@testing-library/react": "^10.4.3",
     "@testing-library/user-event": "^12.0.9",
@@ -17,6 +18,8 @@
     "@typescript-eslint/parser": "^3.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "http-proxy-middleware": "^1.0.4",
+    "mailinabox-api": "file:../mailinabox-api/clients/typescript-fetch",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -58,8 +61,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.4.0"
   }
 }

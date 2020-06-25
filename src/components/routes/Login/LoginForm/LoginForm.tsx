@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   TextField,
@@ -17,14 +17,13 @@ import {
   selectLoginError,
   resetLoginError,
 } from '../../../../features/loginSlice';
+import { authUpdate } from '../../../../features/authSlice';
 
 const setter = (set: React.Dispatch<React.SetStateAction<string>>) => (
   _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
   newValue?: string | undefined
 ) => {
-  if (newValue) {
-    set(newValue);
-  }
+  set(newValue ?? '');
 };
 
 export const LoginForm: React.FunctionComponent = () => {
@@ -33,14 +32,18 @@ export const LoginForm: React.FunctionComponent = () => {
   const loginError = useSelector(selectLoginError);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  useEffect(() => {
+    dispatch(authUpdate({ username: email, password }));
+  });
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        dispatch(resetLoginError());
         dispatch(performLogin());
       }}
     >
-      <Stack gap="20">
+      <Stack tokens={{ childrenGap: 20 }}>
         {loginError && (
           <MessageBar
             messageBarType={MessageBarType.error}
@@ -48,10 +51,10 @@ export const LoginForm: React.FunctionComponent = () => {
             onDismiss={() => dispatch(resetLoginError())}
             dismissButtonAriaLabel="Close"
           >
-            Incorrect email or password
+            {loginError}
           </MessageBar>
         )}
-        <Stack gap="10">
+        <Stack tokens={{ childrenGap: 10 }}>
           <TextField
             label="Email"
             value={email}
@@ -70,7 +73,7 @@ export const LoginForm: React.FunctionComponent = () => {
             onChange={setter(setPassword)}
           />
         </Stack>
-        <Stack horizontalAlign="start" horizontal gap="10">
+        <Stack horizontalAlign="start" horizontal tokens={{ childrenGap: 10 }}>
           <PrimaryButton type="submit" text="Submit" />{' '}
           {isLogginIn && <Spinner size={SpinnerSize.medium} />}
         </Stack>

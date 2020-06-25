@@ -14,7 +14,7 @@ export const Login: React.FunctionComponent = () => {
     <Stack
       className={className}
       verticalAlign="center"
-      gap={15}
+      tokens={{ childrenGap: 15 }}
       styles={{
         root: {
           width: '420px',
