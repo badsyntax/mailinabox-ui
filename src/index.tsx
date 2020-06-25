@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mergeStyles, getTheme } from '@fluentui/react';
+import { Provider } from 'react-redux';
+import { mergeStyles, getTheme, initializeIcons } from '@fluentui/react';
 import { App } from './components/App/App';
+import { store } from './store';
+
+initializeIcons(/* optional base url */);
 
 mergeStyles({
   selectors: {
@@ -18,7 +22,9 @@ mergeStyles({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('app')
 );

@@ -17,7 +17,7 @@ export const Login: React.FunctionComponent = () => {
       gap={15}
       styles={{
         root: {
-          width: '360px',
+          width: '420px',
         },
       }}
     >
