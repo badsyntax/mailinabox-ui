@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import {
   TextField,
   Stack,
@@ -9,35 +11,65 @@ import {
   SpinnerSize,
   MessageBar,
   MessageBarType,
+  Checkbox,
+  BaseButton,
+  Button,
+  AnimationStyles,
 } from '@fluentui/react';
 
 import {
-  performLogin,
   selectIsLoggingIn,
   selectLoginError,
-  resetLoginError,
+  loginResetError,
+  loginCheck,
 } from '../../features/loginSlice';
 import { authUpdate, selectIsAuthenticated } from '../../features/authSlice';
-import { useHistory } from 'react-router-dom';
-
-const setter = (set: React.Dispatch<React.SetStateAction<string>>) => (
-  _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-  newValue?: string | undefined
-) => {
-  set(newValue ?? '');
-};
+import { HomeRoute } from '../routes/HomeRoute/HomeRoute';
 
 export const LoginForm: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const isLogginIn = useSelector(selectIsLoggingIn);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const loginError = useSelector(selectLoginError);
+
+  const [remember, setRemember] = useState(true);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const onRememberChange = useCallback(
+    (ev?: React.FormEvent<HTMLElement>, checked?: boolean): void => {
+      setRemember(!!checked);
+    },
+    []
+  );
+  const onEmailChange = useCallback(
+    (ev: React.FormEvent<HTMLElement>, newValue?: string): void => {
+      setEmail(newValue ?? '');
+    },
+    []
+  );
+  const onPasswordChange = useCallback(
+    (ev: React.FormEvent<HTMLElement>, newValue?: string): void => {
+      setPassword(newValue ?? '');
+    },
+    []
+  );
+  const onMessageBarDismiss = useCallback(
+    (
+      ev?:
+        | React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
+        | undefined
+    ): void => {
+      dispatch(loginResetError());
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     if (isAuthenticated) {
-      history.push('/');
+      history.push(HomeRoute.path);
     } else {
       dispatch(authUpdate({ username: email, password }));
     }
@@ -46,8 +78,8 @@ export const LoginForm: React.FunctionComponent = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        dispatch(resetLoginError());
-        dispatch(performLogin());
+        dispatch(loginResetError());
+        dispatch(loginCheck(remember));
       }}
     >
       <Stack tokens={{ childrenGap: 20 }}>
@@ -55,8 +87,13 @@ export const LoginForm: React.FunctionComponent = () => {
           <MessageBar
             messageBarType={MessageBarType.error}
             isMultiline={false}
-            onDismiss={() => dispatch(resetLoginError())}
+            onDismiss={onMessageBarDismiss}
             dismissButtonAriaLabel="Close"
+            styles={{
+              root: {
+                ...AnimationStyles.fadeIn500,
+              },
+            }}
           >
             {loginError}
           </MessageBar>
@@ -65,24 +102,32 @@ export const LoginForm: React.FunctionComponent = () => {
           <TextField
             label="Email"
             value={email}
-            autoFocus
             required
             type="email"
-            disabled={isLogginIn}
-            onChange={setter(setEmail)}
+            autoFocus
+            onChange={onEmailChange}
           />
           <TextField
             label="Password"
             value={password}
             required
             type="password"
-            disabled={isLogginIn}
-            onChange={setter(setPassword)}
+            onChange={onPasswordChange}
+          />
+          <Checkbox
+            label="Remember me"
+            checked={remember}
+            onChange={onRememberChange}
           />
         </Stack>
-        <Stack horizontalAlign="start" horizontal tokens={{ childrenGap: 10 }}>
-          <PrimaryButton type="submit" text="Submit" />{' '}
+        <Stack
+          horizontalAlign="end"
+          verticalAlign="center"
+          horizontal
+          tokens={{ childrenGap: 10 }}
+        >
           {isLogginIn && <Spinner size={SpinnerSize.medium} />}
+          <PrimaryButton type="submit" text="Sign in" />
         </Stack>
       </Stack>
     </form>

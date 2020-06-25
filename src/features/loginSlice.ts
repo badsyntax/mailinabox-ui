@@ -15,42 +15,29 @@ export const loginSlice = createSlice({
   name: 'login',
   initialState: {
     loginError: null,
-    isLoggedIn: false,
     isLoggingIn: false,
   } as LoginState,
   reducers: {
     loginStart: (state) => {
       state.isLoggingIn = true;
     },
-    loginSuccess: (state) => {
-      state.loginError = null;
-      state.isLoggingIn = false;
-      state.isLoggedIn = true;
-    },
     loginError: (state, action) => {
       state.loginError = action.payload;
       state.isLoggingIn = false;
-      state.isLoggedIn = false;
     },
-    resetLoginError: (state) => {
+    loginResetError: (state) => {
       state.loginError = null;
     },
   },
 });
 
-export const {
-  loginStart,
-  loginSuccess,
-  loginError,
-  resetLoginError,
-} = loginSlice.actions;
+export const { loginStart, loginError, loginResetError } = loginSlice.actions;
 
-export const performLogin = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch) => {
+export const loginCheck = (
+  remember: boolean
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+) => {
   dispatch(loginStart());
   try {
     const result = await userApi.me();
@@ -64,12 +51,17 @@ export const performLogin = (): ThunkAction<
           username: result.email,
           password: result.apiKey,
           isAuthenticated: true,
+          remember,
         })
       );
-      dispatch(loginSuccess());
     }
   } catch (err) {
-    dispatch(loginError(`Request error: ${err.message}`));
+    const { statusText, status } = err as Response;
+    dispatch(
+      loginError(
+        `Request error: ${statusText}${status ? ' (' + status + ')' : ''}`
+      )
+    );
   }
 };
 

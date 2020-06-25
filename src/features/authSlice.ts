@@ -1,18 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { storageAuth } from '../auth';
 
 export interface AuthState {
-  username: string | null;
-  password: string | null;
+  username: string;
+  password: string;
   isAuthenticated: boolean;
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    username: null,
-    password: null,
-    isAuthenticated: false,
+    username: storageAuth.getUsername(),
+    password: storageAuth.getPassword(),
+    isAuthenticated: storageAuth.getIsAuthenticated(),
   } as AuthState,
   reducers: {
     authUpdate: (state, action) => {
