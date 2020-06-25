@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Stack } from '@fluentui/react';
-import { Home } from '../routes/Home/Home';
-import { Login } from '../routes/Login/Login';
+import { HomeRoute } from '../routes/HomeRoute/HomeRoute';
+import { LoginRoute } from '../routes/LoginRoute/LoginRoute';
+import { PrivateRoute } from '../routes/PrivateRoute/PrivateRoute';
 
 export const App: React.FunctionComponent = () => {
   return (
@@ -14,12 +15,12 @@ export const App: React.FunctionComponent = () => {
         tokens={{ childrenGap: 15 }}
       >
         <Switch>
-          <Route exact path="/login">
-            <Login />
+          <Route exact path={LoginRoute.path}>
+            <LoginRoute />
           </Route>
-          <Route exact path="/">
-            <Home />
-          </Route>
+          <PrivateRoute exact path={HomeRoute.path}>
+            <HomeRoute />
+          </PrivateRoute>
           <Route>Not Found</Route>
         </Switch>
       </Stack>

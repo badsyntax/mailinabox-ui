@@ -63,17 +63,16 @@ export const performLogin = (): ThunkAction<
         authUpdate({
           username: result.email,
           password: result.apiKey,
+          isAuthenticated: true,
         })
       );
-      alert('logged in!');
+      dispatch(loginSuccess());
     }
   } catch (err) {
     dispatch(loginError(`Request error: ${err.message}`));
   }
 };
 
-export const selectIsLoggedIn = (state: RootState): boolean =>
-  state.login.isLoggedIn;
 export const selectIsLoggingIn = (state: RootState): boolean =>
   state.login.isLoggingIn;
 export const selectLoginError = (state: RootState): string | null =>

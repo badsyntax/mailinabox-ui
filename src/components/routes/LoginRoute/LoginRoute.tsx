@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, mergeStyles, getTheme } from '@fluentui/react';
-import { LoginHeader } from './LoginHeader/LoginHeader';
-import { LoginForm } from './LoginForm/LoginForm';
+import { LoginHeader } from '../../LoginHeader/LoginHeader';
+import { LoginForm } from '../../LoginForm/LoginForm';
 
 const className = mergeStyles({
   padding: 25,
@@ -9,7 +9,7 @@ const className = mergeStyles({
   backgroundColor: getTheme().palette.white,
 });
 
-export const Login: React.FunctionComponent = () => {
+export const LoginRoute: React.FunctionComponent & { path: string } = () => {
   return (
     <Stack
       className={className}
@@ -26,3 +26,5 @@ export const Login: React.FunctionComponent = () => {
     </Stack>
   );
 };
+
+LoginRoute.path = '/login';

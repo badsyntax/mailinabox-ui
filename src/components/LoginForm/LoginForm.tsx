@@ -16,8 +16,9 @@ import {
   selectIsLoggingIn,
   selectLoginError,
   resetLoginError,
-} from '../../../../features/loginSlice';
-import { authUpdate } from '../../../../features/authSlice';
+} from '../../features/loginSlice';
+import { authUpdate, selectIsAuthenticated } from '../../features/authSlice';
+import { useHistory } from 'react-router-dom';
 
 const setter = (set: React.Dispatch<React.SetStateAction<string>>) => (
   _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -28,12 +29,18 @@ const setter = (set: React.Dispatch<React.SetStateAction<string>>) => (
 
 export const LoginForm: React.FunctionComponent = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const isLogginIn = useSelector(selectIsLoggingIn);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const loginError = useSelector(selectLoginError);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   useEffect(() => {
-    dispatch(authUpdate({ username: email, password }));
+    if (isAuthenticated) {
+      history.push('/');
+    } else {
+      dispatch(authUpdate({ username: email, password }));
+    }
   });
   return (
     <form

@@ -7,7 +7,7 @@ const boldStyle = {
   root: { fontWeight: FontWeights.semibold },
 };
 
-export const Home: React.FunctionComponent = () => {
+export const HomeRoute: React.FunctionComponent & { path: string } = () => {
   return (
     <Stack
       horizontalAlign="center"
@@ -25,7 +25,7 @@ export const Home: React.FunctionComponent = () => {
     >
       <img src={logo} alt="logo" />
       <Text variant="xxLarge" styles={boldStyle}>
-        Welcome to Your UI Fabric Home
+        Welcome to Your UI Fabric HomeRoute
       </Text>
       <Text variant="large">
         For a guide on how to customize this project, check out the UI Fabric
@@ -61,3 +61,5 @@ export const Home: React.FunctionComponent = () => {
     </Stack>
   );
 };
+
+HomeRoute.path = '/';
