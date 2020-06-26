@@ -2,8 +2,11 @@ import {
   Configuration,
   ConfigurationParameters,
   UserApi,
+  SystemApi,
 } from 'mailinabox-api';
 import { storageAuth } from '../auth';
+
+// TODO: add middleware for handling token expiry
 
 const apiConfigParams: ConfigurationParameters = {
   basePath: '/admin',
@@ -13,8 +16,16 @@ const apiConfigParams: ConfigurationParameters = {
 
 const apiConfig = new Configuration(apiConfigParams);
 
-export const userApi = new UserApi(apiConfig);
-
 export function updateApiConfig(config: ConfigurationParameters): void {
   Object.assign(apiConfigParams, config);
+}
+
+export const userApi = new UserApi(apiConfig);
+export const systemApi = new SystemApi(apiConfig);
+
+export function getRequestFailMessage(response: Response): string {
+  const { statusText, status } = response;
+  return `Request error: ${statusText}${
+    status ? ' (' + status + ')' : ''
+  }. Refresh the page to try again.`;
 }

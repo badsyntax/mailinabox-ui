@@ -15,6 +15,7 @@ import {
   BaseButton,
   Button,
   AnimationStyles,
+  mergeStyles,
 } from '@fluentui/react';
 
 import {
@@ -24,7 +25,11 @@ import {
   loginCheck,
 } from '../../features/loginSlice';
 import { authUpdate, selectIsAuthenticated } from '../../features/authSlice';
-import { HomeRoute } from '../routes/HomeRoute/HomeRoute';
+import { MainRoute } from '../routes/MainRoute/MainRoute';
+
+const messageBarClassName = mergeStyles({
+  ...AnimationStyles.fadeIn500,
+});
 
 export const LoginForm: React.FunctionComponent = () => {
   const dispatch = useDispatch();
@@ -66,39 +71,37 @@ export const LoginForm: React.FunctionComponent = () => {
     },
     [dispatch]
   );
+  const onFormSubmit = useCallback(
+    (ev: React.FormEvent<HTMLElement>): void => {
+      ev.preventDefault();
+      dispatch(loginResetError());
+      dispatch(loginCheck(remember));
+    },
+    [dispatch, remember]
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push(HomeRoute.path);
+      history.push(MainRoute.path);
     } else {
       dispatch(authUpdate({ username: email, password }));
     }
   });
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        dispatch(loginResetError());
-        dispatch(loginCheck(remember));
-      }}
-    >
-      <Stack tokens={{ childrenGap: 20 }}>
+    <form onSubmit={onFormSubmit}>
+      <Stack tokens={{ childrenGap: 'm' }}>
         {loginError && (
           <MessageBar
             messageBarType={MessageBarType.error}
             isMultiline={false}
             onDismiss={onMessageBarDismiss}
             dismissButtonAriaLabel="Close"
-            styles={{
-              root: {
-                ...AnimationStyles.fadeIn500,
-              },
-            }}
+            className={messageBarClassName}
           >
             {loginError}
           </MessageBar>
         )}
-        <Stack tokens={{ childrenGap: 10 }}>
+        <Stack tokens={{ childrenGap: 'm' }}>
           <TextField
             label="Email"
             value={email}
@@ -124,10 +127,10 @@ export const LoginForm: React.FunctionComponent = () => {
           horizontalAlign="end"
           verticalAlign="center"
           horizontal
-          tokens={{ childrenGap: 10 }}
+          tokens={{ childrenGap: 's1' }}
         >
           {isLogginIn && <Spinner size={SpinnerSize.medium} />}
-          <PrimaryButton type="submit" text="Sign in" />
+          <PrimaryButton type="submit" text="Sign in" disabled={isLogginIn} />
         </Stack>
       </Stack>
     </form>

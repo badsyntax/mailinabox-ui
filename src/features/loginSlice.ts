@@ -40,7 +40,7 @@ export const loginCheck = (
 ) => {
   dispatch(loginStart());
   try {
-    const result = await userApi.me();
+    const result = await userApi.getMe();
     if (result.status !== MeResponseStatusEnum.Ok) {
       dispatch(loginError(result.reason));
     } else if (!result.apiKey) {
