@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectSummarisedChecks } from '../../../../features/system/statusSlice';
 import { IChartDataPoint, IChartProps, DonutChart } from '@uifabric/charting';
 import { StatusEntryTypeEnum } from 'mailinabox-api';
 import { getTheme } from '@fluentui/react';
+import { selectSummarisedChecks } from '../../features/system/statusSlice';
 
-export const StatusChart: React.FunctionComponent = () => {
+export const SystemStatusChart: React.FunctionComponent = () => {
   const summarisedChecks = useSelector(selectSummarisedChecks);
 
   const chartData: IChartDataPoint[] = [

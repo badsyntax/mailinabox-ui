@@ -1,11 +1,11 @@
 import React from 'react';
 import { MessageBar, MessageBarType } from '@fluentui/react';
 import { useSelector } from 'react-redux';
-import { selectPrivacy } from '../../../../features/system/privacySlice';
-import { selectReboot } from '../../../../features/system/rebootSlice';
-import { StatusActionsMenu } from './StatusActionsMenu';
+import { selectPrivacy } from '../../features/system/privacySlice';
+import { selectReboot } from '../../features/system/rebootSlice';
+import { SystemStatusActionsMenu } from '../SystemStatusActionsMenu/SystemStatusActionsMenu';
 
-export const StatusActions: React.FunctionComponent = () => {
+export const SystemStatusActions: React.FunctionComponent = () => {
   const privacy = useSelector(selectPrivacy);
   const reboot = useSelector(selectReboot);
   return (
@@ -21,7 +21,7 @@ export const StatusActions: React.FunctionComponent = () => {
         </MessageBar>
       )}
       {/* TODO: SHOW ERRORS FOR UPDATING PRIVACY AND REBOOTING */}
-      <StatusActionsMenu privacy={privacy} reboot={reboot} />
+      <SystemStatusActionsMenu privacy={privacy} reboot={reboot} />
     </>
   );
 };

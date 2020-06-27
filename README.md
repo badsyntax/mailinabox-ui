@@ -26,6 +26,15 @@
 - [ ] Add filter for domain
 - [ ] Add summary
 
+## TLS Certicates
+
+- [x] Show certificate status
+- [x] Form to install custom certificates
+- [ ] Replace certificates
+- [ ] Install letsencrypt certificate
+- [ ] Replace letsencrypt certificate
+- [ ] can_provision logic
+
 ## Auth
 
  - [ ] Log out

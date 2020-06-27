@@ -15,7 +15,7 @@ interface SystemChecksDetailsListItemProps {
   item: StatusEntry;
 }
 
-function getTextColor(type: string) {
+function getTextColor(type: StatusEntryTypeEnum) {
   switch (type) {
     case StatusEntryTypeEnum.Ok:
       return theme.palette.greenDark;

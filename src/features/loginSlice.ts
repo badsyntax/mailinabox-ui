@@ -1,9 +1,8 @@
 import { createSlice, Action, ThunkAction } from '@reduxjs/toolkit';
-import { userApi } from '../api';
-
 import { MeResponseStatusEnum } from 'mailinabox-api';
-import { authUpdate } from './authSlice';
+import { userApi } from '../api';
 import { RootState } from '../store';
+import { authUpdate } from './authSlice';
 
 export interface LoginState {
   loginError: string | null;
@@ -11,7 +10,7 @@ export interface LoginState {
   isLoggingIn: boolean;
 }
 
-export const loginSlice = createSlice({
+const loginSlice = createSlice({
   name: 'login',
   initialState: {
     loginError: null,

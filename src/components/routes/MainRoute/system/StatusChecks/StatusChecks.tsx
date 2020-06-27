@@ -8,28 +8,28 @@ import {
   mergeStyles,
   AnimationStyles,
 } from '@fluentui/react';
-import { Body } from '../../../Body/Body';
-import { BodyPanel } from '../../../BodyPanel/BodyPanel';
+import { useDispatch, useSelector } from 'react-redux';
+import { Body } from '../../../../Body/Body';
+import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
 import {
   systemStatusCheck,
   selectIsCheckingStatus,
   selectSystemStatusItemsAndGroups,
   selectStatusError,
-} from '../../../../features/system/statusSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { SystemChecksDetailsList } from '../../../SystemChecksDetailsList/SystemChecksDetailsList';
-import { systemRebootCheck } from '../../../../features/system/rebootSlice';
-import { systemPrivacyCheck } from '../../../../features/system/privacySlice';
-import { StatusChart } from './StatusChart';
-import { StatusActions } from './StatusActions';
+} from '../../../../../features/system/statusSlice';
+import { SystemChecksDetailsList } from '../../../../SystemChecksDetailsList/SystemChecksDetailsList';
+import { systemRebootCheck } from '../../../../../features/system/rebootSlice';
+import { systemPrivacyCheck } from '../../../../../features/system/privacySlice';
+import { SystemStatusChart } from '../../../../SystemStatusChart/SystemStatusChart';
+import { SystemStatusActions } from '../../../../SystemStatusActions/SystemStatusActions';
 
 const messageBarClassName = mergeStyles({
   ...AnimationStyles.fadeIn500,
 });
 
-export const SystemChecks: React.FunctionComponent & { path: string } = () => {
+export const StatusChecks: React.FunctionComponent & { path: string } = () => {
   const dispatch = useDispatch();
-  const isCheckingState = useSelector(selectIsCheckingStatus);
+  const isCheckingStatus = useSelector(selectIsCheckingStatus);
   const statusError = useSelector(selectStatusError);
 
   const [items, groups] = useSelector(selectSystemStatusItemsAndGroups);
@@ -48,17 +48,17 @@ export const SystemChecks: React.FunctionComponent & { path: string } = () => {
           Status Checks
         </Text>
       </Stack>
-      {!isCheckingState && (
+      {!isCheckingStatus && (
         <Stack horizontal tokens={{ childrenGap: 'l1' }}>
           <BodyPanel grow={1} styles={{ root: { flexBasis: 0 } }}>
-            <StatusChart />
+            <SystemStatusChart />
           </BodyPanel>
           <BodyPanel
             grow={1}
             styles={{ root: { flexBasis: 0 } }}
             horizontalAlign="start"
           >
-            <StatusActions />
+            <SystemStatusActions />
           </BodyPanel>
         </Stack>
       )}
@@ -72,10 +72,10 @@ export const SystemChecks: React.FunctionComponent & { path: string } = () => {
             {statusError}
           </MessageBar>
         )}
-        {isCheckingState && (
+        {isCheckingStatus && (
           <ProgressIndicator label="Checking system status..." />
         )}
-        {!isCheckingState && !statusError && (
+        {!isCheckingStatus && !statusError && (
           <SystemChecksDetailsList items={items} groups={groups} />
         )}
       </BodyPanel>
@@ -83,4 +83,4 @@ export const SystemChecks: React.FunctionComponent & { path: string } = () => {
   );
 };
 
-SystemChecks.path = '/system';
+StatusChecks.path = '/system/status';

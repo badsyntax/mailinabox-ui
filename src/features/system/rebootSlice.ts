@@ -8,7 +8,7 @@ export interface SystemRebootState {
   error: string | null;
 }
 
-export const systemReboot = createSlice({
+const systemReboot = createSlice({
   name: 'reboot',
   initialState: {
     isChecking: false,
@@ -45,7 +45,7 @@ export const systemRebootCheck = (): ThunkAction<
 > => async (dispatch) => {
   dispatch(systemRebootStart());
   try {
-    const result = await systemApi.getReboot();
+    const result = await systemApi.getSystemRebootStatus();
     dispatch(systemRebootSuccess(result));
   } catch (err) {
     dispatch(systemRebootError(getRequestFailMessage(err as Response)));

@@ -8,7 +8,7 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState: {
     username: storageAuth.getUsername(),

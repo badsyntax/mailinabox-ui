@@ -9,6 +9,7 @@ import { authMiddleware } from '../middleware/authMiddleware';
 import { systemStatusReducer } from '../features/system/statusSlice';
 import { systemRebootReducer } from '../features/system/rebootSlice';
 import { systemPrivacyReducer } from '../features/system/privacySlice';
+import { sslReducer } from '../features/ssl/sslSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
       reboot: systemRebootReducer,
       privacy: systemPrivacyReducer,
     }),
+    ssl: sslReducer,
   },
   middleware: getDefaultMiddleware().concat(authMiddleware),
 });

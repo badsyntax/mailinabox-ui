@@ -8,7 +8,7 @@ export const Body: React.FunctionComponent = ({ children }) => {
       tokens={{ childrenGap: 'l1', padding: '0 0 l2 0' }}
       styles={{
         root: {
-          maxWidth: 900,
+          maxWidth: 1100,
           width: '100%',
         },
       }}

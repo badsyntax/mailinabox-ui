@@ -1,9 +1,16 @@
 import React from 'react';
-import { mergeStyles, getTheme, Stack, IStackProps } from '@fluentui/react';
+import {
+  mergeStyles,
+  getTheme,
+  Stack,
+  IStackProps,
+  AnimationStyles,
+} from '@fluentui/react';
 
 const className = mergeStyles({
   boxShadow: getTheme().effects.elevation8,
   backgroundColor: getTheme().palette.white,
+  ...AnimationStyles.fadeIn200,
 });
 
 export const BodyPanel: React.FunctionComponent<IStackProps> = ({

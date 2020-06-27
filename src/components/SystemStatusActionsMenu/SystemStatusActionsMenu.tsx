@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   systemPrivacyUpdate,
   selectIsUpdatingPrivacy,
-} from '../../../../features/system/privacySlice';
+} from '../../features/system/privacySlice';
 
 const theme = getTheme();
 
@@ -63,7 +63,7 @@ interface StatusActionsMenuProps {
   reboot: boolean;
 }
 
-export const StatusActionsMenu: React.FunctionComponent<StatusActionsMenuProps> = ({
+export const SystemStatusActionsMenu: React.FunctionComponent<StatusActionsMenuProps> = ({
   privacy,
   reboot,
 }) => {
