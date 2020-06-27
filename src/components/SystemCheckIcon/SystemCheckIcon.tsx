@@ -1,10 +1,10 @@
-import React from 'react';
-import { StatusEntryTypeEnum } from 'mailinabox-api';
 import { getTheme, Icon } from '@fluentui/react';
+import { StatusEntryTypeEnum } from 'mailinabox-api';
+import React from 'react';
 
 const theme = getTheme();
 
-function getIconName(type: string) {
+function getIconName(type: string): string {
   switch (type) {
     case StatusEntryTypeEnum.Ok:
       return 'Accept';
@@ -16,7 +16,7 @@ function getIconName(type: string) {
   }
 }
 
-function getIconColor(type: string) {
+function getIconColor(type: string): string {
   switch (type) {
     case StatusEntryTypeEnum.Ok:
       return theme.palette.green;

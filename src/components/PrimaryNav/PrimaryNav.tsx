@@ -1,7 +1,12 @@
-import React from 'react';
 import { CommandBar } from '@fluentui/react';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { Backups } from '../routes/MainRoute/system/Backups/Backups';
+import { Certificates } from '../routes/MainRoute/system/Certificates/Certificates';
+import { StatusChecks } from '../routes/MainRoute/system/StatusChecks/StatusChecks';
 
 export const PrimaryNav: React.FunctionComponent = () => {
+  const history = useHistory();
   return (
     <CommandBar
       farItems={[
@@ -22,16 +27,19 @@ export const PrimaryNav: React.FunctionComponent = () => {
                 key: 'statusChecks',
                 text: 'Status Checks',
                 iconProps: { iconName: 'Health' },
+                onClick: (): void => history.push(StatusChecks.path),
               },
               {
                 key: 'certificates',
                 text: 'TLS (SSL) Certificates',
                 iconProps: { iconName: 'Lock' },
+                onClick: (): void => history.push(Certificates.path),
               },
               {
                 key: 'backup',
                 text: 'Backup Status',
                 iconProps: { iconName: 'CloudUpload' },
+                onClick: (): void => history.push(Backups.path),
               },
               {
                 key: 'advanced',

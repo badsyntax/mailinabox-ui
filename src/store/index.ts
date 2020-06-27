@@ -1,15 +1,16 @@
 import {
+  combineReducers,
   configureStore,
   getDefaultMiddleware,
-  combineReducers,
 } from '@reduxjs/toolkit';
-import { loginReducer } from '../features/loginSlice';
 import { authReducer } from '../features/authSlice';
-import { authMiddleware } from '../middleware/authMiddleware';
-import { systemStatusReducer } from '../features/system/statusSlice';
-import { systemRebootReducer } from '../features/system/rebootSlice';
-import { systemPrivacyReducer } from '../features/system/privacySlice';
+import { loginReducer } from '../features/loginSlice';
 import { sslReducer } from '../features/ssl/sslSlice';
+import { systemBackupsReducer } from '../features/system/backupsSlice';
+import { systemPrivacyReducer } from '../features/system/privacySlice';
+import { systemRebootReducer } from '../features/system/rebootSlice';
+import { systemStatusReducer } from '../features/system/statusSlice';
+import { authMiddleware } from '../middleware/authMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
       status: systemStatusReducer,
       reboot: systemRebootReducer,
       privacy: systemPrivacyReducer,
+      backups: systemBackupsReducer,
     }),
     ssl: sslReducer,
   },

@@ -1,18 +1,18 @@
-import React, { useCallback } from 'react';
 import {
+  CommandBarButton,
+  DirectionalHint,
   getTheme,
   IOverflowSetItemProps,
-  CommandBarButton,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
   OverflowSet,
+  TooltipDelay,
+  TooltipHost,
 } from '@fluentui/react';
 import { useId } from '@uifabric/react-hooks';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  systemPrivacyUpdate,
   selectIsUpdatingPrivacy,
+  systemPrivacyUpdate,
 } from '../../features/system/privacySlice';
 
 const theme = getTheme();

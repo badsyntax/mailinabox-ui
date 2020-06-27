@@ -1,11 +1,11 @@
-import { Middleware, MiddlewareAPI, Dispatch } from '@reduxjs/toolkit';
-import { authUpdate } from '../features/authSlice';
+import { Dispatch, Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
 import { updateApiConfig } from '../api';
 import { storageAuth } from '../auth';
+import { authUpdate } from '../features/authSlice';
 
 export const authMiddleware: Middleware = ({ getState }: MiddlewareAPI) => (
   next: Dispatch
-) => (action) => {
+) => (action): void => {
   const returnValue = next(action);
   if (action.type === authUpdate.type) {
     const { username, password, isAuthenticated, remember } = action.payload;

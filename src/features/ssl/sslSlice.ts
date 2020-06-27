@@ -1,7 +1,7 @@
-import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { SSLStatusResponse } from 'mailinabox-api';
-import { RootState } from '../../store';
 import { getRequestFailMessage, sslApi } from '../../api';
+import { RootState } from '../../store';
 
 export interface SSLState {
   isCheckingStatus: boolean;
@@ -28,29 +28,33 @@ export const ssl = createSlice({
   name: 'ssl',
   initialState,
   reducers: {
-    sslGetStatusStart: (state) => {
+    sslGetStatusStart: (state): void => {
       state.getStatusError = null;
       state.isCheckingStatus = true;
     },
-    sslGetStatusSuccess: (state, action) => {
+    sslGetStatusSuccess: (state, action): void => {
       state.isCheckingStatus = false;
       state.sslStatus = action.payload;
     },
-    sslGetStatusError: (state, action) => {
+    sslGetStatusError: (state, action): void => {
       state.getStatusError = action.payload;
       state.isCheckingStatus = false;
     },
-    sslGenerateCSRStart: (state) => {
+    sslGenerateCSRStart: (state): void => {
       state.generateCSRError = null;
       state.isGeneratingCSR = true;
     },
-    sslGenerateCSRSuccess: (state, action) => {
+    sslGenerateCSRSuccess: (state, action): void => {
       state.isGeneratingCSR = false;
       state.generatedCSR = action.payload;
     },
-    sslGenerateCSRError: (state, action) => {
+    sslGenerateCSRError: (state, action): void => {
       state.generateCSRError = action.payload;
       state.isGeneratingCSR = false;
+    },
+    sslGenerateCSRReset: (state): void => {
+      state.generateCSRError = null;
+      state.generatedCSR = null;
     },
   },
 });
@@ -62,6 +66,7 @@ export const {
   sslGenerateCSRStart,
   sslGenerateCSRSuccess,
   sslGenerateCSRError,
+  sslGenerateCSRReset,
 } = ssl.actions;
 
 export const sslStatusCheck = (): ThunkAction<
@@ -69,7 +74,7 @@ export const sslStatusCheck = (): ThunkAction<
   RootState,
   unknown,
   Action<string>
-> => async (dispatch) => {
+> => async (dispatch): Promise<void> => {
   dispatch(sslGetStatusStart());
   try {
     const result = await sslApi.getSSLStatus();
@@ -84,7 +89,7 @@ export const sslGenerateCSR = (
   countrycode: string
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
-) => {
+): Promise<void> => {
   dispatch(sslGenerateCSRStart());
   try {
     const result = await sslApi.generateCSR({

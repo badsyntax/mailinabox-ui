@@ -1,7 +1,7 @@
+import { getTheme, initializeIcons, mergeStyles } from '@fluentui/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { mergeStyles, getTheme, initializeIcons } from '@fluentui/react';
 import { App } from './components/App/App';
 import { store } from './store';
 

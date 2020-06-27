@@ -1,6 +1,6 @@
-import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
+import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
-import { systemApi, getRequestFailMessage } from '../../api';
 
 export interface SystemRebootState {
   isChecking: boolean;
@@ -16,15 +16,15 @@ const systemReboot = createSlice({
     error: null,
   } as SystemRebootState,
   reducers: {
-    systemRebootStart: (state) => {
+    systemRebootStart: (state): void => {
       state.error = null;
       state.isChecking = true;
     },
-    systemRebootSuccess: (state, action) => {
+    systemRebootSuccess: (state, action): void => {
       state.isChecking = false;
       state.status = action.payload;
     },
-    systemRebootError: (state, action) => {
+    systemRebootError: (state, action): void => {
       state.error = action.payload;
       state.isChecking = false;
     },
@@ -42,7 +42,7 @@ export const systemRebootCheck = (): ThunkAction<
   RootState,
   unknown,
   Action<string>
-> => async (dispatch) => {
+> => async (dispatch): Promise<void> => {
   dispatch(systemRebootStart());
   try {
     const result = await systemApi.getSystemRebootStatus();

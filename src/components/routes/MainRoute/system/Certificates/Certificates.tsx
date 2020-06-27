@@ -1,32 +1,33 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  Stack,
+  getTheme,
+  mergeStyles,
   MessageBar,
   MessageBarType,
-  ProgressIndicator,
-  Text,
-  getTheme,
   Pivot,
   PivotItem,
   PivotLinkSize,
+  ProgressIndicator,
+  Stack,
+  Text,
 } from '@fluentui/react';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { Body } from '../../../../Body/Body';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectIsCheckingSSLStatus,
+  selectSSLStatus,
   selectSSLStatusError,
   sslStatusCheck,
-  selectSSLStatus,
 } from '../../../../../features/ssl/sslSlice';
+import { Body } from '../../../../Body/Body';
+import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
 import { CertificatesList } from '../../../../CertificatesList/CertificatesList';
 import { InstallCertificate } from '../../../../InstallCertificate/InstallCertificate';
 
 const theme = getTheme();
 
-const pivotItemStyles = {
-  root: { marginTop: theme.spacing.m },
-};
+const className = mergeStyles({
+  marginTop: theme.spacing.m,
+});
 
 const CertificateSections: React.FunctionComponent = () => {
   const sslStatus = useSelector(selectSSLStatus);
@@ -35,10 +36,10 @@ const CertificateSections: React.FunctionComponent = () => {
     <>
       <Pivot aria-label="Basic Pivot Example" linkSize={PivotLinkSize.large}>
         <PivotItem headerText="Certificate Status">
-          <CertificatesList styles={pivotItemStyles} items={items} />
+          <CertificatesList className={className} items={items} />
         </PivotItem>
         <PivotItem headerText="Install Custom Certificate">
-          <InstallCertificate styles={pivotItemStyles} items={items} />
+          <InstallCertificate className={className} items={items} />
         </PivotItem>
       </Pivot>
     </>

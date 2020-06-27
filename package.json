@@ -26,6 +26,7 @@
     "http-proxy-middleware": "^1.0.4",
     "mailinabox-api": "file:../mailinabox-api/clients/typescript-fetch",
     "prettier": "^2.0.5",
+    "prettier-plugin-organize-imports": "^1.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
@@ -53,8 +54,34 @@
     ],
     "rules": {
       "@typescript-eslint/no-floating-promises": "error",
-      "import/order": ["error", {"groups": ["builtin", "external", "parent", "sibling", "index"]}]
-    }
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "import/order": [
+        "error",
+        {
+          "groups": [
+            "builtin",
+            "external",
+            "parent",
+            "sibling",
+            "index"
+          ]
+        }
+      ],
+      "curly": "error"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "rules": {
+          "@typescript-eslint/explicit-function-return-type": [
+            "error"
+          ]
+        }
+      }
+    ]
   },
   "prettier": {
     "singleQuote": true,

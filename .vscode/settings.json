@@ -7,6 +7,7 @@
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
+    "source.organizeImports": false
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

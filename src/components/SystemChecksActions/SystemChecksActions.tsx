@@ -1,9 +1,9 @@
-import React from 'react';
 import {
-  IContextualMenuProps,
-  DirectionalHint,
   DefaultButton,
+  DirectionalHint,
+  IContextualMenuProps,
 } from '@fluentui/react';
+import React from 'react';
 
 const menuProps: IContextualMenuProps = {
   directionalHint: DirectionalHint.bottomRightEdge,

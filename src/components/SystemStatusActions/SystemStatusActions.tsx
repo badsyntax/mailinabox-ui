@@ -1,5 +1,5 @@
-import React from 'react';
 import { MessageBar, MessageBarType } from '@fluentui/react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectPrivacy } from '../../features/system/privacySlice';
 import { selectReboot } from '../../features/system/rebootSlice';

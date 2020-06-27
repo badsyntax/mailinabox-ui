@@ -1,13 +1,13 @@
-import React from 'react';
 import {
-  mergeStyles,
   AnimationStyles,
   IMessageBarProps,
+  mergeStyles,
   MessageBar as FluentMessageBar,
 } from '@fluentui/react';
+import React from 'react';
 
 const messageBarClassName = mergeStyles({
-  ...AnimationStyles.fadeIn200,
+  ...AnimationStyles.fadeIn400,
 });
 
 export const MessageBar: React.FunctionComponent<IMessageBarProps> = (

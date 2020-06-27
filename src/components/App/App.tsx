@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { MainRoute } from '../routes/MainRoute/MainRoute';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { LoginRoute } from '../routes/LoginRoute/LoginRoute';
+import { MainRoute } from '../routes/MainRoute/MainRoute';
 import { PrivateRoute } from '../routes/PrivateRoute/PrivateRoute';
 
 export const App: React.FunctionComponent = () => {

@@ -1,13 +1,13 @@
+import { IGroup } from '@fluentui/react';
 import {
-  createSlice,
-  ThunkAction,
   Action,
   createSelector,
+  createSlice,
+  ThunkAction,
 } from '@reduxjs/toolkit';
 import { StatusEntry, StatusEntryTypeEnum } from 'mailinabox-api';
-import { IGroup } from '@fluentui/react';
+import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
-import { systemApi, getRequestFailMessage } from '../../api';
 
 export interface SystemStatusState {
   isChecking: boolean;
@@ -23,15 +23,15 @@ const systemStatus = createSlice({
     error: null,
   } as SystemStatusState,
   reducers: {
-    systemStatusStart: (state) => {
+    systemStatusStart: (state): void => {
       state.error = null;
       state.isChecking = true;
     },
-    systemStatusSuccess: (state, action) => {
+    systemStatusSuccess: (state, action): void => {
       state.isChecking = false;
       state.status = action.payload;
     },
-    systemStatusError: (state, action) => {
+    systemStatusError: (state, action): void => {
       state.error = action.payload;
       state.isChecking = false;
     },
@@ -49,7 +49,7 @@ export const systemStatusCheck = (): ThunkAction<
   RootState,
   unknown,
   Action<string>
-> => async (dispatch) => {
+> => async (dispatch): Promise<void> => {
   dispatch(systemStatusStart());
   try {
     const result = await systemApi.getSystemStatus();

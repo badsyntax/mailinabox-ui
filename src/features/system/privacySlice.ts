@@ -1,7 +1,7 @@
-import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { UpdateSystemPrivacyValueEnum } from 'mailinabox-api';
+import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
-import { systemApi, getRequestFailMessage } from '../../api';
 
 export interface SystemPrivacyState {
   isChecking: boolean;
@@ -21,26 +21,26 @@ const systemPrivacy = createSlice({
   name: 'privacy',
   initialState,
   reducers: {
-    systemPrivacyGetStart: (state) => {
+    systemPrivacyGetStart: (state): void => {
       state.error = null;
       state.isChecking = true;
     },
-    systemPrivacyGetSuccess: (state, action) => {
+    systemPrivacyGetSuccess: (state, action): void => {
       state.isChecking = false;
       state.status = action.payload;
     },
-    systemPrivacyUpdateStart: (state) => {
+    systemPrivacyUpdateStart: (state): void => {
       state.error = null;
       state.isUpdating = true;
     },
-    systemPrivacyUpdateSuccess: (state, action) => {
+    systemPrivacyUpdateSuccess: (state, action): void => {
       state.isUpdating = false;
       const { result, privacy } = action.payload;
       if (result === 'OK') {
         state.status = privacy;
       }
     },
-    systemPrivacyError: (state, action) => {
+    systemPrivacyError: (state, action): void => {
       state.error = action.payload;
       state.isChecking = false;
     },
@@ -60,7 +60,7 @@ export const systemPrivacyCheck = (): ThunkAction<
   RootState,
   unknown,
   Action<string>
-> => async (dispatch) => {
+> => async (dispatch): Promise<void> => {
   dispatch(systemPrivacyGetStart());
   try {
     const result = await systemApi.getSystemPrivacyStatus();
@@ -74,7 +74,7 @@ export const systemPrivacyUpdate = (
   privacy: boolean
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
-) => {
+): Promise<void> => {
   dispatch(systemPrivacyUpdateStart());
   try {
     const result = await systemApi.updateSystemPrivacy({

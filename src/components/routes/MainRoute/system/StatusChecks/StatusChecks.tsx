@@ -1,27 +1,27 @@
-import React, { useEffect } from 'react';
 import {
-  Text,
-  ProgressIndicator,
-  Stack,
+  AnimationStyles,
+  mergeStyles,
   MessageBar,
   MessageBarType,
-  mergeStyles,
-  AnimationStyles,
+  ProgressIndicator,
+  Stack,
+  Text,
 } from '@fluentui/react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { systemPrivacyCheck } from '../../../../../features/system/privacySlice';
+import { systemRebootCheck } from '../../../../../features/system/rebootSlice';
+import {
+  selectIsCheckingStatus,
+  selectStatusError,
+  selectSystemStatusItemsAndGroups,
+  systemStatusCheck,
+} from '../../../../../features/system/statusSlice';
 import { Body } from '../../../../Body/Body';
 import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import {
-  systemStatusCheck,
-  selectIsCheckingStatus,
-  selectSystemStatusItemsAndGroups,
-  selectStatusError,
-} from '../../../../../features/system/statusSlice';
 import { SystemChecksDetailsList } from '../../../../SystemChecksDetailsList/SystemChecksDetailsList';
-import { systemRebootCheck } from '../../../../../features/system/rebootSlice';
-import { systemPrivacyCheck } from '../../../../../features/system/privacySlice';
-import { SystemStatusChart } from '../../../../SystemStatusChart/SystemStatusChart';
 import { SystemStatusActions } from '../../../../SystemStatusActions/SystemStatusActions';
+import { SystemStatusChart } from '../../../../SystemStatusChart/SystemStatusChart';
 
 const messageBarClassName = mergeStyles({
   ...AnimationStyles.fadeIn500,
@@ -49,7 +49,7 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
         </Text>
       </Stack>
       {!isCheckingStatus && (
-        <Stack horizontal tokens={{ childrenGap: 'l1' }}>
+        <Stack horizontal gap="l1">
           <BodyPanel grow={1} styles={{ root: { flexBasis: 0 } }}>
             <SystemStatusChart />
           </BodyPanel>

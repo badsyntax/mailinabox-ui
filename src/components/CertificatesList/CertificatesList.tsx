@@ -1,34 +1,31 @@
-import React from 'react';
 import {
-  Stack,
-  MessageBarType,
-  Link,
+  ConstrainMode,
+  DefaultButton,
   DetailsList,
   DetailsListLayoutMode,
-  SelectionMode,
-  ConstrainMode,
-  IStackProps,
-  IColumn,
-  Text,
   getTheme,
-  DefaultButton,
+  IColumn,
+  IStackProps,
+  Link,
+  MessageBarType,
   PrimaryButton,
+  SelectionMode,
+  Stack,
+  Text,
 } from '@fluentui/react';
-import {
-  SSLStatusResponseStatus,
-  SSLStatusResponseStatusStatusEnum,
-} from 'mailinabox-api';
+import { SSLStatus, SSLStatusStatusEnum } from 'mailinabox-api';
+import React from 'react';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 const theme = getTheme();
 
-function getTextColor(status: SSLStatusResponseStatusStatusEnum) {
+function getTextColor(status: SSLStatusStatusEnum): string {
   switch (status) {
-    case SSLStatusResponseStatusStatusEnum.Success:
+    case SSLStatusStatusEnum.Success:
       return theme.palette.greenDark;
-    case SSLStatusResponseStatusStatusEnum.Danger:
+    case SSLStatusStatusEnum.Danger:
       return theme.palette.redDark;
-    case SSLStatusResponseStatusStatusEnum.NotApplicable:
+    case SSLStatusStatusEnum.NotApplicable:
     default:
       return theme.semanticColors.bodyText;
   }
@@ -44,7 +41,7 @@ const columns: IColumn[] = [
     isRowHeader: true,
     isResizable: true,
     fieldName: 'domain',
-    onRender: (item: SSLStatusResponseStatus) => {
+    onRender: (item: SSLStatus): React.ReactElement => {
       return <Link href={`https://${item.domain}`}>{item.domain}</Link>;
     },
   },
@@ -55,7 +52,7 @@ const columns: IColumn[] = [
     isRowHeader: true,
     minWidth: 300,
     fieldName: 'text',
-    onRender: (item: SSLStatusResponseStatus) => {
+    onRender: (item: SSLStatus): React.ReactNode => {
       const textColor = getTextColor(item.status);
       return <Text styles={{ root: { color: textColor } }}>{item.text}</Text>;
     },
@@ -66,11 +63,11 @@ const columns: IColumn[] = [
     isMultiline: false,
     minWidth: 140,
     isPadded: false,
-    onRender: (item: SSLStatusResponseStatus) => {
+    onRender: (item: SSLStatus): React.ReactNode => {
       switch (item.status) {
-        case SSLStatusResponseStatusStatusEnum.NotApplicable:
+        case SSLStatusStatusEnum.NotApplicable:
           return null;
-        case SSLStatusResponseStatusStatusEnum.Success:
+        case SSLStatusStatusEnum.Success:
           return (
             <DefaultButton
               styles={{
@@ -101,7 +98,7 @@ const columns: IColumn[] = [
 
 export const CertificatesList: React.FunctionComponent<
   IStackProps & {
-    items: Array<SSLStatusResponseStatus>;
+    items: Array<SSLStatus>;
   }
 > = ({ items, ...props }) => {
   return (
@@ -117,7 +114,7 @@ export const CertificatesList: React.FunctionComponent<
         columns={columns}
         layoutMode={DetailsListLayoutMode.justified}
         isHeaderVisible
-        onShouldVirtualize={() => false}
+        onShouldVirtualize={(): boolean => false}
         selectionMode={SelectionMode.none}
         constrainMode={ConstrainMode.horizontalConstrained}
       />

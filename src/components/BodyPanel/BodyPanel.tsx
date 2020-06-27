@@ -1,11 +1,11 @@
-import React from 'react';
 import {
-  mergeStyles,
-  getTheme,
-  Stack,
-  IStackProps,
   AnimationStyles,
+  getTheme,
+  IStackProps,
+  mergeStyles,
+  Stack,
 } from '@fluentui/react';
+import React from 'react';
 
 const className = mergeStyles({
   boxShadow: getTheme().effects.elevation8,
@@ -18,12 +18,7 @@ export const BodyPanel: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
   return (
-    <Stack
-      as="section"
-      tokens={{ padding: 'm', childrenGap: 'm' }}
-      className={className}
-      {...props}
-    >
+    <Stack as="section" padding="m" gap="m" className={className} {...props}>
       {children}
     </Stack>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { selectIsAuthenticated } from '../../../features/authSlice';
 import { LoginRoute } from '../LoginRoute/LoginRoute';
 
@@ -12,7 +12,7 @@ export const PrivateRoute: React.FunctionComponent<RouteProps> = ({
   return (
     <Route
       {...rest}
-      render={({ location }) =>
+      render={({ location }): React.ReactNode =>
         isAuthenticated ? (
           children
         ) : (

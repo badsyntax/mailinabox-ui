@@ -1,8 +1,8 @@
+import { getTheme } from '@fluentui/react';
+import { DonutChart, IChartDataPoint, IChartProps } from '@uifabric/charting';
+import { StatusEntryTypeEnum } from 'mailinabox-api';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { IChartDataPoint, IChartProps, DonutChart } from '@uifabric/charting';
-import { StatusEntryTypeEnum } from 'mailinabox-api';
-import { getTheme } from '@fluentui/react';
 import { selectSummarisedChecks } from '../../features/system/statusSlice';
 
 export const SystemStatusChart: React.FunctionComponent = () => {

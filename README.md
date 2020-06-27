@@ -6,6 +6,7 @@
 
 - [x] API client
 - [ ] Mock data returned from API client via middleware
+- [ ] Error handling for all requests
 
 ## State
 
@@ -22,9 +23,9 @@
 - [ ] Reboot
 - [ ] Disable new versions
 - [ ] Select headings
-- [ ] Prevent virtual rendering
+- [x] Prevent virtual rendering
 - [ ] Add filter for domain
-- [ ] Add summary
+- [x] Add summary
 
 ## TLS Certicates
 
@@ -39,3 +40,7 @@
 
  - [ ] Log out
  - [ ] Middleware for redirections with 405
+
+## Performance
+
+- [ ] Async imports & code splitting

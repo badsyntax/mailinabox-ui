@@ -1,4 +1,4 @@
-import { createSlice, Action, ThunkAction } from '@reduxjs/toolkit';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { MeResponseStatusEnum } from 'mailinabox-api';
 import { userApi } from '../api';
 import { RootState } from '../store';
@@ -17,14 +17,14 @@ const loginSlice = createSlice({
     isLoggingIn: false,
   } as LoginState,
   reducers: {
-    loginStart: (state) => {
+    loginStart: (state): void => {
       state.isLoggingIn = true;
     },
-    loginError: (state, action) => {
+    loginError: (state, action): void => {
       state.loginError = action.payload;
       state.isLoggingIn = false;
     },
-    loginResetError: (state) => {
+    loginResetError: (state): void => {
       state.loginError = null;
     },
   },
@@ -36,7 +36,7 @@ export const loginCheck = (
   remember: boolean
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
-) => {
+): Promise<void> => {
   dispatch(loginStart());
   try {
     const result = await userApi.getMe();

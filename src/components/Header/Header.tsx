@@ -1,5 +1,5 @@
+import { getTheme, mergeStyles } from '@fluentui/react';
 import React from 'react';
-import { mergeStyles, getTheme } from '@fluentui/react';
 import { PrimaryNav } from '../PrimaryNav/PrimaryNav';
 
 const className = mergeStyles({

@@ -1,30 +1,35 @@
 import {
   Callout,
   DefaultButton,
+  getTheme,
   IconButton,
-  IOnRenderComboBoxLabelProps,
+  ITextFieldProps,
   Stack,
   Text,
 } from '@fluentui/react';
 import { useBoolean, useId } from '@uifabric/react-hooks';
 import React from 'react';
 
-export const InstallCertificateComboBoxLabel: React.FunctionComponent<
-  IOnRenderComboBoxLabelProps & {
-    defaultRender: (props?: IOnRenderComboBoxLabelProps) => JSX.Element | null;
-    calloutText: string;
-  }
-> = (props?): JSX.Element => {
+const theme = getTheme();
+
+type Props = ITextFieldProps & {
+  defaultRender?: (props?: ITextFieldProps) => JSX.Element | null;
+  calloutText?: string;
+  maxWidth?: number;
+};
+
+export const TextFieldWithInfo: React.FunctionComponent<Props> = (
+  props
+): JSX.Element => {
+  const { maxWidth = 320, defaultRender, ...rest } = props;
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(
     false
   );
-  const descriptionId: string = useId('description');
   const iconButtonId: string = useId('iconButton');
-
   return (
     <>
       <Stack horizontal verticalAlign="center">
-        {props?.defaultRender(props)}
+        {defaultRender?.(rest)}
         <IconButton
           id={iconButtonId}
           title="Info"
@@ -38,11 +43,10 @@ export const InstallCertificateComboBoxLabel: React.FunctionComponent<
           target={'#' + iconButtonId}
           setInitialFocus
           onDismiss={toggleIsCalloutVisible}
-          ariaDescribedBy={descriptionId}
           role="alertdialog"
           styles={{
             root: {
-              maxWidth: 320,
+              maxWidth,
             },
           }}
         >
@@ -56,4 +60,29 @@ export const InstallCertificateComboBoxLabel: React.FunctionComponent<
       )}
     </>
   );
+};
+
+export const onRenderTextFieldLabel = (calloutText: string) => (
+  props?: ITextFieldProps,
+  defaultRender?: (props?: ITextFieldProps) => JSX.Element | null
+): React.ReactElement | null => (
+  <TextFieldWithInfo
+    {...props}
+    calloutText={calloutText}
+    defaultRender={defaultRender}
+  />
+);
+
+export const textfieldWithLabelInfoStyles = {
+  subComponentStyles: {
+    label: {
+      root: {
+        selectors: {
+          ':after': {
+            paddingRight: theme.spacing.s2,
+          },
+        },
+      },
+    },
+  },
 };

@@ -1,5 +1,5 @@
+import { getTheme, mergeStyles, Text } from '@fluentui/react';
 import React from 'react';
-import { Text, mergeStyles, getTheme } from '@fluentui/react';
 
 const theme = getTheme();
 

@@ -1,14 +1,14 @@
-import React from 'react';
 import { Stack } from '@fluentui/react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Header } from '../../Header/Header';
-import { StatusChecks } from './system/StatusChecks/StatusChecks';
+import { Backups } from './system/Backups/Backups';
 import { Certificates } from './system/Certificates/Certificates';
+import { StatusChecks } from './system/StatusChecks/StatusChecks';
 
 export const MainRoute: React.FunctionComponent & { path: string } = () => {
-  console.log('main route');
   return (
-    <Stack tokens={{ childrenGap: 'l1' }} horizontalAlign="center">
+    <Stack gap="l1" horizontalAlign="center">
       <Header />
       <Switch>
         <Route exact path={[MainRoute.path, StatusChecks.path]}>
@@ -16,6 +16,9 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
         </Route>
         <Route exact path={Certificates.path}>
           <Certificates />
+        </Route>
+        <Route exact path={Backups.path}>
+          <Backups />
         </Route>
         <Redirect to="/404" />
       </Switch>

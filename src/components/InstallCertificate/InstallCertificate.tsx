@@ -1,18 +1,18 @@
-import React, { useState, useCallback } from 'react';
-
 import {
-  IStackProps,
-  Stack,
-  MessageBarType,
   ComboBox,
-  VirtualizedComboBox,
+  IComboBox,
   IComboBoxOption,
   IOnRenderComboBoxLabelProps,
-  IComboBox,
+  IStackProps,
+  MessageBarType,
+  Stack,
+  VirtualizedComboBox,
 } from '@fluentui/react';
 import { getCodeList } from 'country-list';
-
-import { SSLStatusResponseStatus } from 'mailinabox-api';
+import { SSLStatus } from 'mailinabox-api';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { sslGenerateCSRReset } from '../../features/ssl/sslSlice';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { InstallCertificateComboBoxLabel } from './InstallCertificateComboBoxLabel';
 import { InstallCertificateWithCSR } from './InstallCertificateWithCSR';
@@ -43,36 +43,58 @@ const comboBoxStyles = {
   },
 };
 
-const onRenderComboBoxLabel = (
+const onRenderComboBoxLabel = (calloutText: string) => (
   props?: IOnRenderComboBoxLabelProps,
   defaultRender?: (props?: IOnRenderComboBoxLabelProps) => JSX.Element | null
-) =>
+): React.ReactElement | null =>
   props && defaultRender ? (
-    <InstallCertificateComboBoxLabel {...props} defaultRender={defaultRender} />
+    <InstallCertificateComboBoxLabel
+      {...props}
+      calloutText={calloutText}
+      defaultRender={defaultRender}
+    />
   ) : null;
 
 export const InstallCertificate: React.FunctionComponent<
   IStackProps & {
-    items: Array<SSLStatusResponseStatus>;
+    items: Array<SSLStatus>;
   }
 > = ({ items, ...props }) => {
+  const dispatch = useDispatch();
   const [selectedDomain, setSelectedDomain] = useState<IComboBoxOption>();
   const [selectedCountry, setSelectedCountry] = useState<IComboBoxOption>();
 
   const onDomainChange = useCallback(
     (event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+      dispatch(sslGenerateCSRReset());
       setSelectedDomain(option);
     },
-    []
+    [dispatch]
   );
   const onCountryChange = useCallback(
     (event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+      dispatch(sslGenerateCSRReset());
       setSelectedCountry(option);
     },
+    [dispatch]
+  );
+  const onDomainRenderLabel = useMemo(
+    () =>
+      onRenderComboBoxLabel(
+        'A multi-domain or wildcard certificate will be automatically applied to any domains it is valid for besides the one you choose above.'
+      ),
     []
   );
+  const onCountryRenderLabel = useMemo(
+    () =>
+      onRenderComboBoxLabel(
+        "This is required by some TLS certificate providers. You may leave this blank if you know your TLS certificate provider doesn't require it."
+      ),
+    []
+  );
+
   return (
-    <Stack as="section" tokens={{ childrenGap: 'm' }} {...props}>
+    <Stack as="section" gap="m" {...props}>
       <MessageBar messageBarType={MessageBarType.info} isMultiline>
         If you don't want to use our automatic Let's Encrypt integration, you
         can give any other certificate provider a try. You can generate the
@@ -88,8 +110,8 @@ export const InstallCertificate: React.FunctionComponent<
         required
         allowFreeform
         autoComplete="on"
-        selectedKey={selectedDomain ? selectedDomain.key : undefined}
-        onRenderLabel={onRenderComboBoxLabel}
+        selectedKey={selectedDomain?.key}
+        onRenderLabel={onDomainRenderLabel}
         onChange={onDomainChange}
         styles={comboBoxStyles}
       />
@@ -98,10 +120,10 @@ export const InstallCertificate: React.FunctionComponent<
           placeholder="Select a country"
           label="What country are you in?"
           options={countriesList}
-          onRenderLabel={onRenderComboBoxLabel}
+          onRenderLabel={onCountryRenderLabel}
           allowFreeform
           autoComplete="on"
-          selectedKey={selectedCountry ? selectedCountry.key : undefined}
+          selectedKey={selectedCountry?.key}
           onChange={onCountryChange}
           styles={comboBoxStyles}
           dropdownMaxWidth={300}

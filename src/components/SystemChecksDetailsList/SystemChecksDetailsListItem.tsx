@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from 'react';
-import { StatusEntry, StatusEntryTypeEnum } from 'mailinabox-api';
 import {
-  Link,
-  Text,
-  Stack,
-  getTheme,
-  mergeStyles,
   AnimationStyles,
+  getTheme,
+  Link,
+  mergeStyles,
+  Stack,
+  Text,
 } from '@fluentui/react';
+import { StatusEntry, StatusEntryTypeEnum } from 'mailinabox-api';
+import React, { useCallback, useState } from 'react';
 
 const theme = getTheme();
 
@@ -15,7 +15,7 @@ interface SystemChecksDetailsListItemProps {
   item: StatusEntry;
 }
 
-function getTextColor(type: StatusEntryTypeEnum) {
+function getTextColor(type: StatusEntryTypeEnum): string {
   switch (type) {
     case StatusEntryTypeEnum.Ok:
       return theme.palette.greenDark;
@@ -50,7 +50,7 @@ export const SystemChecksDetailsListItem: React.FunctionComponent<SystemChecksDe
             </>
           )}
           {!isCollapsed && (
-            <Stack tokens={{ padding: 'm 0' }} className={extrasClassName}>
+            <Stack padding="m 0" className={extrasClassName}>
               {extra.map((extraItem) => {
                 return (
                   <>

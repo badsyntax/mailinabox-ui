@@ -1,35 +1,27 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
 import {
-  TextField,
-  Stack,
+  BaseButton,
+  Button,
+  Checkbox,
+  MessageBarType,
   PrimaryButton,
   Spinner,
   SpinnerSize,
-  MessageBar,
-  MessageBarType,
-  Checkbox,
-  BaseButton,
-  Button,
-  AnimationStyles,
-  mergeStyles,
+  Stack,
+  TextField,
 } from '@fluentui/react';
-
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { authUpdate, selectIsAuthenticated } from '../../features/authSlice';
 import {
+  loginCheck,
+  loginResetError,
   selectIsLoggingIn,
   selectLoginError,
-  loginResetError,
-  loginCheck,
 } from '../../features/loginSlice';
-import { authUpdate, selectIsAuthenticated } from '../../features/authSlice';
+import { MessageBar } from '../MessageBar/MessageBar';
 import { MainRoute } from '../routes/MainRoute/MainRoute';
-
-const messageBarClassName = mergeStyles({
-  ...AnimationStyles.fadeIn500,
-});
 
 export const LoginForm: React.FunctionComponent = () => {
   const dispatch = useDispatch();
@@ -89,19 +81,18 @@ export const LoginForm: React.FunctionComponent = () => {
   });
   return (
     <form onSubmit={onFormSubmit}>
-      <Stack tokens={{ childrenGap: 'm' }}>
+      <Stack gap="m">
         {loginError && (
           <MessageBar
             messageBarType={MessageBarType.error}
             isMultiline={false}
             onDismiss={onMessageBarDismiss}
             dismissButtonAriaLabel="Close"
-            className={messageBarClassName}
           >
             {loginError}
           </MessageBar>
         )}
-        <Stack tokens={{ childrenGap: 'm' }}>
+        <Stack gap="m">
           <TextField
             label="Email"
             value={email}
@@ -123,12 +114,7 @@ export const LoginForm: React.FunctionComponent = () => {
             onChange={onRememberChange}
           />
         </Stack>
-        <Stack
-          horizontalAlign="end"
-          verticalAlign="center"
-          horizontal
-          tokens={{ childrenGap: 's1' }}
-        >
+        <Stack horizontalAlign="end" verticalAlign="center" horizontal gap="s1">
           {isLogginIn && <Spinner size={SpinnerSize.medium} />}
           <PrimaryButton type="submit" text="Sign in" disabled={isLogginIn} />
         </Stack>

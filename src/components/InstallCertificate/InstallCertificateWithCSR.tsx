@@ -1,21 +1,20 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   MessageBar,
   MessageBarType,
+  PrimaryButton,
   ProgressIndicator,
   Stack,
-  TextField,
-  PrimaryButton,
   Text,
+  TextField,
 } from '@fluentui/react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectIsGeneratingCSR,
   selectCSRError,
   selectGeneratedCSR,
+  selectIsGeneratingCSR,
   sslGenerateCSR,
 } from '../../features/ssl/sslSlice';
-
 import { Pre } from '../Pre/Pre';
 
 interface SSLCertificateInstallProps {
@@ -34,7 +33,6 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
 
   useEffect(() => {
     dispatch(sslGenerateCSR(domain, countryCode));
-    console.log('GENERATE CSR');
   }, [countryCode, domain, dispatch]);
 
   return (
@@ -46,7 +44,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
       )}
       {isGeneratingCSR && <ProgressIndicator label="Generating CSR..." />}
       {!isGeneratingCSR && generatedCSR && (
-        <Stack tokens={{ childrenGap: 'm' }}>
+        <Stack gap="m">
           <Text>
             You will need to provide the certificate provider this Certificate
             Signing Request (CSR):
