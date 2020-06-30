@@ -4,8 +4,9 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import { authReducer } from '../features/authSlice';
+import { dnsReducer } from '../features/dnsSlice';
 import { loginReducer } from '../features/loginSlice';
-import { sslReducer } from '../features/ssl/sslSlice';
+import { sslReducer } from '../features/sslSlice';
 import { systemBackupsReducer } from '../features/system/backupsSlice';
 import { systemPrivacyReducer } from '../features/system/privacySlice';
 import { systemRebootReducer } from '../features/system/rebootSlice';
@@ -22,6 +23,7 @@ export const store = configureStore({
       privacy: systemPrivacyReducer,
       backups: systemBackupsReducer,
     }),
+    dns: dnsReducer,
     ssl: sslReducer,
   },
   middleware: getDefaultMiddleware().concat(authMiddleware),

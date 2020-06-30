@@ -4,6 +4,7 @@ import {
   getTheme,
   IconButton,
   ITextFieldProps,
+  mergeStyles,
   Stack,
   Text,
 } from '@fluentui/react';
@@ -12,9 +13,13 @@ import React from 'react';
 
 const theme = getTheme();
 
+const iconButtonClassName = mergeStyles({
+  marginBottom: '-3px',
+});
+
 type Props = ITextFieldProps & {
   defaultRender?: (props?: ITextFieldProps) => JSX.Element | null;
-  calloutText?: string;
+  calloutText?: React.ReactNode;
   maxWidth?: number;
 };
 
@@ -36,6 +41,7 @@ export const TextFieldWithInfo: React.FunctionComponent<Props> = (
           ariaLabel="Info"
           iconProps={{ iconName: 'Info' }}
           onClick={toggleIsCalloutVisible}
+          className={iconButtonClassName}
         />
       </Stack>
       {isCalloutVisible && (
@@ -62,7 +68,7 @@ export const TextFieldWithInfo: React.FunctionComponent<Props> = (
   );
 };
 
-export const onRenderTextFieldLabel = (calloutText: string) => (
+export const onRenderTextFieldLabel = (calloutText: React.ReactNode) => (
   props?: ITextFieldProps,
   defaultRender?: (props?: ITextFieldProps) => JSX.Element | null
 ): React.ReactElement | null => (

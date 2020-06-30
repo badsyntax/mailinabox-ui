@@ -1,4 +1,4 @@
-import { getTheme, Icon } from '@fluentui/react';
+import { FontSizes, getTheme, Icon } from '@fluentui/react';
 import { StatusEntryTypeEnum } from 'mailinabox-api';
 import React from 'react';
 
@@ -41,7 +41,7 @@ export const SystemCheckIcon: React.FunctionComponent<SystemCheckIconProps> = ({
       styles={{
         root: {
           color: getIconColor(type),
-          fontSize: 16,
+          fontSize: FontSizes.medium,
           verticalAlign: 'middle',
         },
       }}

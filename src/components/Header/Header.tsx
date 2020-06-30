@@ -1,4 +1,4 @@
-import { getTheme, mergeStyles } from '@fluentui/react';
+import { getTheme, mergeStyles, Stack, Text } from '@fluentui/react';
 import React from 'react';
 import { PrimaryNav } from '../PrimaryNav/PrimaryNav';
 
@@ -9,8 +9,31 @@ const className = mergeStyles({
 
 export const Header: React.FunctionComponent = () => {
   return (
-    <header className={className}>
-      <PrimaryNav />
-    </header>
+    <Stack
+      as="header"
+      className={className}
+      horizontal
+      horizontalAlign="center"
+    >
+      <Stack
+        as="section"
+        gap="s1"
+        styles={{
+          root: {
+            maxWidth: 1170,
+            width: '100%',
+          },
+        }}
+        horizontal
+        verticalAlign="center"
+      >
+        <Stack.Item disableShrink>
+          <Text nowrap variant="large">
+            todo.proxima-mail.com
+          </Text>
+        </Stack.Item>
+        <PrimaryNav />
+      </Stack>
+    </Stack>
   );
 };

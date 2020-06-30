@@ -17,7 +17,7 @@ import {
   selectSSLStatus,
   selectSSLStatusError,
   sslStatusCheck,
-} from '../../../../../features/ssl/sslSlice';
+} from '../../../../../features/sslSlice';
 import { Body } from '../../../../Body/Body';
 import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
 import { CertificatesList } from '../../../../CertificatesList/CertificatesList';
@@ -34,7 +34,7 @@ const CertificateSections: React.FunctionComponent = () => {
   const items = sslStatus.status;
   return (
     <>
-      <Pivot aria-label="Basic Pivot Example" linkSize={PivotLinkSize.large}>
+      <Pivot linkSize={PivotLinkSize.large}>
         <PivotItem headerText="Certificate Status">
           <CertificatesList className={className} items={items} />
         </PivotItem>

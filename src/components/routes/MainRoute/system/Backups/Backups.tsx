@@ -32,7 +32,7 @@ const className = mergeStyles({
 const BackupSections: React.FunctionComponent = () => {
   const { backups, unmatchedFileSize } = useSelector(selectBackupsStatus);
   return (
-    <Pivot aria-label="Basic Pivot Example" linkSize={PivotLinkSize.large}>
+    <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Backup Status">
         {backups && (
           <BackupsList

@@ -1,7 +1,7 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { SSLStatusResponse } from 'mailinabox-api';
-import { getRequestFailMessage, sslApi } from '../../api';
-import { RootState } from '../../store';
+import { getRequestFailMessage, sslApi } from '../api';
+import { RootState } from '../store';
 
 export interface SSLState {
   isCheckingStatus: boolean;

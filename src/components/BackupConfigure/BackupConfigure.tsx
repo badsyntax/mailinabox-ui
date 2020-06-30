@@ -3,14 +3,17 @@ import {
   IDropdownOption,
   IStackProps,
   mergeStyles,
-  MessageBarType,
+  PrimaryButton,
   Stack,
-  Text,
 } from '@fluentui/react';
 import { SystemBackupStatusResponse } from 'mailinabox-api';
 import React, { useCallback, useState } from 'react';
-import { MessageBar } from '../MessageBar/MessageBar';
-import { BackupConfigureS3 } from './BackupConfigureS3';
+import { BackupConfigureLocal } from './local/BackupConfigureLocal';
+import { BackupInfoLocal } from './local/BackupInfoLocal';
+import { BackupConfigureRsync } from './rsync/BackupConfigureRsync';
+import { BackupInfoRsync } from './rsync/BackupInfoRsync';
+import { BackupConfigureS3 } from './s3/BackupConfigureS3';
+import { BackupInfoS3 } from './s3/BackupInfoS3';
 
 const columnClassName = mergeStyles({
   flexBasis: 0,
@@ -67,20 +70,35 @@ export const BackupConfigure: React.FunctionComponent<
           required
           onChange={onBackupOptionChange}
         />
-        <Text>
-          Backups are stored in an Amazon Web Services S3 bucket. You must have
-          an AWS account already.
-        </Text>
-        <MessageBar messageBarType={MessageBarType.info} isMultiline>
-          You MUST manually copy the encryption password from
-          /home/user-data/backup/secret_key.txt to a safe and secure location.
-          You will need this file to decrypt backup files. It is NOT stored in
-          your Amazon S3 bucket.
-        </MessageBar>
+        {selectedBackupOption?.key === BackupOptionKeys.local && (
+          <BackupInfoLocal />
+        )}
+        {selectedBackupOption?.key === BackupOptionKeys.rsync && (
+          <BackupInfoRsync />
+        )}
+        {selectedBackupOption?.key === BackupOptionKeys.s3 && <BackupInfoS3 />}
       </Stack>
-      <Stack gap="m" grow={1} className={columnClassName}>
+      <Stack
+        gap="m"
+        grow={1}
+        className={columnClassName}
+        verticalAlign={
+          selectedBackupOption?.key === BackupOptionKeys.off ? 'end' : 'start'
+        }
+      >
+        {selectedBackupOption?.key === BackupOptionKeys.local && (
+          <BackupConfigureLocal />
+        )}
+        {selectedBackupOption?.key === BackupOptionKeys.rsync && (
+          <BackupConfigureRsync />
+        )}
         {selectedBackupOption?.key === BackupOptionKeys.s3 && (
           <BackupConfigureS3 />
+        )}
+        {selectedBackupOption?.key === BackupOptionKeys.off && (
+          <Stack horizontal>
+            <PrimaryButton>Save</PrimaryButton>
+          </Stack>
         )}
       </Stack>
     </Stack>

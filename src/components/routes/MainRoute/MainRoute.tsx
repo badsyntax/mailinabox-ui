@@ -2,8 +2,11 @@ import { Stack } from '@fluentui/react';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Header } from '../../Header/Header';
+import { Instructions } from './mail/Instructions/Instructions';
 import { Backups } from './system/Backups/Backups';
 import { Certificates } from './system/Certificates/Certificates';
+import { CustomDns } from './system/CustomDns/CustomDns';
+import { ExternalDns } from './system/ExternalDns/ExternalDns';
 import { StatusChecks } from './system/StatusChecks/StatusChecks';
 
 export const MainRoute: React.FunctionComponent & { path: string } = () => {
@@ -19,6 +22,15 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
         </Route>
         <Route exact path={Backups.path}>
           <Backups />
+        </Route>
+        <Route exact path={CustomDns.path}>
+          <CustomDns />
+        </Route>
+        <Route exact path={ExternalDns.path}>
+          <ExternalDns />
+        </Route>
+        <Route exact path={Instructions.path}>
+          <Instructions />
         </Route>
         <Redirect to="/404" />
       </Switch>

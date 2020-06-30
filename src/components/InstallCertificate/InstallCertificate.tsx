@@ -4,6 +4,7 @@ import {
   IComboBoxOption,
   IOnRenderComboBoxLabelProps,
   IStackProps,
+  mergeStyles,
   MessageBarType,
   Stack,
   VirtualizedComboBox,
@@ -12,7 +13,7 @@ import { getCodeList } from 'country-list';
 import { SSLStatus } from 'mailinabox-api';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { sslGenerateCSRReset } from '../../features/ssl/sslSlice';
+import { sslGenerateCSRReset } from '../../features/sslSlice';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { InstallCertificateComboBoxLabel } from './InstallCertificateComboBoxLabel';
 import { InstallCertificateWithCSR } from './InstallCertificateWithCSR';
@@ -26,18 +27,15 @@ const countriesList = Object.keys(countries)
   }))
   .sort((a, b) => a.text.localeCompare(b.text));
 
+const columnClassName = mergeStyles({
+  flexBasis: 0,
+});
+
 const comboBoxStyles = {
-  root: {
-    maxWidth: 400,
-  },
-  subComponentStyles: {
-    label: {
-      root: {
-        selectors: {
-          ':after': {
-            paddingRight: 0,
-          },
-        },
+  label: {
+    selectors: {
+      ':after': {
+        paddingRight: 0,
       },
     },
   },
@@ -100,42 +98,48 @@ export const InstallCertificate: React.FunctionComponent<
         can give any other certificate provider a try. You can generate the
         needed CSR below.
       </MessageBar>
-      <ComboBox
-        placeholder="Select a domain"
-        label="Which domain are you getting a certificate for?"
-        options={items.map(({ domain }) => ({
-          key: domain,
-          text: domain,
-        }))}
-        required
-        allowFreeform
-        autoComplete="on"
-        selectedKey={selectedDomain?.key}
-        onRenderLabel={onDomainRenderLabel}
-        onChange={onDomainChange}
-        styles={comboBoxStyles}
-      />
-      {selectedDomain && (
-        <VirtualizedComboBox
-          placeholder="Select a country"
-          label="What country are you in?"
-          options={countriesList}
-          onRenderLabel={onCountryRenderLabel}
-          allowFreeform
-          autoComplete="on"
-          selectedKey={selectedCountry?.key}
-          onChange={onCountryChange}
-          styles={comboBoxStyles}
-          dropdownMaxWidth={300}
-          useComboBoxAsMenuWidth
-        />
-      )}
-      {selectedDomain && selectedCountry && (
-        <InstallCertificateWithCSR
-          domain={selectedDomain.key as string}
-          countryCode={selectedCountry.key as string}
-        />
-      )}
+      <Stack horizontal gap="l2">
+        <Stack gap="m" grow={1} className={columnClassName}>
+          <ComboBox
+            placeholder="Select a domain"
+            label="Which domain are you getting a certificate for?"
+            options={items.map(({ domain }) => ({
+              key: domain,
+              text: domain,
+            }))}
+            required
+            allowFreeform
+            autoComplete="on"
+            selectedKey={selectedDomain?.key}
+            onRenderLabel={onDomainRenderLabel}
+            onChange={onDomainChange}
+            styles={comboBoxStyles}
+          />
+          {selectedDomain && (
+            <VirtualizedComboBox
+              placeholder="Select a country"
+              label="What country are you in?"
+              options={countriesList}
+              onRenderLabel={onCountryRenderLabel}
+              allowFreeform
+              autoComplete="on"
+              selectedKey={selectedCountry?.key}
+              onChange={onCountryChange}
+              styles={comboBoxStyles}
+              dropdownMaxWidth={300}
+              useComboBoxAsMenuWidth
+            />
+          )}
+        </Stack>
+        <Stack gap="m" grow={2} className={columnClassName}>
+          {selectedDomain && selectedCountry && (
+            <InstallCertificateWithCSR
+              domain={selectedDomain.key as string}
+              countryCode={selectedCountry.key as string}
+            />
+          )}
+        </Stack>
+      </Stack>
     </Stack>
   );
 };

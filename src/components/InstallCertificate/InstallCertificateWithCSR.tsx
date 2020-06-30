@@ -14,7 +14,7 @@ import {
   selectGeneratedCSR,
   selectIsGeneratingCSR,
   sslGenerateCSR,
-} from '../../features/ssl/sslSlice';
+} from '../../features/sslSlice';
 import { Pre } from '../Pre/Pre';
 
 interface SSLCertificateInstallProps {

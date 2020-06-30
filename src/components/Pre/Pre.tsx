@@ -11,12 +11,14 @@ const className = mergeStyles({
   borderRadius: theme.effects.roundedCorner2,
   borderWidth: 1,
   borderStyle: 'solid',
-  marginBottom: 0,
+  overflow: 'auto',
+  textOverflow: 'unset',
+  margin: 0,
 });
 
 export const Pre: React.FunctionComponent = ({ children }) => {
   return (
-    <Text as="pre" className={className} block>
+    <Text as="pre" className={className}>
       {children}
     </Text>
   );

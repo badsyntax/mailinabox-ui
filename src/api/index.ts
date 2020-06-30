@@ -1,9 +1,10 @@
 import {
   Configuration,
   ConfigurationParameters,
-  UserApi,
-  SystemApi,
+  DnsApi,
   SslApi,
+  SystemApi,
+  UserApi,
 } from 'mailinabox-api';
 import { storageAuth } from '../auth';
 
@@ -24,6 +25,7 @@ export function updateApiConfig(config: ConfigurationParameters): void {
 export const userApi = new UserApi(apiConfig);
 export const systemApi = new SystemApi(apiConfig);
 export const sslApi = new SslApi(apiConfig);
+export const dnsApi = new DnsApi(apiConfig);
 
 export function getRequestFailMessage(response: Response): string {
   const { statusText, status } = response;

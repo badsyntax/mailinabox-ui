@@ -11,6 +11,8 @@
 ## State
 
 - [x] Redux store
+- [x] Top-level URL state
+- [ ] Sub-level URL state
 
 ## Main layout
 
@@ -36,6 +38,18 @@
 - [ ] Replace letsencrypt certificate
 - [ ] can_provision logic
 
+## External DNS
+
+- [ ] Download Zone file
+
+## Mail
+
+- [ ] Download instructions PDF
+
+## Backups
+
+- [ ] Save config
+
 ## Auth
 
  - [ ] Log out
@@ -44,3 +58,9 @@
 ## Performance
 
 - [ ] Async imports & code splitting
+
+## Accessibility
+
+- [ ] Mobile support
+- [ ] ARIA labels
+- [ ] Audit

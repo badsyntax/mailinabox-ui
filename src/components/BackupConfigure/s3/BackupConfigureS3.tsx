@@ -9,7 +9,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,
-} from '../TextFieldWithInfo/TextFieldWithInfo';
+} from '../../TextFieldWithInfo/TextFieldWithInfo';
 
 const s3RegionOptions = [
   { key: 's3-eu-west-1.amazonaws.com', text: 'eu-west-1' },
@@ -93,7 +93,13 @@ export const BackupConfigureS3: React.FunctionComponent = () => {
   const onDaysRenderLabel = useMemo(
     () =>
       onRenderTextFieldLabel(
-        'This is the minimum number of days backup data is kept for. The box makes an incremental backup, so backup data is often kept much longer. An incremental backup file that is less than this number of days old requires that all previous increments back to the most recent full backup, plus that full backup, remain available.'
+        <>
+          This is the minimum number of days backup data is kept for. The box
+          makes an incremental backup, so backup data is often kept much longer.
+          An incremental backup file that is less than this number of days old
+          requires that all previous increments back to the most recent full
+          backup, plus that full backup, remain available.
+        </>
       ),
     []
   );
