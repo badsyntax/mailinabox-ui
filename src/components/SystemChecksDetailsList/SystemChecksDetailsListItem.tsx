@@ -6,7 +6,7 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import { StatusEntry, StatusEntryTypeEnum } from 'mailinabox-api';
+import { StatusEntry, StatusEntryType } from 'mailinabox-api';
 import React, { useCallback, useState } from 'react';
 
 const theme = getTheme();
@@ -15,13 +15,13 @@ interface SystemChecksDetailsListItemProps {
   item: StatusEntry;
 }
 
-function getTextColor(type: StatusEntryTypeEnum): string {
+function getTextColor(type: StatusEntryType): string {
   switch (type) {
-    case StatusEntryTypeEnum.Ok:
+    case StatusEntryType.Ok:
       return theme.palette.greenDark;
-    case StatusEntryTypeEnum.Error:
+    case StatusEntryType.Error:
       return theme.palette.redDark;
-    case StatusEntryTypeEnum.Warning:
+    case StatusEntryType.Warning:
     default:
       return theme.palette.yellowDark;
   }

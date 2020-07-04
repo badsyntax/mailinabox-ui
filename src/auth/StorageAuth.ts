@@ -48,4 +48,9 @@ export class StorageAuth {
       sessionStorage.setItem(STORAGE_KEY, credentials);
     }
   }
+
+  clear(): void {
+    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
+  }
 }

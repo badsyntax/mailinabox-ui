@@ -1,4 +1,4 @@
-import { StorageAuth, STORAGE_KEY, CREDENTIALS_SEPERATOR } from './StorageAuth';
+import { CREDENTIALS_SEPERATOR, StorageAuth, STORAGE_KEY } from './StorageAuth';
 
 export const storageAuth = new StorageAuth(
   sessionStorage.getItem(STORAGE_KEY) ||

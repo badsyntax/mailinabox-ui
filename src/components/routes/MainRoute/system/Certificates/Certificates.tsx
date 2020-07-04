@@ -1,4 +1,5 @@
 import {
+  Breadcrumb,
   getTheme,
   mergeStyles,
   MessageBar,
@@ -60,9 +61,24 @@ export const Certificates: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Text as="h1" block variant="xLarge">
-          TLS (SSL) Certificates
-        </Text>
+        <Breadcrumb
+          styles={{
+            root: {
+              marginTop: 0,
+            },
+          }}
+          items={[
+            {
+              text: 'System',
+              key: 'system',
+            },
+            {
+              text: 'TLS (SSL) Certificates',
+              key: 'certificates',
+              as: 'h1',
+            },
+          ]}
+        />
       </Stack>
       <BodyPanel>
         <Text>

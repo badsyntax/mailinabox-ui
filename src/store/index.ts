@@ -11,6 +11,7 @@ import { systemBackupsReducer } from '../features/system/backupsSlice';
 import { systemPrivacyReducer } from '../features/system/privacySlice';
 import { systemRebootReducer } from '../features/system/rebootSlice';
 import { systemStatusReducer } from '../features/system/statusSlice';
+import { usersReducer } from '../features/usersSlice';
 import { authMiddleware } from '../middleware/authMiddleware';
 
 export const store = configureStore({
@@ -25,6 +26,7 @@ export const store = configureStore({
     }),
     dns: dnsReducer,
     ssl: sslReducer,
+    users: usersReducer,
   },
   middleware: getDefaultMiddleware().concat(authMiddleware),
 });

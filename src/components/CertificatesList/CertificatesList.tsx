@@ -13,19 +13,19 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import { SSLStatus, SSLStatusStatusEnum } from 'mailinabox-api';
+import { SSLStatus, SSLStatusType } from 'mailinabox-api';
 import React from 'react';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 const theme = getTheme();
 
-function getTextColor(status: SSLStatusStatusEnum): string {
+function getTextColor(status: SSLStatusType): string {
   switch (status) {
-    case SSLStatusStatusEnum.Success:
+    case SSLStatusType.Success:
       return theme.palette.greenDark;
-    case SSLStatusStatusEnum.Danger:
+    case SSLStatusType.Danger:
       return theme.palette.redDark;
-    case SSLStatusStatusEnum.NotApplicable:
+    case SSLStatusType.NotApplicable:
     default:
       return theme.semanticColors.bodyText;
   }
@@ -65,9 +65,9 @@ const columns: IColumn[] = [
     isPadded: false,
     onRender: (item: SSLStatus): React.ReactNode => {
       switch (item.status) {
-        case SSLStatusStatusEnum.NotApplicable:
+        case SSLStatusType.NotApplicable:
           return null;
-        case SSLStatusStatusEnum.Success:
+        case SSLStatusType.Success:
           return (
             <DefaultButton
               styles={{

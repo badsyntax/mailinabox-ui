@@ -5,7 +5,7 @@ import {
   createSlice,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { StatusEntry, StatusEntryTypeEnum } from 'mailinabox-api';
+import { StatusEntry, StatusEntryType } from 'mailinabox-api';
 import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
 
@@ -84,7 +84,7 @@ export const selectSystemStatusItemsAndGroups = (
   let group: StatusGroup | undefined = undefined;
   const entries = selectStatus(state);
   entries.forEach((statusEntry, i) => {
-    const isHeadingEntry = statusEntry.type === StatusEntryTypeEnum.Heading;
+    const isHeadingEntry = statusEntry.type === StatusEntryType.Heading;
     if (!isHeadingEntry) {
       items.push({
         key: 'item' + items.length,
@@ -113,9 +113,9 @@ export const selectSystemStatusItemsAndGroups = (
 };
 
 interface SummarisedChecks {
-  [StatusEntryTypeEnum.Ok]: number;
-  [StatusEntryTypeEnum.Warning]: number;
-  [StatusEntryTypeEnum.Error]: number;
+  [StatusEntryType.Ok]: number;
+  [StatusEntryType.Warning]: number;
+  [StatusEntryType.Error]: number;
   total: number;
 }
 
@@ -123,24 +123,24 @@ export const selectSummarisedChecks = createSelector(
   [selectSystemStatusItemsAndGroups],
   ([items]): SummarisedChecks => {
     const summary = {
-      [StatusEntryTypeEnum.Ok]: 0,
-      [StatusEntryTypeEnum.Warning]: 0,
-      [StatusEntryTypeEnum.Error]: 0,
+      [StatusEntryType.Ok]: 0,
+      [StatusEntryType.Warning]: 0,
+      [StatusEntryType.Error]: 0,
       total: 0,
     };
     items.forEach((item) => {
-      if (item.type !== StatusEntryTypeEnum.Heading) {
+      if (item.type !== StatusEntryType.Heading) {
         summary.total += 1;
       }
       switch (item.type) {
-        case StatusEntryTypeEnum.Ok:
-          summary[StatusEntryTypeEnum.Ok] += 1;
+        case StatusEntryType.Ok:
+          summary[StatusEntryType.Ok] += 1;
           break;
-        case StatusEntryTypeEnum.Error:
-          summary[StatusEntryTypeEnum.Error] += 1;
+        case StatusEntryType.Error:
+          summary[StatusEntryType.Error] += 1;
           break;
-        case StatusEntryTypeEnum.Warning:
-          summary[StatusEntryTypeEnum.Warning] += 1;
+        case StatusEntryType.Warning:
+          summary[StatusEntryType.Warning] += 1;
           break;
       }
     });

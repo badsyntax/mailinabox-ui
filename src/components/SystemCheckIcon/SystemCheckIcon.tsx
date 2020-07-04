@@ -1,16 +1,16 @@
 import { FontSizes, getTheme, Icon } from '@fluentui/react';
-import { StatusEntryTypeEnum } from 'mailinabox-api';
+import { StatusEntryType } from 'mailinabox-api';
 import React from 'react';
 
 const theme = getTheme();
 
 function getIconName(type: string): string {
   switch (type) {
-    case StatusEntryTypeEnum.Ok:
+    case StatusEntryType.Ok:
       return 'Accept';
-    case StatusEntryTypeEnum.Error:
+    case StatusEntryType.Error:
       return 'Error';
-    case StatusEntryTypeEnum.Warning:
+    case StatusEntryType.Warning:
     default:
       return 'Warning';
   }
@@ -18,18 +18,18 @@ function getIconName(type: string): string {
 
 function getIconColor(type: string): string {
   switch (type) {
-    case StatusEntryTypeEnum.Ok:
+    case StatusEntryType.Ok:
       return theme.palette.green;
-    case StatusEntryTypeEnum.Error:
+    case StatusEntryType.Error:
       return theme.palette.red;
-    case StatusEntryTypeEnum.Warning:
+    case StatusEntryType.Warning:
     default:
       return theme.palette.yellowDark;
   }
 }
 
 interface SystemCheckIconProps {
-  type: StatusEntryTypeEnum;
+  type: StatusEntryType;
 }
 
 export const SystemCheckIcon: React.FunctionComponent<SystemCheckIconProps> = ({

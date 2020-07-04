@@ -1,4 +1,5 @@
 import {
+  Breadcrumb,
   getTheme,
   mergeStyles,
   MessageBarType,
@@ -72,9 +73,24 @@ export const Backups: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Text as="h1" block variant="xLarge">
-          Backup Status
-        </Text>
+        <Breadcrumb
+          styles={{
+            root: {
+              marginTop: 0,
+            },
+          }}
+          items={[
+            {
+              text: 'System',
+              key: 'system',
+            },
+            {
+              text: 'Backup Status',
+              key: 'backupstatus',
+              as: 'h1',
+            },
+          ]}
+        />
       </Stack>
       <BodyPanel>
         <Text>

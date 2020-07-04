@@ -1,4 +1,5 @@
 import {
+  Breadcrumb,
   getTheme,
   mergeStyles,
   MessageBar,
@@ -46,7 +47,7 @@ const CustomDnsSections: React.FunctionComponent = () => {
           records={customDnsRecords}
         />
       </PivotItem>
-      <PivotItem headerText="Add Record">
+      <PivotItem headerText="Add Custom Record">
         <CustomDnsAdd className={className} />
       </PivotItem>
       <PivotItem headerText="Secondary Nameserver">
@@ -83,9 +84,24 @@ export const CustomDns: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Text as="h1" block variant="xLarge">
-          Custom DNS
-        </Text>
+        <Breadcrumb
+          styles={{
+            root: {
+              marginTop: 0,
+            },
+          }}
+          items={[
+            {
+              text: 'System',
+              key: 'system',
+            },
+            {
+              text: 'Custom DNS',
+              key: 'customdns',
+              as: 'h1',
+            },
+          ]}
+        />
       </Stack>
       <MessageBar messageBarType={MessageBarType.warning} isMultiline>
         This is an advanced configuration page.

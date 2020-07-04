@@ -1,5 +1,5 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
-import { UpdateSystemPrivacyValueEnum } from 'mailinabox-api';
+import { SystemPrivacyStatus } from 'mailinabox-api';
 import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
 
@@ -78,9 +78,7 @@ export const systemPrivacyUpdate = (
   dispatch(systemPrivacyUpdateStart());
   try {
     const result = await systemApi.updateSystemPrivacy({
-      value: privacy
-        ? UpdateSystemPrivacyValueEnum.Private
-        : UpdateSystemPrivacyValueEnum.Off,
+      value: privacy ? SystemPrivacyStatus.Private : SystemPrivacyStatus.Off,
     });
     dispatch(
       systemPrivacyUpdateSuccess({

@@ -1,11 +1,11 @@
 import {
   AnimationStyles,
+  Breadcrumb,
   mergeStyles,
   MessageBar,
   MessageBarType,
   ProgressIndicator,
   Stack,
-  Text,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,9 +44,24 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Text as="h1" block variant="xLarge">
-          Status Checks
-        </Text>
+        <Breadcrumb
+          styles={{
+            root: {
+              marginTop: 0,
+            },
+          }}
+          items={[
+            {
+              text: 'System',
+              key: 'system',
+            },
+            {
+              text: 'Status Checks',
+              key: 'statuschecks',
+              as: 'h1',
+            },
+          ]}
+        />
       </Stack>
       {!isCheckingStatus && (
         <Stack horizontal gap="l1">

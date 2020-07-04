@@ -5,6 +5,7 @@ import {
   IStackProps,
   Label,
   mergeStyles,
+  PrimaryButton,
   Stack,
   Text,
   TextField,
@@ -95,6 +96,9 @@ export const DnsZoneFileGenerator: React.FunctionComponent<IStackProps> = ({
         <Stack gap="s2">
           <Label>Generation Options</Label>
           <Checkbox label="Split long TXT entries" checked={false} />
+        </Stack>
+        <Stack horizontal>
+          <PrimaryButton>Generate</PrimaryButton>
         </Stack>
       </Stack>
       <Stack

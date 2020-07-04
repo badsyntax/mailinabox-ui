@@ -1,5 +1,5 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
-import { MeResponseStatusEnum } from 'mailinabox-api';
+import { MeAuthStatus } from 'mailinabox-api';
 import { userApi } from '../api';
 import { RootState } from '../store';
 import { authUpdate } from './authSlice';
@@ -20,6 +20,9 @@ const loginSlice = createSlice({
     loginStart: (state): void => {
       state.isLoggingIn = true;
     },
+    loginSuccess: (state): void => {
+      state.isLoggingIn = false;
+    },
     loginError: (state, action): void => {
       state.loginError = action.payload;
       state.isLoggingIn = false;
@@ -30,7 +33,12 @@ const loginSlice = createSlice({
   },
 });
 
-export const { loginStart, loginError, loginResetError } = loginSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginError,
+  loginResetError,
+} = loginSlice.actions;
 
 export const loginCheck = (
   remember: boolean
@@ -40,19 +48,22 @@ export const loginCheck = (
   dispatch(loginStart());
   try {
     const result = await userApi.getMe();
-    if (result.status !== MeResponseStatusEnum.Ok) {
+    if (result.status !== MeAuthStatus.Ok) {
       dispatch(loginError(result.reason));
     } else if (!result.apiKey) {
       dispatch(loginError('You are not an administrator on this system.'));
     } else {
-      dispatch(
-        authUpdate({
-          username: result.email,
-          password: result.apiKey,
-          isAuthenticated: true,
-          remember,
-        })
-      );
+      dispatch(loginSuccess());
+      setTimeout(() => {
+        dispatch(
+          authUpdate({
+            username: result.email,
+            password: result.apiKey,
+            isAuthenticated: true,
+            remember,
+          })
+        );
+      });
     }
   } catch (err) {
     const { statusText, status } = err as Response;

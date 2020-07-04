@@ -30,4 +30,6 @@ export const { authUpdate } = authSlice.actions;
 export const selectIsAuthenticated = (state: RootState): boolean =>
   state.auth.isAuthenticated;
 
+export const selectUsername = (state: RootState): string => state.auth.username;
+
 export const { reducer: authReducer } = authSlice;

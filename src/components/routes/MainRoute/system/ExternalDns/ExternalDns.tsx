@@ -1,4 +1,5 @@
 import {
+  Breadcrumb,
   getTheme,
   IGroup,
   Link,
@@ -12,11 +13,7 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import {
-  DNSDumpDomainRecord,
-  DNSDumpDomainRecords,
-  DNSDumpDomains,
-} from 'mailinabox-api';
+import { DNSDumpDomainRecord, DNSDumpDomains } from 'mailinabox-api';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -52,11 +49,7 @@ const ExternalDnsSections: React.FunctionComponent = () => {
       level: 0,
       count: dnsRecords.length,
     });
-    (dnsRecords as DNSDumpDomainRecords).forEach(
-      (record: DNSDumpDomainRecord) => {
-        records.push(record);
-      }
-    );
+    records.push(...(dnsRecords as Array<DNSDumpDomainRecord>));
   });
   return (
     <Pivot linkSize={PivotLinkSize.large}>
@@ -84,9 +77,24 @@ export const ExternalDns: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Text as="h1" block variant="xLarge">
-          External DNS
-        </Text>
+        <Breadcrumb
+          styles={{
+            root: {
+              marginTop: 0,
+            },
+          }}
+          items={[
+            {
+              text: 'System',
+              key: 'system',
+            },
+            {
+              text: 'External DNS',
+              key: 'externaldns',
+              as: 'h1',
+            },
+          ]}
+        />
       </Stack>
       <MessageBar messageBarType={MessageBarType.warning} isMultiline>
         This is an advanced configuration page.

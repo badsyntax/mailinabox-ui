@@ -1,6 +1,6 @@
 import { getTheme } from '@fluentui/react';
 import { DonutChart, IChartDataPoint, IChartProps } from '@uifabric/charting';
-import { StatusEntryTypeEnum } from 'mailinabox-api';
+import { StatusEntryType } from 'mailinabox-api';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectSummarisedChecks } from '../../features/system/statusSlice';
@@ -11,19 +11,19 @@ export const SystemStatusChart: React.FunctionComponent = () => {
   const chartData: IChartDataPoint[] = [
     {
       legend: 'Passed',
-      data: summarisedChecks[StatusEntryTypeEnum.Ok],
+      data: summarisedChecks[StatusEntryType.Ok],
       color: getTheme().palette.green,
       xAxisCalloutData: 'Passed checks',
     },
     {
       legend: 'Failed',
-      data: summarisedChecks[StatusEntryTypeEnum.Error],
+      data: summarisedChecks[StatusEntryType.Error],
       color: getTheme().palette.red,
       xAxisCalloutData: 'Failed checks',
     },
     {
       legend: 'Warning',
-      data: summarisedChecks[StatusEntryTypeEnum.Warning],
+      data: summarisedChecks[StatusEntryType.Warning],
       color: getTheme().palette.yellow,
       xAxisCalloutData: 'Warning checks',
     },
