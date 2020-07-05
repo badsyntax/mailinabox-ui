@@ -18,7 +18,7 @@ const className = mergeStyles({
 
 export const Pre: React.FunctionComponent = ({ children }) => {
   return (
-    <Text as="pre" className={className}>
+    <Text as="pre" className={className} block>
       {children}
     </Text>
   );

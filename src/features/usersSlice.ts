@@ -8,24 +8,42 @@ import {
 import { getRequestFailMessage, usersApi } from '../api';
 import { RootState } from '../store';
 
+export enum UserAction {
+  addAdminPrivilege,
+  removeAdminPrivilege,
+  setPassword,
+  archive,
+}
+
+export interface UserUpdate {
+  user?: MailUser;
+  action?: UserAction;
+}
+
 export interface UsersState {
   isGettingUsers: boolean;
   users: MailUsersResponse;
   getUsersError: string | null;
-
-  isUpdatingPrivilege: boolean;
-  updatePrivilegeError: string | null;
-
-  updatePrivilegeResponse: string | null;
+  isUpdatingUser: boolean;
+  isAddingUser: boolean;
+  updateUserError: string | null;
+  updateUserResponse: string | null;
+  userUpdate: UserUpdate | null;
+  addUserResponse: string | null;
+  addUserError: string | null;
 }
 
 const initialState: UsersState = {
   isGettingUsers: false,
   users: [],
   getUsersError: null,
-  isUpdatingPrivilege: false,
-  updatePrivilegeError: null,
-  updatePrivilegeResponse: null,
+  isUpdatingUser: false,
+  isAddingUser: false,
+  updateUserError: null,
+  updateUserResponse: null,
+  userUpdate: null,
+  addUserResponse: null,
+  addUserError: null,
 };
 
 export const users = createSlice({
@@ -44,23 +62,43 @@ export const users = createSlice({
       state.getUsersError = action.payload;
       state.isGettingUsers = false;
     },
-
-    userUpdatePrivilegeStart: (state): void => {
-      state.updatePrivilegeError = null;
-      state.isUpdatingPrivilege = true;
+    userUpdateStart: (state): void => {
+      state.updateUserError = null;
+      state.isUpdatingUser = true;
     },
-    userUpdatePrivilegeSuccess: (state, action): void => {
-      state.isUpdatingPrivilege = false;
-      state.updatePrivilegeResponse = action.payload;
+    userUpdateSuccess: (state, action): void => {
+      state.isUpdatingUser = false;
+      state.updateUserResponse = action.payload;
     },
-    userUpdatePrivilegeError: (state, action): void => {
-      state.updatePrivilegeError = action.payload;
-      state.isUpdatingPrivilege = false;
+    userUpdateError: (state, action): void => {
+      state.updateUserError = action.payload;
+      state.isUpdatingUser = false;
     },
-    userUpdatePrivilegeReset: (state): void => {
-      state.isUpdatingPrivilege = false;
-      state.updatePrivilegeError = null;
-      state.updatePrivilegeResponse = null;
+    userUpdateReset: (state): void => {
+      state.isUpdatingUser = false;
+      state.updateUserError = null;
+      state.updateUserResponse = null;
+    },
+    userUpdate: (state, action): void => {
+      state.userUpdate = action.payload;
+    },
+    userResetUpdateAction: (state): void => {
+      state.userUpdate = {
+        action: undefined,
+        user: state.userUpdate?.user,
+      };
+    },
+    userAddStart: (state): void => {
+      state.addUserError = null;
+      state.isAddingUser = true;
+    },
+    userAddSuccess: (state, action): void => {
+      state.isAddingUser = false;
+      state.addUserResponse = action.payload;
+    },
+    userAddError: (state, action): void => {
+      state.addUserError = action.payload;
+      state.isAddingUser = false;
     },
   },
 });
@@ -69,10 +107,15 @@ export const {
   usersGetSuccess,
   usersGetStart,
   usersGetError,
-  userUpdatePrivilegeStart,
-  userUpdatePrivilegeSuccess,
-  userUpdatePrivilegeError,
-  userUpdatePrivilegeReset,
+  userUpdateStart,
+  userUpdateSuccess,
+  userUpdateError,
+  userUpdateReset,
+  userUpdate,
+  userResetUpdateAction,
+  userAddStart,
+  userAddSuccess,
+  userAddError,
 } = users.actions;
 
 export const { reducer: usersReducer } = users;
@@ -86,23 +129,35 @@ export const selectUsersError = (state: RootState): string | null =>
 export const selectUsers = (state: RootState): MailUsersResponse =>
   state.users.users;
 
-export const selectIsUpdatingPrivilege = (state: RootState): boolean =>
-  state.users.isUpdatingPrivilege;
+export const selectIsUpdatingUser = (state: RootState): boolean =>
+  state.users.isUpdatingUser;
 
-export const selectUpdatePrivilegeError = (state: RootState): string | null =>
-  state.users.updatePrivilegeError;
+export const selectUpdateUserError = (state: RootState): string | null =>
+  state.users.updateUserError;
 
-export const selectUpdatePrivilegeResponse = (
-  state: RootState
-): string | null => state.users.updatePrivilegeResponse;
+export const selectUpdateUserResponse = (state: RootState): string | null =>
+  state.users.updateUserResponse;
 
-export const usersCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(usersGetStart());
+export const selectUserUpdate = (state: RootState): UserUpdate | null =>
+  state.users.userUpdate;
+
+export const selectIsAddingUser = (state: RootState): boolean =>
+  state.users.isAddingUser;
+
+export const selectAddUserError = (state: RootState): string | null =>
+  state.users.addUserError;
+
+export const selectAddUserResponse = (state: RootState): string | null =>
+  state.users.addUserResponse;
+
+export const usersCheck = (
+  showProgress = true
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  if (showProgress) {
+    dispatch(usersGetStart());
+  }
   try {
     const result = await usersApi.getUsers({
       format: MailUsersResponseFormat.Json,
@@ -118,15 +173,15 @@ export const userAddAdminPrivilege = (
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userUpdatePrivilegeStart());
+  dispatch(userUpdateStart());
   try {
     const result = await usersApi.addUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
-    dispatch(userUpdatePrivilegeSuccess(result));
+    dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdatePrivilegeError(getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(getRequestFailMessage(err as Response)));
   }
 };
 
@@ -135,14 +190,68 @@ export const userRemoveAdminPrivilege = (
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userUpdatePrivilegeStart());
+  dispatch(userUpdateStart());
   try {
     const result = await usersApi.removeUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
-    dispatch(userUpdatePrivilegeSuccess(result));
+    dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdatePrivilegeError(getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(getRequestFailMessage(err as Response)));
+  }
+};
+
+export const userSetPassword = (
+  user: MailUser,
+  password: string
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(userUpdateStart());
+  try {
+    const result = await usersApi.setPassword({
+      email: user.email,
+      password: password,
+    });
+    dispatch(userUpdateSuccess(result));
+  } catch (err) {
+    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
+  }
+};
+
+export const userRemove = (
+  user: MailUser
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(userUpdateStart());
+  try {
+    const result = await usersApi.removeUser({
+      email: user.email,
+    });
+    dispatch(userUpdateSuccess(result));
+  } catch (err) {
+    dispatch(userUpdateError(getRequestFailMessage(err as Response)));
+  }
+};
+
+export const userAdd = (
+  email: string,
+  password: string,
+  privileges: MailUserPrivilege
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(userAddStart());
+  try {
+    const result = await usersApi.addUser({
+      email,
+      password,
+      privileges,
+    });
+    dispatch(userAddSuccess(result));
+  } catch (err) {
+    dispatch(userAddError(getRequestFailMessage(err as Response)));
   }
 };

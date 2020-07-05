@@ -1,18 +1,28 @@
-import { DefaultButton, IContextualMenuItem } from '@fluentui/react';
+import { DefaultButton } from '@fluentui/react';
 import { MailUser, MailUserPrivilege } from 'mailinabox-api';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { UserAction, userUpdate } from '../../features/usersSlice';
 
 interface MailUserActionsListProps {
   user: MailUser;
-  onAddAdminPrivilegeUser: (user: MailUser) => void;
-  onRemoveAdminPrivilegeUser: (user: MailUser) => void;
 }
 
 export const MailUserActionsList: React.FunctionComponent<MailUserActionsListProps> = ({
   user,
-  onAddAdminPrivilegeUser,
-  onRemoveAdminPrivilegeUser,
 }) => {
+  const dispatch = useDispatch();
+  const doAction = useCallback(
+    (action: UserAction): void => {
+      dispatch(
+        userUpdate({
+          user,
+          action,
+        })
+      );
+    },
+    [dispatch, user]
+  );
   return (
     <DefaultButton
       text="Actions"
@@ -22,36 +32,22 @@ export const MailUserActionsList: React.FunctionComponent<MailUserActionsListPro
             ? {
                 key: 'removeadmin',
                 text: 'Remove Admin Privilege',
-                onClick: (
-                  ev?:
-                    | React.MouseEvent<HTMLElement, MouseEvent>
-                    | React.KeyboardEvent<HTMLElement>
-                    | undefined,
-                  item?: IContextualMenuItem | undefined
-                ): boolean | void => {
-                  onRemoveAdminPrivilegeUser(user);
-                },
+                onClick: (): void => doAction(UserAction.removeAdminPrivilege),
               }
             : {
                 key: 'makeadmin',
                 text: 'Make Admin',
-                onClick: (
-                  ev?:
-                    | React.MouseEvent<HTMLElement, MouseEvent>
-                    | React.KeyboardEvent<HTMLElement>
-                    | undefined,
-                  item?: IContextualMenuItem | undefined
-                ): boolean | void => {
-                  onAddAdminPrivilegeUser(user);
-                },
+                onClick: (): void => doAction(UserAction.addAdminPrivilege),
               },
           {
             key: 'setpassword',
             text: 'Set Password',
+            onClick: (): void => doAction(UserAction.setPassword),
           },
           {
             key: 'archiveaccount',
             text: 'Archive Account',
+            onClick: (): void => doAction(UserAction.archive),
           },
         ],
       }}

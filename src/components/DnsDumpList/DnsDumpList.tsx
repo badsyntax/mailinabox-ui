@@ -80,7 +80,6 @@ export const DnsDumpList: React.FunctionComponent<
     groups: Array<IGroup>;
   }
 > = ({ records = [], groups = [], ...props }) => {
-  console.log('RERENDER');
   return (
     <Stack as="section" {...props}>
       <DetailsList

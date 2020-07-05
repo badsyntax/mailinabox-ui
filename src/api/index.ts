@@ -29,9 +29,13 @@ export const sslApi = new SslApi(apiConfig);
 export const dnsApi = new DnsApi(apiConfig);
 export const usersApi = new UsersApi(apiConfig);
 
-export function getRequestFailMessage(response: Response): string {
+export async function getRequestFailMessage(
+  response: Response
+): Promise<string> {
   const { statusText, status } = response;
-  return `Request error: ${statusText}${
-    status ? ' (' + status + ')' : ''
-  }. Refresh the page to try again.`;
+  const responseText = await response.text();
+  return (
+    responseText ??
+    `Request error: ${statusText}${status ? ' (' + status + ')' : ''}`
+  );
 }

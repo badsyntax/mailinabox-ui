@@ -33,32 +33,9 @@ const className = mergeStyles({
 
 const UsersSections: React.FunctionComponent = () => {
   const dispatch = useDispatch();
+  const isCheckingUsers = useSelector(selectIsGettingUsers);
   const mailUsers = useSelector(selectUsers);
   const usersError = useSelector(selectUsersError);
-  const isCheckingUsers = useSelector(selectIsGettingUsers);
-
-  // const addAdminPrivilegeResponse = useSelector(
-  //   selectAddAdminPrivilegeResponse
-  // );
-  // const removeAdminPrivilegeResponse = useSelector(
-  //   selectRemoveAdminPrivilegeResponse
-  // );
-
-  useEffect(() => {
-    dispatch(usersCheck());
-  }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (addAdminPrivilegeResponse) {
-  //     dispatch(userAddAdminPrivilegeReset());
-  //     dispatch(usersCheck());
-  //   }
-  //   if (removeAdminPrivilegeResponse) {
-  //     dispatch(userRemoveAdminPrivilegeReset());
-  //     dispatch(usersCheck());
-  //   }
-  // }, [addAdminPrivilegeResponse, dispatch, removeAdminPrivilegeResponse]);
-
   const users: Array<MailUser> = [];
   const groups: Array<IGroup> = [];
 
@@ -75,7 +52,9 @@ const UsersSections: React.FunctionComponent = () => {
     users.push(...usersByDomain);
   });
 
-  console.log('isCheckingUsers', isCheckingUsers);
+  useEffect(() => {
+    dispatch(usersCheck());
+  }, [dispatch]);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Existing Mail Users" className={className}>

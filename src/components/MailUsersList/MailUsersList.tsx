@@ -12,18 +12,11 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import { useBoolean } from '@uifabric/react-hooks';
 import { MailUser, MailUserPrivilege, MailUserStatus } from 'mailinabox-api';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectUpdatePrivilegeResponse,
-  usersCheck,
-  userUpdatePrivilegeReset,
-} from '../../features/usersSlice';
+import React from 'react';
 import { MessageBar } from '../MessageBar/MessageBar';
+import { MailUserActions } from './MailUserActions';
 import { MailUserActionsList } from './MailUserActionsList';
-import { MailUserPrivilegeUpdate } from './MailUserPrivilegeUpdate';
 
 const classNames = mergeStyleSets({
   fileIconHeaderIcon: {
@@ -55,7 +48,7 @@ const columns: IColumn[] = [
     },
   },
   {
-    key: 'column1',
+    key: 'column2',
     name: 'Email Address',
     minWidth: 320,
     isMultiline: true,
@@ -89,10 +82,17 @@ const columns: IColumn[] = [
     },
   },
   {
-    key: 'column2',
+    key: 'column3',
     name: '',
     minWidth: 160,
     isMultiline: false,
+    styles: {},
+    isPadded: false,
+    onRender: (user: MailUser): React.ReactNode => {
+      return user.status === MailUserStatus.Active ? (
+        <MailUserActionsList user={user} />
+      ) : null;
+    },
   },
 ];
 
@@ -102,68 +102,9 @@ export const MailUsersList: React.FunctionComponent<
     groups: Array<IGroup>;
   }
 > = ({ users = [], groups = [], ...props }) => {
-  const dispatch = useDispatch();
-  const updatePrivilegeResponse = useSelector(selectUpdatePrivilegeResponse);
-  const [
-    addAdminDialogHidden,
-    { setFalse: showAddAdminDialog, setTrue: hideAddAdminDialog },
-  ] = useBoolean(true);
-  const [
-    removeAdminDialogHidden,
-    { setFalse: showRemoveAdminDialog, setTrue: hideRemoveAdminDialog },
-  ] = useBoolean(true);
-
-  const [dialogUser, setDialogUser] = useState<MailUser>();
-
-  const addAdminPrivilegeUser = useCallback(
-    (user: MailUser): void => {
-      setDialogUser(user);
-      showAddAdminDialog();
-    },
-    [showAddAdminDialog]
-  );
-  const removeAdminPrivilegeUser = useCallback(
-    (user: MailUser): void => {
-      setDialogUser(user);
-      showRemoveAdminDialog();
-    },
-    [showRemoveAdminDialog]
-  );
-
-  columns[2].onRender = useCallback(
-    (user: MailUser): React.ReactNode => {
-      return user.status === MailUserStatus.Active ? (
-        <MailUserActionsList
-          user={user}
-          onAddAdminPrivilegeUser={addAdminPrivilegeUser}
-          onRemoveAdminPrivilegeUser={removeAdminPrivilegeUser}
-        />
-      ) : null;
-    },
-    [addAdminPrivilegeUser, removeAdminPrivilegeUser]
-  );
-
-  useEffect(() => {
-    hideAddAdminDialog();
-    hideRemoveAdminDialog();
-    dispatch(usersCheck());
-    dispatch(userUpdatePrivilegeReset());
-  }, [
-    dispatch,
-    hideAddAdminDialog,
-    hideRemoveAdminDialog,
-    updatePrivilegeResponse,
-  ]);
-
   return (
     <Stack as="section" {...props}>
-      <MailUserPrivilegeUpdate
-        removeAdminDialogHidden={removeAdminDialogHidden}
-        addAdminDialogHidden={addAdminDialogHidden}
-        hideAddAdminDialog={hideAddAdminDialog}
-        hideRemoveAdminDialog={hideRemoveAdminDialog}
-        user={dialogUser}
-      />
+      <MailUserActions />
       <DetailsList
         items={users}
         groups={groups}
