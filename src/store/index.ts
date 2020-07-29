@@ -13,6 +13,7 @@ import { systemPrivacyReducer } from '../features/system/privacySlice';
 import { systemRebootReducer } from '../features/system/rebootSlice';
 import { systemStatusReducer } from '../features/system/statusSlice';
 import { usersReducer } from '../features/usersSlice';
+import { webReducer } from '../features/webSlice';
 import { authMiddleware } from '../middleware/authMiddleware';
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
     ssl: sslReducer,
     users: usersReducer,
     aliases: aliasesReducer,
+    web: webReducer,
   },
   middleware: getDefaultMiddleware().concat(authMiddleware),
 });

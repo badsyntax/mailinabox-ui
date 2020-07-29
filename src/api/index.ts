@@ -7,6 +7,7 @@ import {
   SystemApi,
   UserApi,
   UsersApi,
+  WebApi,
 } from 'mailinabox-api';
 import { storageAuth } from '../auth';
 
@@ -30,6 +31,7 @@ export const systemApi = new SystemApi(apiConfig);
 export const sslApi = new SslApi(apiConfig);
 export const dnsApi = new DnsApi(apiConfig);
 export const usersApi = new UsersApi(apiConfig);
+export const webApi = new WebApi(apiConfig);
 
 export async function getRequestFailMessage(
   response: Response

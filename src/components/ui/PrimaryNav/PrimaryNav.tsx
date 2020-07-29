@@ -10,6 +10,7 @@ import { Certificates } from '../../routes/MainRoute/system/Certificates/Certifi
 import { CustomDns } from '../../routes/MainRoute/system/CustomDns/CustomDns';
 import { ExternalDns } from '../../routes/MainRoute/system/ExternalDns/ExternalDns';
 import { StatusChecks } from '../../routes/MainRoute/system/StatusChecks/StatusChecks';
+import { Web } from '../../routes/MainRoute/Web/Web';
 
 export const PrimaryNav: React.FunctionComponent = () => {
   const history = useHistory();
@@ -131,6 +132,7 @@ export const PrimaryNav: React.FunctionComponent = () => {
             key: 'web',
             text: 'Web',
             iconProps: { iconName: 'SiteScan' },
+            onClick: (): void => history.push(Web.path),
           },
         ]}
       />

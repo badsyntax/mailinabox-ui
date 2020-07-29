@@ -11,6 +11,7 @@ import { Certificates } from './system/Certificates/Certificates';
 import { CustomDns } from './system/CustomDns/CustomDns';
 import { ExternalDns } from './system/ExternalDns/ExternalDns';
 import { StatusChecks } from './system/StatusChecks/StatusChecks';
+import { Web } from './Web/Web';
 
 export const MainRoute: React.FunctionComponent & { path: string } = () => {
   return (
@@ -40,6 +41,9 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
         </Route>
         <Route exact path={Aliases.path}>
           <Aliases />
+        </Route>
+        <Route exact path={Web.path}>
+          <Web />
         </Route>
         <Route exact path={LogoutRoute.path}>
           <LogoutRoute />

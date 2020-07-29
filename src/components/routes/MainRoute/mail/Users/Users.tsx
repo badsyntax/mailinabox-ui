@@ -57,18 +57,18 @@ const UsersSections: React.FunctionComponent = () => {
   }, [dispatch]);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
-      <PivotItem headerText="Existing Mail Users" className={className}>
+      <PivotItem headerText="Existing Mail Users">
         {usersError && (
           <MessageBar messageBarType={MessageBarType.error} isMultiline>
             {usersError}
           </MessageBar>
         )}
         {isCheckingUsers && <ProgressIndicator label="Loading users..." />}
-        {users.length > 0 && (
+        {!isCheckingUsers && (
           <MailUsersList users={users} groups={groups} className={className} />
         )}
       </PivotItem>
-      <PivotItem headerText="Add a Mail User" className={className}>
+      <PivotItem headerText="Add a Mail User">
         <MailUserAdd className={className} />
       </PivotItem>
     </Pivot>
