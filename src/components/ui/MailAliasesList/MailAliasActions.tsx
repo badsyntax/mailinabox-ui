@@ -7,10 +7,12 @@ import {
   aliasRemove,
   aliasRemoveReset,
   aliasResetUpdateAction,
+  aliasUpsertReset,
   selectAliasUpdate,
   selectIsRemovingAlias,
   selectRemoveAliasError,
   selectRemoveAliasResponse,
+  selectUpsertAliasResponse,
 } from '../../../features/aliasesSlice';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 import { MailAliasUpdateDialog } from './MailAliasUpdateDialog';
@@ -21,6 +23,7 @@ export const MailAliasActions: React.FunctionComponent = () => {
   const aliasUpdate = useSelector(selectAliasUpdate);
   const removeAliasError = useSelector(selectRemoveAliasError);
   const removeAliasResponse = useSelector(selectRemoveAliasResponse);
+  const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
 
   const onActionDialogDismiss = useCallback((): void => {
     dispatch(aliasResetUpdateAction());
@@ -32,6 +35,13 @@ export const MailAliasActions: React.FunctionComponent = () => {
     }
     dispatch(aliasRemoveReset());
   }, [dispatch, removeAliasResponse]);
+
+  const onUpdateAliasDialogDismissed = useCallback((): void => {
+    if (upsertAliasResponse) {
+      dispatch(aliasesCheck());
+    }
+    dispatch(aliasUpsertReset());
+  }, [dispatch, upsertAliasResponse]);
 
   const removeAlias = useCallback((): void => {
     if (aliasUpdate?.alias) {
@@ -67,6 +77,7 @@ export const MailAliasActions: React.FunctionComponent = () => {
         hidden={aliasUpdate?.action !== AliasAction.update}
         alias={aliasUpdate?.alias}
         onDismiss={onActionDialogDismiss}
+        onDismissed={onUpdateAliasDialogDismissed}
       ></MailAliasUpdateDialog>
     </>
   );

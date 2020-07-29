@@ -3,16 +3,21 @@ import {
   Dialog,
   DialogType,
   IDialogContentProps,
+  IDialogProps,
   PrimaryButton,
-  Stack,
 } from '@fluentui/react';
-import { MailAlias } from 'mailinabox-api';
-import React from 'react';
+import { MailAlias, UpsertAliasRequest } from 'mailinabox-api';
+import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import {
+  selectIsUpsertingAlias,
+  selectUpsertAliasResponse,
+} from '../../../features/aliasesSlice';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
+import { MailAliasUpsert } from '../MailAliasUpsert/MailAliasUpsert';
+import { Pre } from '../Pre/Pre';
 
 interface MailAliasUpdateDialogProps {
-  onDismiss: () => void;
-  hidden: boolean;
   alias?: MailAlias;
 }
 
@@ -21,36 +26,58 @@ const updateAliasDialogContentProps: IDialogContentProps = {
   title: 'Update Alias',
 };
 
-export const MailAliasUpdateDialog: React.FunctionComponent<MailAliasUpdateDialogProps> = ({
-  hidden,
-  onDismiss,
-  alias,
-}) => {
+export const MailAliasUpdateDialog: React.FunctionComponent<
+  IDialogProps & MailAliasUpdateDialogProps
+> = ({ alias, ...dialogProps }) => {
+  const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
+  const isUpsertingAlias = useSelector(selectIsUpsertingAlias);
+
+  const onDialogCloseButtonClick = useCallback(() => {
+    dialogProps.onDismiss?.();
+  }, [dialogProps]);
+
+  const updateAlias: UpsertAliasRequest = {
+    address: alias?.address || '',
+    forwardsTo: alias?.forwardsTo.join('\n') ?? '',
+    permittedSenders: alias?.permittedSenders?.join('\n') ?? null,
+    updateIfExists: 1,
+  };
+
+  const dialogWidth = upsertAliasResponse ? 480 : 580;
   return (
     <Dialog
-      hidden={hidden}
+      {...dialogProps}
       dialogContentProps={updateAliasDialogContentProps}
       modalProps={{
         isBlocking: true,
       }}
-      minWidth={480}
-      maxWidth={480}
+      minWidth={dialogWidth}
+      maxWidth={dialogWidth}
     >
-      {/* {updateUserResponse && (
+      {upsertAliasResponse && (
         <>
-          <Pre>{updateUserResponse}</Pre>
+          <Pre>{upsertAliasResponse}</Pre>
           <DialogFooter>
-            <PrimaryButton text="OK" onClick={onDismiss} />
+            <PrimaryButton text="OK" onClick={onDialogCloseButtonClick} />
           </DialogFooter>
         </>
-      )} */}
-      <form>
-        <Stack gap="s1">Update alias</Stack>
-        <DialogFooter>
-          <PrimaryButton text="Update Alias" type="submit" />
-          <DefaultButton text="Cancel" onClick={onDismiss} />
-        </DialogFooter>
-      </form>
+      )}
+      {!upsertAliasResponse && (
+        <MailAliasUpsert updateAlias={updateAlias}>
+          <DialogFooter isLoading={isUpsertingAlias}>
+            <PrimaryButton
+              text="Update Alias"
+              type="submit"
+              disabled={isUpsertingAlias}
+            />
+            <DefaultButton
+              text="Cancel"
+              onClick={onDialogCloseButtonClick}
+              disabled={isUpsertingAlias}
+            />
+          </DialogFooter>
+        </MailAliasUpsert>
+      )}
     </Dialog>
   );
 };

@@ -8,7 +8,6 @@ import {
   IGroupHeaderProps,
   IRenderFunction,
   IStackProps,
-  mergeStyleSets,
   SelectionMode,
   Stack,
   Text,
@@ -17,13 +16,6 @@ import { MailAlias } from 'mailinabox-api';
 import React from 'react';
 import { MailAliasActions } from './MailAliasActions';
 import { MailAliasActionsList } from './MailAliasActionsList';
-
-const classNames = mergeStyleSets({
-  fileIconHeaderIcon: {
-    padding: 0,
-    fontSize: '16px',
-  },
-});
 
 const columns: IColumn[] = [
   {
@@ -72,37 +64,6 @@ const columns: IColumn[] = [
     onRender: (alias: MailAlias): React.ReactNode => {
       return <MailAliasActionsList alias={alias} />;
     },
-
-    // onRender: (item: MailAlias): React.ReactElement => {
-    //   return (
-    //     <IconButton
-    //       menuIconProps={{
-    //         iconName: 'MoreVertical',
-    //       }}
-    //       styles={{
-    //         menuIcon: {
-    //           fontWeight: 'bold',
-    //         },
-    //       }}
-    //       role="button"
-    //       aria-haspopup={true}
-    //       aria-label="Show actions"
-    //       menuProps={{
-    //         directionalHint: DirectionalHint.bottomRightEdge,
-    //         items: [
-    //           {
-    //             key: 'edit',
-    //             text: 'Edit',
-    //           },
-    //           {
-    //             key: 'delete',
-    //             text: 'Delete',
-    //           },
-    //         ],
-    //       }}
-    //     />
-    //   );
-    // },
   },
 ];
 

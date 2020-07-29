@@ -3,6 +3,7 @@ import {
   MailAlias,
   MailAliasesResponse,
   MailAliasesResponseFormat,
+  UpsertAliasRequest,
 } from 'mailinabox-api';
 import { aliasesApi, getRequestFailMessage } from '../api';
 import { RootState } from '../store';
@@ -176,21 +177,13 @@ export const aliasesCheck = (
 };
 
 export const aliasUpsert = (
-  address: string,
-  forwardsTo: string,
-  permittedSenders: string,
-  updateIfExists = 0
+  alias: UpsertAliasRequest
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
   dispatch(aliasUpsertStart());
   try {
-    const result = await aliasesApi.addAlias({
-      address,
-      forwardsTo,
-      permittedSenders,
-      updateIfExists,
-    });
+    const result = await aliasesApi.upsertAlias(alias);
     dispatch(aliasUpsertSuccess(result));
   } catch (err) {
     dispatch(aliasUpsertError(await getRequestFailMessage(err as Response)));

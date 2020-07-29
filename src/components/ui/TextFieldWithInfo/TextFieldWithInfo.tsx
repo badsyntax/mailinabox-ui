@@ -1,6 +1,5 @@
 import {
   Callout,
-  DefaultButton,
   getTheme,
   IconButton,
   ITextFieldProps,
@@ -47,7 +46,6 @@ export const TextFieldWithInfo: React.FunctionComponent<Props> = (
       {isCalloutVisible && (
         <Callout
           target={'#' + iconButtonId}
-          setInitialFocus
           onDismiss={toggleIsCalloutVisible}
           role="alertdialog"
           styles={{
@@ -58,9 +56,6 @@ export const TextFieldWithInfo: React.FunctionComponent<Props> = (
         >
           <Stack horizontalAlign="start" padding="m" gap="m">
             <Text>{props.calloutText}</Text>
-            <DefaultButton onClick={toggleIsCalloutVisible}>
-              Close
-            </DefaultButton>
           </Stack>
         </Callout>
       )}
