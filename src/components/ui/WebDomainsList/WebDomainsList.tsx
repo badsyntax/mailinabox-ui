@@ -2,9 +2,7 @@ import {
   ConstrainMode,
   DetailsList,
   DetailsListLayoutMode,
-  DirectionalHint,
   IColumn,
-  IconButton,
   IDetailsGroupDividerProps,
   IGroupHeaderProps,
   IRenderFunction,
@@ -23,42 +21,11 @@ import {
   selectGetDomainsError,
   selectIsGettingDomains,
   selectOrderedAndGroupedStaticEnabledDomains,
+  WebDomainWithDomainInfo,
 } from '../../../features/webSlice';
 import { MessageBar } from '../MessageBar/MessageBar';
-
-interface WebActionsListProps {
-  webDomain: WebDomain;
-}
-
-export const WebActionsList: React.FunctionComponent<WebActionsListProps> = ({
-  webDomain,
-}) => {
-  return (
-    <IconButton
-      menuIconProps={{
-        iconName: 'MoreVertical',
-      }}
-      styles={{
-        menuIcon: {
-          fontWeight: 'bold',
-        },
-      }}
-      role="button"
-      aria-haspopup={true}
-      aria-label="Show actions"
-      menuProps={{
-        directionalHint: DirectionalHint.bottomRightEdge,
-        items: [
-          {
-            key: 'changeroot',
-            text: 'Change Root Directory',
-            onClick: (): void => undefined,
-          },
-        ],
-      }}
-    />
-  );
-};
+import { WebDomainActions } from './WebDomainActions';
+import { WebDomainsActionsList } from './WebDomainsActionsList';
 
 const columns: IColumn[] = [
   {
@@ -67,27 +34,29 @@ const columns: IColumn[] = [
     minWidth: 100,
     maxWidth: 300,
     isRowHeader: true,
-    onRender: (webDomain: WebDomain): React.ReactElement => {
-      return <Link href={webDomain.domain}>{webDomain.domain}</Link>;
-    },
+    onRender: (webDomain: WebDomain): React.ReactElement => (
+      <Link href={`https://${webDomain.domain}`}>
+        https://{webDomain.domain}
+      </Link>
+    ),
   },
   {
     key: 'column2',
     name: 'Directory for Files',
     minWidth: 300,
     isRowHeader: false,
-    onRender: (webDomain: WebDomain): React.ReactElement => {
-      return <Text>{webDomain.root}</Text>;
-    },
+    onRender: (webDomain: WebDomain): React.ReactElement => (
+      <Text>{webDomain.root}</Text>
+    ),
   },
   {
     key: 'column3',
     name: 'Actions',
     isMultiline: false,
     minWidth: 50,
-    onRender: (webDomain: WebDomain): React.ReactNode => {
-      return <WebActionsList webDomain={webDomain} />;
-    },
+    onRender: (webDomain: WebDomainWithDomainInfo): React.ReactNode => (
+      <WebDomainsActionsList webDomain={webDomain} />
+    ),
   },
 ];
 
@@ -112,6 +81,7 @@ export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
   }, [dispatch, domains, isGettingDomains]);
   return (
     <Stack className={className}>
+      <WebDomainActions />
       {getDomainsError && (
         <MessageBar messageBarType={MessageBarType.error} isMultiline>
           {getDomainsError}
@@ -160,7 +130,6 @@ export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
               },
             }}
             layoutMode={DetailsListLayoutMode.justified}
-            onShouldVirtualize={(): boolean => false}
             selectionMode={SelectionMode.none}
             constrainMode={ConstrainMode.horizontalConstrained}
           />
