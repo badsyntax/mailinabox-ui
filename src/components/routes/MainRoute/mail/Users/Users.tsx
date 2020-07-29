@@ -19,11 +19,11 @@ import {
   selectUsersError,
   usersCheck,
 } from '../../../../../features/usersSlice';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { MailUserAdd } from '../../../../MailUserAdd/MailUserAdd';
-import { MailUsersList } from '../../../../MailUsersList/MailUsersList';
-import { MessageBar } from '../../../../MessageBar/MessageBar';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { MailUserAdd } from '../../../../ui/MailUserAdd/MailUserAdd';
+import { MailUsersList } from '../../../../ui/MailUsersList/MailUsersList';
+import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
 
 const theme = getTheme();
 
@@ -45,7 +45,7 @@ const UsersSections: React.FunctionComponent = () => {
       key: 'group' + groups.length,
       name: domain,
       startIndex: users.length,
-      isCollapsed: false,
+      isCollapsed: true,
       level: 0,
       count: usersByDomain.length,
     });

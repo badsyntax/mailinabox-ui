@@ -48,7 +48,7 @@ export const systemRebootCheck = (): ThunkAction<
     const result = await systemApi.getSystemRebootStatus();
     dispatch(systemRebootSuccess(result));
   } catch (err) {
-    dispatch(systemRebootError(getRequestFailMessage(err as Response)));
+    dispatch(systemRebootError(await getRequestFailMessage(err as Response)));
   }
 };
 

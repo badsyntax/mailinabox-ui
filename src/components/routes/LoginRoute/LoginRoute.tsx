@@ -1,7 +1,7 @@
 import { AnimationStyles, getTheme, mergeStyles, Stack } from '@fluentui/react';
 import React from 'react';
-import { LoginForm } from '../../LoginForm/LoginForm';
-import { LoginHeader } from '../../LoginHeader/LoginHeader';
+import { LoginForm } from '../../ui/LoginForm/LoginForm';
+import { LoginHeader } from '../../ui/LoginHeader/LoginHeader';
 
 const className = mergeStyles({
   maxWidth: 420,

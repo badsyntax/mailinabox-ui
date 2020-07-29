@@ -9,10 +9,10 @@ import {
 } from '@fluentui/react';
 import { useId } from '@uifabric/react-hooks';
 import React from 'react';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { MailExchangeSettingsList } from '../../../../MailExchangeSettingsList/MailExchangeSettingsList';
-import { MailSettingsList } from '../../../../MailSettingsList/MailSettingsList';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { MailExchangeSettingsList } from '../../../../ui/MailExchangeSettingsList/MailExchangeSettingsList';
+import { MailSettingsList } from '../../../../ui/MailSettingsList/MailSettingsList';
 
 const columnClassName = mergeStyles({
   flexBasis: 0,

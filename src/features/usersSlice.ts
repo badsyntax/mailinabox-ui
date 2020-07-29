@@ -1,9 +1,15 @@
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
+import {
+  Action,
+  createSlice,
+  PayloadAction,
+  ThunkAction,
+} from '@reduxjs/toolkit';
 import {
   MailUser,
   MailUserPrivilege,
   MailUsersResponse,
   MailUsersResponseFormat,
+  MailUserStatus,
 } from 'mailinabox-api';
 import { getRequestFailMessage, usersApi } from '../api';
 import { RootState } from '../store';
@@ -92,13 +98,46 @@ export const users = createSlice({
       state.addUserError = null;
       state.isAddingUser = true;
     },
-    userAddSuccess: (state, action): void => {
+    userAddSuccess: (
+      state,
+      action: PayloadAction<{
+        response: string;
+        email: string;
+        privileges: Array<MailUserPrivilege>;
+      }>
+    ): void => {
+      const { response, email, privileges } = action.payload;
+      const domain = email.split('@').pop() as string;
+      const domainIndex = state.users.findIndex(
+        (domainUsers) => domainUsers.domain === domain
+      );
+      const newUser: MailUser = {
+        email,
+        privileges: privileges.filter((privilege) => !!privilege),
+        status: MailUserStatus.Active,
+      };
+      if (domainIndex >= 0) {
+        state.users[domainIndex].users.push(newUser);
+      } else {
+        state.users.push({
+          domain,
+          users: [newUser],
+        });
+      }
       state.isAddingUser = false;
-      state.addUserResponse = action.payload;
+      state.addUserResponse = response;
     },
     userAddError: (state, action): void => {
       state.addUserError = action.payload;
       state.isAddingUser = false;
+    },
+    userAddReset: (state): void => {
+      state.addUserError = null;
+      state.isAddingUser = false;
+      state.addUserResponse = null;
+    },
+    userAddResetError: (state): void => {
+      state.addUserError = null;
     },
   },
 });
@@ -116,6 +155,8 @@ export const {
   userAddStart,
   userAddSuccess,
   userAddError,
+  userAddReset,
+  userAddResetError,
 } = users.actions;
 
 export const { reducer: usersReducer } = users;
@@ -164,7 +205,7 @@ export const usersCheck = (
     });
     dispatch(usersGetSuccess(result));
   } catch (err) {
-    dispatch(usersGetError(getRequestFailMessage(err as Response)));
+    dispatch(usersGetError(await getRequestFailMessage(err as Response)));
   }
 };
 
@@ -181,7 +222,7 @@ export const userAddAdminPrivilege = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
   }
 };
 
@@ -198,7 +239,7 @@ export const userRemoveAdminPrivilege = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
   }
 };
 
@@ -232,14 +273,14 @@ export const userRemove = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
   }
 };
 
 export const userAdd = (
   email: string,
   password: string,
-  privileges: MailUserPrivilege
+  privilege: MailUserPrivilege
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
@@ -248,10 +289,16 @@ export const userAdd = (
     const result = await usersApi.addUser({
       email,
       password,
-      privileges,
+      privileges: privilege,
     });
-    dispatch(userAddSuccess(result));
+    dispatch(
+      userAddSuccess({
+        response: result,
+        email,
+        privileges: [privilege],
+      })
+    );
   } catch (err) {
-    dispatch(userAddError(getRequestFailMessage(err as Response)));
+    dispatch(userAddError(await getRequestFailMessage(err as Response)));
   }
 };

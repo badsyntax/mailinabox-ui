@@ -1,15 +1,29 @@
 import {
   Breadcrumb,
   getTheme,
+  IGroup,
   mergeStyles,
+  MessageBarType,
   Pivot,
   PivotItem,
   PivotLinkSize,
+  ProgressIndicator,
   Stack,
 } from '@fluentui/react';
-import React from 'react';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
+import { MailAlias, MailAliasByDomain } from 'mailinabox-api';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  aliasesCheck,
+  selectAliases,
+  selectAliasesError,
+  selectIsGettingAliases,
+} from '../../../../../features/aliasesSlice';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { MailAliasAdd } from '../../../../ui/MailAliasAdd/MailAliasAdd';
+import { MailAliasesList } from '../../../../ui/MailAliasesList/MailAliasesList';
+import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
 
 const theme = getTheme();
 
@@ -18,13 +32,49 @@ const className = mergeStyles({
 });
 
 const AliasesSections: React.FunctionComponent = () => {
+  const dispatch = useDispatch();
+
+  const isCheckingAliases = useSelector(selectIsGettingAliases);
+  const mailAliases = useSelector(selectAliases);
+  const aliasesError = useSelector(selectAliasesError);
+  const aliases: Array<MailAlias> = [];
+  const groups: Array<IGroup> = [];
+
+  mailAliases.forEach((aliasDomain: MailAliasByDomain) => {
+    const { domain, aliases: aliasesByDomain } = aliasDomain;
+    groups.push({
+      key: 'group' + groups.length,
+      name: domain,
+      startIndex: aliases.length,
+      level: 0,
+      count: aliasesByDomain.length,
+      isCollapsed: true,
+    });
+    aliases.push(...aliasesByDomain);
+  });
+
+  useEffect(() => {
+    dispatch(aliasesCheck());
+  }, [dispatch]);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
-      <PivotItem headerText="Existing Mail Alias" className={className}>
-        <div>Existing mail aliases</div>
+      <PivotItem headerText="Existing Mail Aliases" className={className}>
+        {aliasesError && (
+          <MessageBar messageBarType={MessageBarType.error} isMultiline>
+            {aliasesError}
+          </MessageBar>
+        )}
+        {isCheckingAliases && <ProgressIndicator label="Loading aliases..." />}
+        {!isCheckingAliases && (
+          <MailAliasesList
+            aliases={aliases}
+            groups={groups}
+            className={className}
+          />
+        )}
       </PivotItem>
       <PivotItem headerText="Add a Mail Alias" className={className}>
-        <div>Add a Mail Alias</div>
+        <MailAliasAdd />
       </PivotItem>
     </Pivot>
   );

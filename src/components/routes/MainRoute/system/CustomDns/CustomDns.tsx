@@ -25,11 +25,11 @@ import {
   selectIsCheckingSecondaryNameserver,
   selectIsCheckingZones,
 } from '../../../../../features/dnsSlice';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { CustomDnsAdd } from '../../../../CustomDnsAdd/CustomDnsAdd';
-import { CustomDnsRecordsList } from '../../../../CustomDnsRecordsList/CustomDnsRecordsList';
-import { CustomDnsSecondaryNameserver } from '../../../../CustomDnsSecondaryNameserver/CustomDnsSecondaryNameserver';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { CustomDnsAdd } from '../../../../ui/CustomDnsAdd/CustomDnsAdd';
+import { CustomDnsRecordsList } from '../../../../ui/CustomDnsRecordsList/CustomDnsRecordsList';
+import { CustomDnsSecondaryNameserver } from '../../../../ui/CustomDnsSecondaryNameserver/CustomDnsSecondaryNameserver';
 
 const theme = getTheme();
 

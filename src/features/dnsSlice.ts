@@ -121,7 +121,9 @@ export const dnsSecondaryNameserverCheck = (): ThunkAction<
     dispatch(dnsGetSecondaryNameserverSuccess(result));
   } catch (err) {
     dispatch(
-      dnsGetSecondaryNameserverError(getRequestFailMessage(err as Response))
+      dnsGetSecondaryNameserverError(
+        await getRequestFailMessage(err as Response)
+      )
     );
   }
 };
@@ -137,7 +139,7 @@ export const dnsZonesCheck = (): ThunkAction<
     const result = await dnsApi.getDnsZones();
     dispatch(dnsGetZonesSuccess(result));
   } catch (err) {
-    dispatch(dnsGetZonesError(getRequestFailMessage(err as Response)));
+    dispatch(dnsGetZonesError(await getRequestFailMessage(err as Response)));
   }
 };
 
@@ -152,7 +154,9 @@ export const dnsCustomRecordsCheck = (): ThunkAction<
     const result = await dnsApi.getDnsCustomRecords();
     dispatch(dnsGetCustomRecordsSuccess(result));
   } catch (err) {
-    dispatch(dnsGetCustomRecordsError(getRequestFailMessage(err as Response)));
+    dispatch(
+      dnsGetCustomRecordsError(await getRequestFailMessage(err as Response))
+    );
   }
 };
 
@@ -167,7 +171,7 @@ export const dnsDumpCheck = (): ThunkAction<
     const result = await dnsApi.getDnsDump();
     dispatch(dnsGetDumpSuccess(result));
   } catch (err) {
-    dispatch(dnsGetDumpError(getRequestFailMessage(err as Response)));
+    dispatch(dnsGetDumpError(await getRequestFailMessage(err as Response)));
   }
 };
 

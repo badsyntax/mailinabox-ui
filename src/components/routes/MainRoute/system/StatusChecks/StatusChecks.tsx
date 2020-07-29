@@ -17,11 +17,11 @@ import {
   selectSystemStatusItemsAndGroups,
   systemStatusCheck,
 } from '../../../../../features/system/statusSlice';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { SystemChecksDetailsList } from '../../../../SystemChecksDetailsList/SystemChecksDetailsList';
-import { SystemStatusActions } from '../../../../SystemStatusActions/SystemStatusActions';
-import { SystemStatusChart } from '../../../../SystemStatusChart/SystemStatusChart';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { SystemChecksDetailsList } from '../../../../ui/SystemChecksDetailsList/SystemChecksDetailsList';
+import { SystemStatusActions } from '../../../../ui/SystemStatusActions/SystemStatusActions';
+import { SystemStatusChart } from '../../../../ui/SystemStatusChart/SystemStatusChart';
 
 const messageBarClassName = mergeStyles({
   ...AnimationStyles.fadeIn500,

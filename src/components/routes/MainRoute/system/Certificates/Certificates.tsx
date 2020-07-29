@@ -19,10 +19,10 @@ import {
   selectSSLStatusError,
   sslStatusCheck,
 } from '../../../../../features/sslSlice';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { CertificatesList } from '../../../../CertificatesList/CertificatesList';
-import { InstallCertificate } from '../../../../InstallCertificate/InstallCertificate';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { CertificatesList } from '../../../../ui/CertificatesList/CertificatesList';
+import { InstallCertificate } from '../../../../ui/InstallCertificate/InstallCertificate';
 
 const theme = getTheme();
 

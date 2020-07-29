@@ -18,11 +18,11 @@ import {
   selectIsCheckingBackupsStatus,
   systemBackupsStatusCheck,
 } from '../../../../../features/system/backupsSlice';
-import { BackupConfigure } from '../../../../BackupConfigure/BackupConfigure';
-import { BackupsList } from '../../../../BackupsList/BackupsList';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { MessageBar } from '../../../../MessageBar/MessageBar';
+import { BackupConfigure } from '../../../../ui/BackupConfigure/BackupConfigure';
+import { BackupsList } from '../../../../ui/BackupsList/BackupsList';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
 
 const theme = getTheme();
 

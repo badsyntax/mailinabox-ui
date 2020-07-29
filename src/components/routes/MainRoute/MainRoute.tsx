@@ -1,7 +1,7 @@
 import { Stack } from '@fluentui/react';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Header } from '../../Header/Header';
+import { Header } from '../../ui/Header/Header';
 import { LogoutRoute } from '../LogoutRoute/LogoutRoute';
 import { Aliases } from './mail/Aliases/Aliases';
 import { Instructions } from './mail/Instructions/Instructions';

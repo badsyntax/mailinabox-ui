@@ -22,10 +22,10 @@ import {
   selectGetDumpError,
   selectIsCheckingDump,
 } from '../../../../../features/dnsSlice';
-import { Body } from '../../../../Body/Body';
-import { BodyPanel } from '../../../../BodyPanel/BodyPanel';
-import { DnsDumpList } from '../../../../DnsDumpList/DnsDumpList';
-import { DnsZoneFileGenerator } from '../../../../DnsZoneFileGenerator/DnsZoneFileGenerator';
+import { Body } from '../../../../ui/Body/Body';
+import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
+import { DnsDumpList } from '../../../../ui/DnsDumpList/DnsDumpList';
+import { DnsZoneFileGenerator } from '../../../../ui/DnsZoneFileGenerator/DnsZoneFileGenerator';
 
 const theme = getTheme();
 

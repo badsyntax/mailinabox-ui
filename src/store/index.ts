@@ -3,6 +3,7 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
+import { aliasesReducer } from '../features/aliasesSlice';
 import { authReducer } from '../features/authSlice';
 import { dnsReducer } from '../features/dnsSlice';
 import { loginReducer } from '../features/loginSlice';
@@ -27,6 +28,7 @@ export const store = configureStore({
     dns: dnsReducer,
     ssl: sslReducer,
     users: usersReducer,
+    aliases: aliasesReducer,
   },
   middleware: getDefaultMiddleware().concat(authMiddleware),
 });

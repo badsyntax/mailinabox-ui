@@ -2,7 +2,7 @@ import { getTheme, initializeIcons, mergeStyles } from '@fluentui/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { App } from './components/App/App';
+import { App } from './components/ui/App/App';
 import { store } from './store';
 
 initializeIcons(/* optional base url */);

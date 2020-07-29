@@ -80,7 +80,7 @@ export const sslStatusCheck = (): ThunkAction<
     const result = await sslApi.getSSLStatus();
     dispatch(sslGetStatusSuccess(result));
   } catch (err) {
-    dispatch(sslGetStatusError(getRequestFailMessage(err as Response)));
+    dispatch(sslGetStatusError(await getRequestFailMessage(err as Response)));
   }
 };
 
@@ -98,7 +98,7 @@ export const sslGenerateCSR = (
     });
     dispatch(sslGenerateCSRSuccess(result));
   } catch (err) {
-    dispatch(sslGenerateCSRError(getRequestFailMessage(err as Response)));
+    dispatch(sslGenerateCSRError(await getRequestFailMessage(err as Response)));
   }
 };
 

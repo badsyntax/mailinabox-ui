@@ -1,4 +1,5 @@
 import {
+  AliasesApi,
   Configuration,
   ConfigurationParameters,
   DnsApi,
@@ -23,6 +24,7 @@ export function updateApiConfig(config: ConfigurationParameters): void {
   Object.assign(apiConfigParams, config);
 }
 
+export const aliasesApi = new AliasesApi(apiConfig);
 export const userApi = new UserApi(apiConfig);
 export const systemApi = new SystemApi(apiConfig);
 export const sslApi = new SslApi(apiConfig);

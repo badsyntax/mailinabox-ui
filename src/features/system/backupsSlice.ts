@@ -54,7 +54,9 @@ export const systemBackupsStatusCheck = (): ThunkAction<
     const result = await systemApi.getSystemBackupStatus();
     dispatch(systemBackupsStatusGetSuccess(result));
   } catch (err) {
-    dispatch(systemBackupsStatusError(getRequestFailMessage(err as Response)));
+    dispatch(
+      systemBackupsStatusError(await getRequestFailMessage(err as Response))
+    );
   }
 };
 
