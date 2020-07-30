@@ -1,8 +1,15 @@
 import { MessageBarType, Text } from '@fluentui/react';
+import { SystemBackupConfigResponse } from 'mailinabox-api';
 import React from 'react';
 import { MessageBar } from '../../MessageBar/MessageBar';
 
-export const BackupInfoS3: React.FunctionComponent = () => {
+interface BackupInfoS3Props {
+  config: SystemBackupConfigResponse;
+}
+
+export const BackupInfoS3: React.FunctionComponent<BackupInfoS3Props> = ({
+  config,
+}) => {
   return (
     <>
       <Text>
@@ -10,10 +17,10 @@ export const BackupInfoS3: React.FunctionComponent = () => {
         AWS account already.
       </Text>
       <MessageBar messageBarType={MessageBarType.warning} isMultiline>
-        You MUST manually copy the encryption password from
-        <code>/home/user-data/backup/secret_key.txt</code> to a safe and secure
-        location. You will need this file to decrypt backup files. It is NOT
-        stored in your Amazon S3 bucket.
+        You MUST manually copy the encryption password from{' '}
+        <code>{config.encPwFile}</code> to a safe and secure location. You will
+        need this file to decrypt backup files. It is NOT stored in your Amazon
+        S3 bucket.
       </MessageBar>
     </>
   );

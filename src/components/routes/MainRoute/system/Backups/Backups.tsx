@@ -13,10 +13,12 @@ import {
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectBackupsStatus,
-  selectBackupsStatusError,
-  selectIsCheckingBackupsStatus,
-  systemBackupsStatusCheck,
+  getConfig,
+  getStatus,
+  selectConfigError,
+  selectIsGettingStatus,
+  selectStatus,
+  selectStatusError,
 } from '../../../../../features/system/backupsSlice';
 import { BackupConfigure } from '../../../../ui/BackupConfigure/BackupConfigure';
 import { BackupsList } from '../../../../ui/BackupsList/BackupsList';
@@ -31,7 +33,7 @@ const className = mergeStyles({
 });
 
 const BackupSections: React.FunctionComponent = () => {
-  const { backups, unmatchedFileSize } = useSelector(selectBackupsStatus);
+  const { backups, unmatchedFileSize } = useSelector(selectStatus);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Backup Status">
@@ -63,12 +65,18 @@ export const Backups: React.FunctionComponent & {
   path: string;
 } = () => {
   const dispatch = useDispatch();
-  const isCheckingBackupsStatus = useSelector(selectIsCheckingBackupsStatus);
-  const statusError = useSelector(selectBackupsStatusError);
+  const isGettingStatus = useSelector(selectIsGettingStatus);
+  const isGettingConfig = useSelector(selectIsGettingStatus);
+  const statusError = useSelector(selectStatusError);
+  const configError = useSelector(selectConfigError);
 
   useEffect(() => {
-    dispatch(systemBackupsStatusCheck());
+    dispatch(getStatus());
+    dispatch(getConfig());
   }, [dispatch]);
+
+  const isLoading = isGettingStatus || isGettingConfig;
+  const error = statusError || configError;
 
   return (
     <Body>
@@ -101,15 +109,13 @@ export const Backups: React.FunctionComponent & {
         </Text>
       </BodyPanel>
       <BodyPanel>
-        {statusError && (
+        {error && (
           <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {statusError}
+            {error}
           </MessageBar>
         )}
-        {isCheckingBackupsStatus && (
-          <ProgressIndicator label="Checking backup status..." />
-        )}
-        {!isCheckingBackupsStatus && !statusError && <BackupSections />}
+        {isLoading && <ProgressIndicator label="Checking backup status..." />}
+        {!isLoading && !error && <BackupSections />}
       </BodyPanel>
     </Body>
   );

@@ -200,7 +200,7 @@ export const usersCheck = (
     dispatch(usersGetStart());
   }
   try {
-    const result = await usersApi.getUsers({
+    const result = await usersApi.getMailUsers({
       format: MailUsersResponseFormat.Json,
     });
     dispatch(usersGetSuccess(result));
@@ -216,7 +216,7 @@ export const userAddAdminPrivilege = (
 ): Promise<void> => {
   dispatch(userUpdateStart());
   try {
-    const result = await usersApi.addUserPrivilege({
+    const result = await usersApi.addMailUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
@@ -233,7 +233,7 @@ export const userRemoveAdminPrivilege = (
 ): Promise<void> => {
   dispatch(userUpdateStart());
   try {
-    const result = await usersApi.removeUserPrivilege({
+    const result = await usersApi.removeMailUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
@@ -251,7 +251,7 @@ export const userSetPassword = (
 ): Promise<void> => {
   dispatch(userUpdateStart());
   try {
-    const result = await usersApi.setPassword({
+    const result = await usersApi.setMailUserPassword({
       email: user.email,
       password: password,
     });
@@ -268,7 +268,7 @@ export const userRemove = (
 ): Promise<void> => {
   dispatch(userUpdateStart());
   try {
-    const result = await usersApi.removeUser({
+    const result = await usersApi.removeMailUser({
       email: user.email,
     });
     dispatch(userUpdateSuccess(result));
@@ -286,7 +286,7 @@ export const userAdd = (
 ): Promise<void> => {
   dispatch(userAddStart());
   try {
-    const result = await usersApi.addUser({
+    const result = await usersApi.addMailUser({
       email,
       password,
       privileges: privilege,

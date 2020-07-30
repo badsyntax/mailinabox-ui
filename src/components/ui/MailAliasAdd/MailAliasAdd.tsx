@@ -50,7 +50,7 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
   }, [dispatch]);
 
   const onDialogClose = useCallback(
-    (event: React.MouseEvent<BaseButton, MouseEvent>): void => {
+    (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
     },
     []

@@ -184,7 +184,7 @@ export const getDomains = (): ThunkAction<
 > => async (dispatch): Promise<void> => {
   dispatch(getDomainsStart());
   try {
-    const result = await webApi.getDomains();
+    const result = await webApi.getWebDomains();
     dispatch(getDomainsSuccess(result));
   } catch (err) {
     dispatch(getDomainsError(await getRequestFailMessage(err as Response)));
@@ -199,7 +199,7 @@ export const updateWeb = (): ThunkAction<
 > => async (dispatch): Promise<void> => {
   dispatch(updateStart());
   try {
-    const result = await webApi.update();
+    const result = await webApi.updateWeb();
     dispatch(updateSuccess(result || 'Nothing changed.'));
   } catch (err) {
     dispatch(updateError(await getRequestFailMessage(err as Response)));

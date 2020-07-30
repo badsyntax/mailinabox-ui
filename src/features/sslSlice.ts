@@ -1,6 +1,6 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
-  SSLInstallCertificateRequest,
+  SSLCertificateInstallRequest,
   SSLStatus,
   SSLStatusResponse,
 } from 'mailinabox-api';
@@ -177,7 +177,7 @@ export const generateCSR = (
 ): Promise<void> => {
   dispatch(generateCSRStart());
   try {
-    const result = await sslApi.generateCSR({
+    const result = await sslApi.generateSSLCSR({
       domain,
       countrycode,
     });
@@ -188,13 +188,13 @@ export const generateCSR = (
 };
 
 export const installCertificate = (
-  request: SSLInstallCertificateRequest
+  request: SSLCertificateInstallRequest
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
   dispatch(installCertificateStart());
   try {
-    const result = await sslApi.installCertificate(request);
+    const result = await sslApi.installSSLCertificate(request);
     dispatch(installCertificateSuccess(result));
   } catch (err) {
     dispatch(

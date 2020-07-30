@@ -2,11 +2,7 @@ import {
   ConstrainMode,
   DetailsList,
   DetailsListLayoutMode,
-  DetailsRow,
-  getTheme,
   IColumn,
-  IDetailsRowProps,
-  IDetailsRowStyles,
   IStackProps,
   mergeStyles,
   MessageBarType,
@@ -17,8 +13,6 @@ import {
 import { SystemBackupStatus, SystemBackupStatusResponse } from 'mailinabox-api';
 import React from 'react';
 import { MessageBar } from '../MessageBar/MessageBar';
-
-const theme = getTheme();
 
 function niceSize(bytes: number): string {
   const powers = ['bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -138,10 +132,10 @@ export const BackupsList: React.FunctionComponent<
       )}
       {backups.length && (
         <>
-          <MessageBar messageBarType={MessageBarType.info} isMultiline>
+          <MessageBar>
             The backup location currently contains the backups listed below. The
             total size of the backups is currently{' '}
-            {getTotalBackupsSize(backups, unmatchedFileSize)}.
+            <strong>{getTotalBackupsSize(backups, unmatchedFileSize)}</strong>.
           </MessageBar>
           <DetailsList
             items={backups}
@@ -151,26 +145,6 @@ export const BackupsList: React.FunctionComponent<
             onShouldVirtualize={(): boolean => false}
             selectionMode={SelectionMode.none}
             constrainMode={ConstrainMode.horizontalConstrained}
-            onRenderRow={(props?: IDetailsRowProps): JSX.Element | null => {
-              const customStyles: Partial<IDetailsRowStyles> = {};
-              if (props) {
-                if (props.itemIndex % 2 === 0) {
-                  // Every other row renders with a different background color
-                  customStyles.root = {
-                    backgroundColor: theme.palette.themeLighterAlt,
-                  };
-                }
-
-                return (
-                  <DetailsRow
-                    {...props}
-                    styles={customStyles}
-                    enableUpdateAnimations={false}
-                  />
-                );
-              }
-              return null;
-            }}
           />
         </>
       )}

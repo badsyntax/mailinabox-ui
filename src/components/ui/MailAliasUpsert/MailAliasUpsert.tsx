@@ -13,7 +13,7 @@ import {
   Stack,
   TextField,
 } from '@fluentui/react';
-import { UpsertAliasRequest } from 'mailinabox-api';
+import { UpsertMailAliasRequest } from 'mailinabox-api';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -38,7 +38,7 @@ const columnClassName = mergeStyles({
 function getInitialAliasType({
   address,
   forwardsTo,
-}: UpsertAliasRequest): AliasType {
+}: UpsertMailAliasRequest): AliasType {
   if (address.charAt(0) === '@' && forwardsTo.charAt(0) === '@') {
     return AliasType.domainAlias;
   } else if (address.charAt(0) === '@') {
@@ -48,7 +48,7 @@ function getInitialAliasType({
   }
 }
 
-const defaultAlias: UpsertAliasRequest = {
+const defaultAlias: UpsertMailAliasRequest = {
   address: '',
   forwardsTo: '',
   permittedSenders: '',
@@ -56,7 +56,7 @@ const defaultAlias: UpsertAliasRequest = {
 };
 
 interface MailAliasUpsertProps {
-  updateAlias?: UpsertAliasRequest;
+  updateAlias?: UpsertMailAliasRequest;
 }
 
 export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
@@ -72,7 +72,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   const [senderType, setSenderType] = useState<SenderType>(
     updateAlias.permittedSenders ? SenderType.manual : SenderType.any
   );
-  const [alias, setAlias] = useState<UpsertAliasRequest>(updateAlias);
+  const [alias, setAlias] = useState<UpsertMailAliasRequest>(updateAlias);
 
   const senderTypeOptions: IChoiceGroupOption[] = [
     { key: SenderType.any, text: formData[aliasType].permittedSenders.any },
@@ -135,7 +135,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
 
   const onMessageBarDismiss = useCallback(
     (
-      ev?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
+      _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
       dispatch(upsertAliasResetError());
     },
@@ -145,7 +145,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   const onFormSubmit = useCallback(
     (event: React.FormEvent<HTMLElement>): void => {
       event.preventDefault();
-      const addAlias: UpsertAliasRequest = {
+      const addAlias: UpsertMailAliasRequest = {
         ...alias,
         permittedSenders:
           senderType === SenderType.manual ? alias.permittedSenders : null,

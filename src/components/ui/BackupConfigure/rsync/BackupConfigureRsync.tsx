@@ -1,37 +1,57 @@
-import { PrimaryButton, Stack, TextField } from '@fluentui/react';
-import React, { useCallback, useMemo, useState } from 'react';
+import { TextField } from '@fluentui/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,
 } from '../../TextFieldWithInfo/TextFieldWithInfo';
+import { BackupConfigureProps } from '../types';
 
-export const BackupConfigureRsync: React.FunctionComponent = () => {
-  const [days, setDays] = useState<string | undefined>('1');
-  const [hostname, setHostname] = useState<string | undefined>('');
-  const [path, setPath] = useState<string | undefined>('');
-  const [username, setUsername] = useState<string | undefined>('');
-  const sshKey = 'key'; // TODO
+export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps> = ({
+  config,
+  isCurrentType,
+  daysDescription,
+  onConfigChange,
+}) => {
+  const targetPath = isCurrentType
+    ? config.target.substring(8).split('//')
+    : [];
+  const targetHostParts = isCurrentType
+    ? targetPath.shift()?.split('@') || []
+    : [];
+  const initialUsername = isCurrentType ? targetHostParts[0] : '';
+  const initialHostName = isCurrentType ? targetHostParts[1] : '';
+  const initialPath = isCurrentType ? `/${targetPath[0]}` : '';
+
+  const [days, setDays] = useState<string | undefined>(
+    String(config.minAgeInDays)
+  );
+  const [hostname, setHostname] = useState<string | undefined>(initialHostName);
+  const [path, setPath] = useState<string | undefined>(initialPath);
+  const [username, setUsername] = useState<string | undefined>(initialUsername);
+
   const onDaysChange = useCallback(
     (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string | undefined
     ): void => {
       setDays(newValue);
     },
     []
   );
+
   const onHostnameChange = useCallback(
     (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string | undefined
     ): void => {
       setHostname(newValue);
     },
     []
   );
+
   const onPathChange = useCallback(
     (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string | undefined
     ): void => {
       setPath(newValue);
@@ -40,26 +60,19 @@ export const BackupConfigureRsync: React.FunctionComponent = () => {
   );
   const onUsernameChange = useCallback(
     (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string | undefined
     ): void => {
       setUsername(newValue);
     },
     []
   );
+
   const onDaysRenderLabel = useMemo(
-    () =>
-      onRenderTextFieldLabel(
-        <>
-          This is the minimum number of days backup data is kept for. The box
-          makes an incremental backup, so backup data is often kept much longer.
-          An incremental backup file that is less than this number of days old
-          requires that all previous increments back to the most recent full
-          backup, plus that full backup, remain available.
-        </>
-      ),
-    []
+    () => onRenderTextFieldLabel(daysDescription),
+    [daysDescription]
   );
+
   const onSSHKeyRenderLabel = useMemo(
     () =>
       onRenderTextFieldLabel(
@@ -72,6 +85,16 @@ export const BackupConfigureRsync: React.FunctionComponent = () => {
       ),
     []
   );
+
+  useEffect(() => {
+    onConfigChange({
+      target: `rsync://${username}@${hostname}/${path}`,
+      targetUser: '',
+      targetPass: '',
+      minAge: Number(days) || 1,
+    });
+  }, [days, hostname, onConfigChange, path, username]);
+
   return (
     <>
       <TextField
@@ -95,7 +118,7 @@ export const BackupConfigureRsync: React.FunctionComponent = () => {
         onChange={onUsernameChange}
       />
       <TextField
-        value={sshKey}
+        value={config.sshPubKey}
         label="Public SSH Key"
         required
         readOnly
@@ -113,9 +136,6 @@ export const BackupConfigureRsync: React.FunctionComponent = () => {
         styles={textfieldWithLabelInfoStyles}
         onChange={onDaysChange}
       />
-      <Stack horizontal>
-        <PrimaryButton>Save</PrimaryButton>
-      </Stack>
     </>
   );
 };

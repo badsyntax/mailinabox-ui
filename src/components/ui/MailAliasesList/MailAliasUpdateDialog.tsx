@@ -6,7 +6,7 @@ import {
   IDialogProps,
   PrimaryButton,
 } from '@fluentui/react';
-import { MailAlias, UpsertAliasRequest } from 'mailinabox-api';
+import { MailAlias, UpsertMailAliasRequest } from 'mailinabox-api';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -36,7 +36,7 @@ export const MailAliasUpdateDialog: React.FunctionComponent<
     dialogProps.onDismiss?.();
   }, [dialogProps]);
 
-  const updateAlias: UpsertAliasRequest = {
+  const updateAlias: UpsertMailAliasRequest = {
     address: alias?.address || '',
     forwardsTo: alias?.forwardsTo.join('\n') ?? '',
     permittedSenders: alias?.permittedSenders?.join('\n') ?? null,

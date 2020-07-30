@@ -13,7 +13,7 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
-import { SSLInstallCertificateRequest } from 'mailinabox-api';
+import { SSLCertificateInstallRequest } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -44,7 +44,7 @@ const modalProps: IModalProps = {
   isBlocking: true,
 };
 
-const defaultInstallCertificateRequest: SSLInstallCertificateRequest = {
+const defaultInstallCertificateRequest: SSLCertificateInstallRequest = {
   domain: '',
   cert: '',
   chain: '',
@@ -67,7 +67,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
   );
 
   const [installCertificateRequest, setInstallCertificateRequest] = useState<
-    SSLInstallCertificateRequest
+    SSLCertificateInstallRequest
   >({
     ...defaultInstallCertificateRequest,
     domain,

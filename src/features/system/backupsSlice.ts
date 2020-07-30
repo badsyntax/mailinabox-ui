@@ -1,73 +1,179 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
-import { SystemBackupStatusResponse } from 'mailinabox-api';
+import {
+  SystemBackupConfigResponse,
+  SystemBackupConfigUpdateRequest,
+  SystemBackupStatusResponse,
+} from 'mailinabox-api';
 import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
 
 export interface SystemBackupsState {
-  isChecking: boolean;
+  isGettingStatus: boolean;
+  isGettingConfig: boolean;
+  isUpdatingConfig: boolean;
   status: SystemBackupStatusResponse;
-  error: string | null;
+  config: SystemBackupConfigResponse;
+  updateConfigResponse: string | null;
+  getStatusError: string | null;
+  getConfigError: string | null;
+  updateConfigError: string | null;
 }
 
 const initialState: SystemBackupsState = {
-  isChecking: false,
+  isGettingStatus: false,
+  isGettingConfig: false,
+  isUpdatingConfig: false,
   status: {
     backups: [],
     unmatchedFileSize: 0,
   },
-  error: null,
+  config: {
+    encPwFile: '',
+    fileTargetDirectory: '',
+    minAgeInDays: 1,
+    sshPubKey: '',
+    target: '',
+  },
+  updateConfigResponse: null,
+  getStatusError: null,
+  getConfigError: null,
+  updateConfigError: null,
 };
 
 const systemBackups = createSlice({
   name: 'backups',
   initialState,
   reducers: {
-    systemBackupsStatusGetStart: (state): void => {
-      state.error = null;
-      state.isChecking = true;
+    getStatusStart: (state): void => {
+      state.getStatusError = null;
+      state.isGettingStatus = true;
     },
-    systemBackupsStatusGetSuccess: (state, action): void => {
-      state.isChecking = false;
+    getStatusSuccess: (state, action): void => {
+      state.isGettingStatus = false;
       state.status = action.payload;
     },
-    systemBackupsStatusError: (state, action): void => {
-      state.error = action.payload;
-      state.isChecking = false;
+    getStatusError: (state, action): void => {
+      state.getStatusError = action.payload;
+      state.isGettingStatus = false;
+    },
+    getConfigStart: (state): void => {
+      state.getConfigError = null;
+      state.isGettingConfig = true;
+    },
+    getConfigSuccess: (state, action): void => {
+      state.isGettingConfig = false;
+      state.config = action.payload;
+    },
+    getConfigError: (state, action): void => {
+      state.getConfigError = action.payload;
+      state.isGettingConfig = false;
+    },
+    updateConfigStart: (state): void => {
+      state.updateConfigError = null;
+      state.isUpdatingConfig = true;
+    },
+    updateConfigSuccess: (state, action): void => {
+      state.isUpdatingConfig = false;
+      state.updateConfigResponse = action.payload;
+    },
+    updateConfigError: (state, action): void => {
+      state.updateConfigError = action.payload;
+      state.isUpdatingConfig = false;
+    },
+    updateConfigResetError: (state): void => {
+      state.updateConfigError = null;
+    },
+    updateConfigReset: (state): void => {
+      state.updateConfigError = null;
+      state.isUpdatingConfig = false;
+      state.updateConfigResponse = null;
     },
   },
 });
 
 export const {
-  systemBackupsStatusGetSuccess,
-  systemBackupsStatusGetStart,
-  systemBackupsStatusError,
+  getStatusSuccess,
+  getStatusStart,
+  getStatusError,
+  getConfigStart,
+  getConfigSuccess,
+  getConfigError,
+  updateConfigStart,
+  updateConfigSuccess,
+  updateConfigError,
+  updateConfigResetError,
+  updateConfigReset,
 } = systemBackups.actions;
 
-export const systemBackupsStatusCheck = (): ThunkAction<
+export const { reducer: systemBackupsReducer } = systemBackups;
+
+export const selectIsGettingStatus = (state: RootState): boolean =>
+  state.system.backups.isGettingStatus;
+
+export const selectStatusError = (state: RootState): string | null =>
+  state.system.backups.getStatusError;
+
+export const selectStatus = (state: RootState): SystemBackupStatusResponse =>
+  state.system.backups.status;
+
+export const selectIsGettingConfig = (state: RootState): boolean =>
+  state.system.backups.isGettingConfig;
+
+export const selectConfigError = (state: RootState): string | null =>
+  state.system.backups.getConfigError;
+
+export const selectConfig = (state: RootState): SystemBackupConfigResponse =>
+  state.system.backups.config;
+
+export const selectIsUpdatingConfig = (state: RootState): boolean =>
+  state.system.backups.isUpdatingConfig;
+
+export const selectUpdateConfigError = (state: RootState): string | null =>
+  state.system.backups.updateConfigError;
+
+export const selectUpdateConfigResponse = (state: RootState): string | null =>
+  state.system.backups.updateConfigResponse;
+
+export const getStatus = (): ThunkAction<
   void,
   RootState,
   unknown,
   Action<string>
 > => async (dispatch): Promise<void> => {
-  dispatch(systemBackupsStatusGetStart());
+  dispatch(getStatusStart());
   try {
     const result = await systemApi.getSystemBackupStatus();
-    dispatch(systemBackupsStatusGetSuccess(result));
+    dispatch(getStatusSuccess(result));
   } catch (err) {
-    dispatch(
-      systemBackupsStatusError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(getStatusError(await getRequestFailMessage(err as Response)));
   }
 };
 
-export const { reducer: systemBackupsReducer } = systemBackups;
+export const getConfig = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch): Promise<void> => {
+  dispatch(getConfigStart());
+  try {
+    const result = await systemApi.getSystemBackupConfig();
+    dispatch(getConfigSuccess(result));
+  } catch (err) {
+    dispatch(getConfigError(await getRequestFailMessage(err as Response)));
+  }
+};
 
-export const selectIsCheckingBackupsStatus = (state: RootState): boolean =>
-  state.system.backups.isChecking;
-
-export const selectBackupsStatusError = (state: RootState): string | null =>
-  state.system.backups.error;
-
-export const selectBackupsStatus = (
-  state: RootState
-): SystemBackupStatusResponse => state.system.backups.status;
+export const updateConfig = (
+  config: SystemBackupConfigUpdateRequest
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(updateConfigStart());
+  try {
+    const result = await systemApi.updateSystemBackupConfig(config);
+    dispatch(updateConfigSuccess(result));
+  } catch (err) {
+    dispatch(updateConfigError(await getRequestFailMessage(err as Response)));
+  }
+};
