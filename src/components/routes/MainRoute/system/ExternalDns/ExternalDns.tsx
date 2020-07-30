@@ -17,8 +17,8 @@ import { DNSDumpDomainRecord, DNSDumpDomains } from 'mailinabox-api';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  dnsDumpCheck,
-  selectGetDump,
+  getDump,
+  selectDump,
   selectGetDumpError,
   selectIsCheckingDump,
 } from '../../../../../features/dnsSlice';
@@ -34,7 +34,7 @@ const className = mergeStyles({
 });
 
 const ExternalDnsSections: React.FunctionComponent = () => {
-  const dump = useSelector(selectGetDump);
+  const dump = useSelector(selectDump);
 
   const records: Array<DNSDumpDomainRecord> = [];
   const groups: Array<IGroup> = [];
@@ -71,7 +71,7 @@ export const ExternalDns: React.FunctionComponent & {
   const dumpError = useSelector(selectGetDumpError);
 
   useEffect(() => {
-    dispatch(dnsDumpCheck());
+    dispatch(getDump());
   }, [dispatch]);
 
   return (

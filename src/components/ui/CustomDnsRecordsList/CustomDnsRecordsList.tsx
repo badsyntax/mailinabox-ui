@@ -1,6 +1,5 @@
 import {
   ConstrainMode,
-  DefaultButton,
   DetailsList,
   DetailsListLayoutMode,
   getTheme,
@@ -12,6 +11,8 @@ import {
 } from '@fluentui/react';
 import { DNSCustomRecord } from 'mailinabox-api';
 import React from 'react';
+import { CustomDnsRecordActions } from './CustomDnsRecordActions';
+import { CustomDnsRecordsActionsList } from './CustomDnsRecordsActionsList';
 
 const theme = getTheme();
 
@@ -48,20 +49,9 @@ const columns: IColumn[] = [
     key: 'column4',
     name: 'Actions',
     isMultiline: false,
-    minWidth: 100,
-    maxWidth: 100,
-    onRender: (item: DNSCustomRecord): React.ReactNode => {
-      return (
-        <DefaultButton
-          styles={{
-            textContainer: {
-              ...theme.fonts.small,
-            },
-          }}
-        >
-          Delete
-        </DefaultButton>
-      );
+    minWidth: 50,
+    onRender: (dnsRecord: DNSCustomRecord): React.ReactNode => {
+      return <CustomDnsRecordsActionsList dnsRecord={dnsRecord} />;
     },
   },
 ];
@@ -73,6 +63,7 @@ export const CustomDnsRecordsList: React.FunctionComponent<
 > = ({ records = [], ...props }) => {
   return (
     <Stack as="section" {...props}>
+      <CustomDnsRecordActions />
       <DetailsList
         items={records}
         columns={columns}

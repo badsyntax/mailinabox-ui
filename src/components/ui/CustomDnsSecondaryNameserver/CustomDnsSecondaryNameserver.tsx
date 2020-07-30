@@ -1,7 +1,6 @@
 import {
   IStackProps,
   mergeStyles,
-  MessageBarType,
   PrimaryButton,
   Stack,
   Text,
@@ -35,11 +34,13 @@ export const CustomDnsSecondaryNameserver: React.FunctionComponent<IStackProps> 
         </Text>
       </Stack>
       <Stack gap="m" grow={1} className={columnClassName}>
-        <MessageBar messageBarType={MessageBarType.info} isMultiline>
+        <MessageBar>
           Multiple secondary servers can be separated with commas or spaces
           (i.e., ns2.hostingcompany.com ns3.hostingcompany.com).
-          <br /> To enable zone transfers to additional servers without listing
-          them as secondary nameservers, add an IP address or subnet using
+        </MessageBar>
+        <MessageBar>
+          To enable zone transfers to additional servers without listing them as
+          secondary nameservers, add an IP address or subnet using
           xfr:10.20.30.40 or xfr:10.20.30.40/24.
         </MessageBar>
         <TextField

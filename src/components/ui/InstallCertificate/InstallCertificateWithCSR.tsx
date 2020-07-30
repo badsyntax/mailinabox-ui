@@ -201,7 +201,6 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
             placeholder="-----BEGIN CERTIFICATE-----&#xA;stuff here&#xA;-----END CERTIFICATE-----&#xA;-----BEGIN CERTIFICATE-----&#xA;more stuff here&#xA;-----END CERTIFICATE-----"
             value={installCertificateRequest.chain}
             onChange={onChainChange}
-            required
           />
           <Stack horizontal>
             <PrimaryButton type="submit" disabled={isInstallingCertificate}>

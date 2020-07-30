@@ -1,5 +1,6 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
+  AddDnsCustomRecordRequest,
   DNSCustomRecord,
   DNSDumpResponse,
   DNSSecondaryNameserverResponse,
@@ -7,19 +8,35 @@ import {
 import { dnsApi, getRequestFailMessage } from '../api';
 import { RootState } from '../store';
 
+export enum DNSActionType {
+  remove,
+}
+
+export interface DNSAction {
+  dnsRecord?: DNSCustomRecord;
+  type?: DNSActionType;
+}
+
 export interface SSLState {
   isCheckingSecondaryNameserver: boolean;
   isCheckingZones: boolean;
   isCheckingCustomRecords: boolean;
   isCheckingDump: boolean;
+  isAddingCustomRecord: boolean;
+  isRemovingCustomRecord: boolean;
   secondaryNameserver: DNSSecondaryNameserverResponse;
   zones: Array<string>;
   customRecords: Array<DNSCustomRecord>;
   dump: DNSDumpResponse;
+  addCustomRecordResponse: string | null;
+  removeCustomRecordResponse: string | null;
   getSecondaryNameserverError: string | null;
   getZonesError: string | null;
   getCustomRecordsError: string | null;
   getDumpError: string | null;
+  addCustomRecordError: string | null;
+  removeCustomRecordError: string | null;
+  dnsAction: DNSAction | null;
 }
 
 const initialState: SSLState = {
@@ -27,153 +44,152 @@ const initialState: SSLState = {
   isCheckingZones: false,
   isCheckingCustomRecords: false,
   isCheckingDump: false,
+  isAddingCustomRecord: false,
+  isRemovingCustomRecord: false,
   secondaryNameserver: {
     hostnames: [],
   },
   dump: [],
   zones: [],
   customRecords: [],
+  addCustomRecordResponse: null,
+  removeCustomRecordResponse: null,
   getSecondaryNameserverError: null,
   getZonesError: null,
   getCustomRecordsError: null,
   getDumpError: null,
+  addCustomRecordError: null,
+  removeCustomRecordError: null,
+  dnsAction: null,
 };
 
 export const dns = createSlice({
   name: 'dns',
   initialState,
   reducers: {
-    dnsGetDumpStart: (state): void => {
+    getDumpStart: (state): void => {
       state.getDumpError = null;
       state.isCheckingDump = true;
     },
-    dnsGetDumpSuccess: (state, action): void => {
+    getDumpSuccess: (state, action): void => {
       state.isCheckingDump = false;
       state.dump = action.payload;
     },
-    dnsGetDumpError: (state, action): void => {
+    getDumpError: (state, action): void => {
       state.isCheckingDump = false;
       state.getDumpError = action.payload;
     },
-    dnsGetSecondaryNameserverStart: (state): void => {
+    getSecondaryNameserverStart: (state): void => {
       state.getSecondaryNameserverError = null;
       state.isCheckingSecondaryNameserver = true;
     },
-    dnsGetSecondaryNameserverSuccess: (state, action): void => {
+    getSecondaryNameserverSuccess: (state, action): void => {
       state.isCheckingSecondaryNameserver = false;
       state.secondaryNameserver = action.payload;
     },
-    dnsGetSecondaryNameserverError: (state, action): void => {
+    getSecondaryNameserverError: (state, action): void => {
       state.isCheckingSecondaryNameserver = false;
       state.getSecondaryNameserverError = action.payload;
     },
-    dnsGetZonesStart: (state): void => {
+    getZonesStart: (state): void => {
       state.getZonesError = null;
       state.isCheckingZones = true;
     },
-    dnsGetZonesSuccess: (state, action): void => {
+    getZonesSuccess: (state, action): void => {
       state.isCheckingZones = false;
-      state.secondaryNameserver = action.payload;
+      state.zones = action.payload;
     },
-    dnsGetZonesError: (state, action): void => {
+    getZonesError: (state, action): void => {
       state.isCheckingZones = false;
       state.getZonesError = action.payload;
     },
-    dnsGetCustomRecordsStart: (state): void => {
+    getCustomRecordsStart: (state): void => {
       state.getCustomRecordsError = null;
       state.isCheckingCustomRecords = true;
     },
-    dnsGetCustomRecordsSuccess: (state, action): void => {
+    getCustomRecordsSuccess: (state, action): void => {
       state.isCheckingCustomRecords = false;
       state.customRecords = action.payload;
     },
-    dnsGetCustomRecordsError: (state, action): void => {
+    getCustomRecordsError: (state, action): void => {
       state.isCheckingCustomRecords = false;
       state.getCustomRecordsError = action.payload;
+    },
+    addCustomRecordStart: (state): void => {
+      state.addCustomRecordError = null;
+      state.isAddingCustomRecord = true;
+    },
+    addCustomRecordSuccess: (state, action): void => {
+      state.isAddingCustomRecord = false;
+      state.addCustomRecordResponse = action.payload;
+    },
+    addCustomRecordError: (state, action): void => {
+      state.isAddingCustomRecord = false;
+      state.addCustomRecordError = action.payload;
+    },
+    addCustomRecordResetError: (state): void => {
+      state.addCustomRecordError = null;
+    },
+    addCustomRecordReset: (state): void => {
+      state.isAddingCustomRecord = false;
+      state.addCustomRecordError = null;
+      state.addCustomRecordResponse = null;
+    },
+    removeCustomRecordStart: (state): void => {
+      state.removeCustomRecordError = null;
+      state.isRemovingCustomRecord = true;
+    },
+    removeCustomRecordSuccess: (state, action): void => {
+      state.isRemovingCustomRecord = false;
+      state.removeCustomRecordResponse = action.payload;
+    },
+    removeCustomRecordError: (state, action): void => {
+      state.isRemovingCustomRecord = false;
+      state.removeCustomRecordError = action.payload;
+    },
+    removeCustomRecordResetError: (state): void => {
+      state.removeCustomRecordError = null;
+    },
+    removeCustomRecordReset: (state): void => {
+      state.isRemovingCustomRecord = false;
+      state.removeCustomRecordError = null;
+      state.removeCustomRecordResponse = null;
+    },
+    resetDNSAction: (state): void => {
+      state.dnsAction = null;
+    },
+    setDNSAction: (state, action): void => {
+      state.dnsAction = action.payload;
     },
   },
 });
 
 export const {
-  dnsGetSecondaryNameserverStart,
-  dnsGetSecondaryNameserverSuccess,
-  dnsGetSecondaryNameserverError,
-  dnsGetZonesStart,
-  dnsGetZonesSuccess,
-  dnsGetZonesError,
-  dnsGetCustomRecordsStart,
-  dnsGetCustomRecordsSuccess,
-  dnsGetCustomRecordsError,
-  dnsGetDumpStart,
-  dnsGetDumpSuccess,
-  dnsGetDumpError,
+  getSecondaryNameserverStart,
+  getSecondaryNameserverSuccess,
+  getSecondaryNameserverError,
+  getZonesStart,
+  getZonesSuccess,
+  getZonesError,
+  getCustomRecordsStart,
+  getCustomRecordsSuccess,
+  getCustomRecordsError,
+  getDumpStart,
+  getDumpSuccess,
+  getDumpError,
+  addCustomRecordStart,
+  addCustomRecordSuccess,
+  addCustomRecordError,
+  addCustomRecordResetError,
+  addCustomRecordReset,
+  removeCustomRecordStart,
+  removeCustomRecordSuccess,
+  removeCustomRecordError,
+  removeCustomRecordResetError,
+  removeCustomRecordReset,
+  resetDNSAction,
+  setDNSAction,
 } = dns.actions;
-
-export const dnsSecondaryNameserverCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(dnsGetSecondaryNameserverStart());
-  try {
-    const result = await dnsApi.getDnsSecondaryNameserver();
-    dispatch(dnsGetSecondaryNameserverSuccess(result));
-  } catch (err) {
-    dispatch(
-      dnsGetSecondaryNameserverError(
-        await getRequestFailMessage(err as Response)
-      )
-    );
-  }
-};
-
-export const dnsZonesCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(dnsGetZonesStart());
-  try {
-    const result = await dnsApi.getDnsZones();
-    dispatch(dnsGetZonesSuccess(result));
-  } catch (err) {
-    dispatch(dnsGetZonesError(await getRequestFailMessage(err as Response)));
-  }
-};
-
-export const dnsCustomRecordsCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(dnsGetCustomRecordsStart());
-  try {
-    const result = await dnsApi.getDnsCustomRecords();
-    dispatch(dnsGetCustomRecordsSuccess(result));
-  } catch (err) {
-    dispatch(
-      dnsGetCustomRecordsError(await getRequestFailMessage(err as Response))
-    );
-  }
-};
-
-export const dnsDumpCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(dnsGetDumpStart());
-  try {
-    const result = await dnsApi.getDnsDump();
-    dispatch(dnsGetDumpSuccess(result));
-  } catch (err) {
-    dispatch(dnsGetDumpError(await getRequestFailMessage(err as Response)));
-  }
-};
 
 export const { reducer: dnsReducer } = dns;
 
@@ -185,7 +201,7 @@ export const selectGetSecondaryNameserverError = (
   state: RootState
 ): string | null => state.dns.getSecondaryNameserverError;
 
-export const selectGetSecondaryNameserver = (
+export const selectSecondaryNameserver = (
   state: RootState
 ): DNSSecondaryNameserverResponse => state.dns.secondaryNameserver;
 
@@ -195,8 +211,7 @@ export const selectIsCheckingZones = (state: RootState): boolean =>
 export const selectGetZonesError = (state: RootState): string | null =>
   state.dns.getZonesError;
 
-export const selectGetZones = (state: RootState): Array<string> =>
-  state.dns.zones;
+export const selectZones = (state: RootState): Array<string> => state.dns.zones;
 
 export const selectIsCheckingCustomRecords = (state: RootState): boolean =>
   state.dns.isCheckingCustomRecords;
@@ -204,9 +219,8 @@ export const selectIsCheckingCustomRecords = (state: RootState): boolean =>
 export const selectGetCustomRecordsError = (state: RootState): string | null =>
   state.dns.getCustomRecordsError;
 
-export const selectGetCustomRecords = (
-  state: RootState
-): Array<DNSCustomRecord> => state.dns.customRecords;
+export const selectCustomRecords = (state: RootState): Array<DNSCustomRecord> =>
+  state.dns.customRecords;
 
 export const selectIsCheckingDump = (state: RootState): boolean =>
   state.dns.isCheckingDump;
@@ -214,8 +228,31 @@ export const selectIsCheckingDump = (state: RootState): boolean =>
 export const selectGetDumpError = (state: RootState): string | null =>
   state.dns.getDumpError;
 
-export const selectGetDump = (state: RootState): DNSDumpResponse =>
-  state.dns.dump;
+export const selectDump = (state: RootState): DNSDumpResponse => state.dns.dump;
+
+export const selectIsAddingCustomRecord = (state: RootState): boolean =>
+  state.dns.isAddingCustomRecord;
+
+export const selectAddCustomRecordError = (state: RootState): string | null =>
+  state.dns.addCustomRecordError;
+
+export const selectAddCustomRecordResponse = (
+  state: RootState
+): string | null => state.dns.addCustomRecordResponse;
+
+export const selectIsRemovingCustomRecord = (state: RootState): boolean =>
+  state.dns.isRemovingCustomRecord;
+
+export const selectRemoveCustomRecordError = (
+  state: RootState
+): string | null => state.dns.removeCustomRecordError;
+
+export const selectRemoveCustomRecordResponse = (
+  state: RootState
+): string | null => state.dns.removeCustomRecordResponse;
+
+export const selectDNSAction = (state: RootState): DNSAction | null =>
+  state.dns.dnsAction;
 
 function sort(a: DNSCustomRecord, b: DNSCustomRecord): number {
   if (a.qname === b.qname) {
@@ -234,7 +271,7 @@ function reverseFqdn(record: DNSCustomRecord): DNSCustomRecord {
   };
 }
 
-export const selectGetCustomRecordsSorted = (
+export const selectCustomRecordsSorted = (
   state: RootState
 ): Array<DNSCustomRecord> => {
   return state.dns.customRecords
@@ -242,4 +279,84 @@ export const selectGetCustomRecordsSorted = (
     .map(reverseFqdn)
     .sort(sort)
     .map(reverseFqdn);
+};
+
+export const getSecondaryNameserver = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch): Promise<void> => {
+  dispatch(getSecondaryNameserverStart());
+  try {
+    const result = await dnsApi.getDnsSecondaryNameserver();
+    dispatch(getSecondaryNameserverSuccess(result));
+  } catch (err) {
+    dispatch(
+      getSecondaryNameserverError(await getRequestFailMessage(err as Response))
+    );
+  }
+};
+
+export const getZones = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch): Promise<void> => {
+  dispatch(getZonesStart());
+  try {
+    const result = await dnsApi.getDnsZones();
+    dispatch(getZonesSuccess(result));
+  } catch (err) {
+    dispatch(getZonesError(await getRequestFailMessage(err as Response)));
+  }
+};
+
+export const getCustomRecords = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch): Promise<void> => {
+  dispatch(getCustomRecordsStart());
+  try {
+    const result = await dnsApi.getDnsCustomRecords();
+    dispatch(getCustomRecordsSuccess(result));
+  } catch (err) {
+    dispatch(
+      getCustomRecordsError(await getRequestFailMessage(err as Response))
+    );
+  }
+};
+
+export const getDump = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch): Promise<void> => {
+  dispatch(getDumpStart());
+  try {
+    const result = await dnsApi.getDnsDump();
+    dispatch(getDumpSuccess(result));
+  } catch (err) {
+    dispatch(getDumpError(await getRequestFailMessage(err as Response)));
+  }
+};
+
+export const addCustomRecord = (
+  customRecordRequest: AddDnsCustomRecordRequest
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(addCustomRecordStart());
+  try {
+    const result = await dnsApi.addDnsCustomRecord(customRecordRequest);
+    dispatch(addCustomRecordSuccess(result));
+  } catch (err) {
+    dispatch(
+      addCustomRecordError(await getRequestFailMessage(err as Response))
+    );
+  }
 };

@@ -14,11 +14,11 @@ import {
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  dnsCustomRecordsCheck,
-  dnsSecondaryNameserverCheck,
-  dnsZonesCheck,
+  getCustomRecords,
+  getSecondaryNameserver,
+  getZones,
+  selectCustomRecordsSorted,
   selectGetCustomRecordsError,
-  selectGetCustomRecordsSorted,
   selectGetSecondaryNameserverError,
   selectGetZonesError,
   selectIsCheckingCustomRecords,
@@ -38,7 +38,7 @@ const className = mergeStyles({
 });
 
 const CustomDnsSections: React.FunctionComponent = () => {
-  const customDnsRecords = useSelector(selectGetCustomRecordsSorted);
+  const customDnsRecords = useSelector(selectCustomRecordsSorted);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="DNS Records">
@@ -76,9 +76,9 @@ export const CustomDns: React.FunctionComponent & {
     isCheckingSecondaryNameserver || isCheckingZones || isCheckingCustom;
 
   useEffect(() => {
-    dispatch(dnsSecondaryNameserverCheck());
-    dispatch(dnsZonesCheck());
-    dispatch(dnsCustomRecordsCheck());
+    dispatch(getSecondaryNameserver());
+    dispatch(getZones());
+    dispatch(getCustomRecords());
   }, [dispatch]);
 
   return (

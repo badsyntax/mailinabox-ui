@@ -8,17 +8,19 @@
 - [ ] Mock data returned from API client via middleware
 - [ ] Error handling for all requests
 
-## State
+## State
 
 - [x] Redux store
 - [ ] Reduce the amount of selectors - extract from state directly (see redux-toolkit advanced docs)
 - [x] Top-level URL state
 - [ ] Sub-level URL state (eg `/mail/users/add`)
 - [ ] Don't always refresh data lists on mount, instead refresh them after actions, and store open groups in  state
+- [ ] Normalise store (eg when performing actions, don't replicate entities): https://redux.js.org/introduction/learning-resources#normalization
 
 ## Main layout
 
 - [x] Primary Nav
+- [x] Body containers
 
 ## Status Checks
 
@@ -30,13 +32,14 @@
 - [ ] Add filter for domain
 - [x] Add summary
 
-## TLS Certicates
+## TLS Certificates
 
 - [x] Show certificate status
 - [x] Form to install custom certificates
-- [ ] Install custom certificate
-- [ ] Replace custom certificate
+- [x] Install custom certificate
+- [x] Replace custom certificate
 - [ ] can_provision logic (`/ssl/provision`)
+- [ ] Generate CSR without country selection
 
 ## External DNS
 
@@ -46,9 +49,13 @@
 
 - [ ] Download instructions PDF
 
-## Backups
+## Backups
 
-- [ ] Save config
+- [x] Save config
+
+## Forms
+
+- [ ] Simplify field data handling - use object instead of separate vars
 
 ## Auth
 
