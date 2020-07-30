@@ -5,6 +5,7 @@ import { LogoutRoute } from '../../routes/LogoutRoute/LogoutRoute';
 import { Aliases } from '../../routes/MainRoute/mail/Aliases/Aliases';
 import { Instructions } from '../../routes/MainRoute/mail/Instructions/Instructions';
 import { Users } from '../../routes/MainRoute/mail/Users/Users';
+import { SyncGuide } from '../../routes/MainRoute/SyncGuide/SyncGuide';
 import { Backups } from '../../routes/MainRoute/system/Backups/Backups';
 import { Certificates } from '../../routes/MainRoute/system/Certificates/Certificates';
 import { CustomDns } from '../../routes/MainRoute/system/CustomDns/CustomDns';
@@ -127,6 +128,7 @@ export const PrimaryNav: React.FunctionComponent = () => {
             key: 'contacts',
             text: 'Contacts/Calendar',
             iconProps: { iconName: 'Calendar' },
+            onClick: (): void => history.push(SyncGuide.path),
           },
           {
             key: 'web',

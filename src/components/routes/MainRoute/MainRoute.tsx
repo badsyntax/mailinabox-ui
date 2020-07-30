@@ -6,6 +6,7 @@ import { LogoutRoute } from '../LogoutRoute/LogoutRoute';
 import { Aliases } from './mail/Aliases/Aliases';
 import { Instructions } from './mail/Instructions/Instructions';
 import { Users } from './mail/Users/Users';
+import { SyncGuide } from './SyncGuide/SyncGuide';
 import { Backups } from './system/Backups/Backups';
 import { Certificates } from './system/Certificates/Certificates';
 import { CustomDns } from './system/CustomDns/CustomDns';
@@ -41,6 +42,9 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
         </Route>
         <Route exact path={Aliases.path}>
           <Aliases />
+        </Route>
+        <Route exact path={SyncGuide.path}>
+          <SyncGuide />
         </Route>
         <Route exact path={Web.path}>
           <Web />

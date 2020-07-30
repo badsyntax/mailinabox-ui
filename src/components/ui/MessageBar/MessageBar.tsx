@@ -13,12 +13,13 @@ const messageBarClassName = mergeStyles({
 export const MessageBar: React.FunctionComponent<
   IMessageBarProps & {
     animate?: boolean;
+    className?: string;
   }
-> = ({ animate = true, ...rest }) => {
+> = ({ animate = true, className, ...rest }) => {
   const propsWithAnimation = animate
     ? {
         ...rest,
-        className: messageBarClassName,
+        className: mergeStyles(className, messageBarClassName),
       }
     : rest;
   return <FluentMessageBar {...propsWithAnimation} />;

@@ -53,7 +53,7 @@ export const Web: React.FunctionComponent & {
           <PivotItem headerText="Domains">
             <WebDomainsList className={className} />
           </PivotItem>
-          <PivotItem headerText="Uploading Web Files">
+          <PivotItem headerText="Uploading Instructions">
             <Stack gap="m" className={className}>
               <MessageBar>
                 You can replace the default website with your own HTML pages and

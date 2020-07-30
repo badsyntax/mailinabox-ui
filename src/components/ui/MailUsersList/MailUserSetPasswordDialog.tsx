@@ -98,6 +98,7 @@ export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPassw
               label="New Password"
               type="password"
               value={password}
+              required
               onChange={onPasswordChange}
               description="Passwords must be at least eight characters and may not contain spaces."
               styles={{ description: { ...getTheme().fonts.small } }}

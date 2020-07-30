@@ -52,11 +52,11 @@ const items = [
   },
   {
     option: 'Username',
-    value: '	Your whole email address.',
+    value: 'Your whole email address.',
   },
   {
     option: 'Password',
-    value: '	Your mail password.',
+    value: 'Your mail password.',
   },
 ];
 

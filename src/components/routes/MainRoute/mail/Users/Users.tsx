@@ -59,12 +59,16 @@ const UsersSections: React.FunctionComponent = () => {
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Existing Mail Users">
         {usersError && (
-          <MessageBar messageBarType={MessageBarType.error} isMultiline>
+          <MessageBar
+            messageBarType={MessageBarType.error}
+            isMultiline
+            className={className}
+          >
             {usersError}
           </MessageBar>
         )}
         {isCheckingUsers && <ProgressIndicator label="Loading users..." />}
-        {!isCheckingUsers && (
+        {!isCheckingUsers && !usersError && (
           <MailUsersList users={users} groups={groups} className={className} />
         )}
       </PivotItem>

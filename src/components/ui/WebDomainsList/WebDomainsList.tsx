@@ -75,10 +75,10 @@ export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
   const getDomainsError = useSelector(selectGetDomainsError);
 
   useEffect(() => {
-    if (!domains.length && !isGettingDomains) {
+    if (!domains.length && !isGettingDomains && !getDomainsError) {
       dispatch(getDomains());
     }
-  }, [dispatch, domains, isGettingDomains]);
+  }, [dispatch, domains, getDomainsError, isGettingDomains]);
   return (
     <Stack className={className}>
       <WebDomainActions />
@@ -88,7 +88,7 @@ export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
         </MessageBar>
       )}
       {isGettingDomains && <ProgressIndicator label="Loading domains..." />}
-      {!isGettingDomains && (
+      {!isGettingDomains && !getDomainsError && (
         <>
           <MessageBar>
             To add a domain to this table, create a dummy

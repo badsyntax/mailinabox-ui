@@ -60,12 +60,16 @@ const AliasesSections: React.FunctionComponent = () => {
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Existing Mail Aliases" className={className}>
         {aliasesError && (
-          <MessageBar messageBarType={MessageBarType.error} isMultiline>
+          <MessageBar
+            messageBarType={MessageBarType.error}
+            isMultiline
+            className={className}
+          >
             {aliasesError}
           </MessageBar>
         )}
         {isCheckingAliases && <ProgressIndicator label="Loading aliases..." />}
-        {!isCheckingAliases && (
+        {!isCheckingAliases && !aliasesError && (
           <MailAliasesList
             aliases={aliases}
             groups={groups}

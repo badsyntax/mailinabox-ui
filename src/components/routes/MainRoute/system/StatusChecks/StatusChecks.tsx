@@ -63,7 +63,7 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
           ]}
         />
       </Stack>
-      {!isCheckingStatus && (
+      {!isCheckingStatus && !statusError && (
         <Stack horizontal gap="l1">
           <BodyPanel grow={1} styles={{ root: { flexBasis: 0 } }}>
             <SystemStatusChart />

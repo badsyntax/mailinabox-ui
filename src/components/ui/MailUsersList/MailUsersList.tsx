@@ -68,13 +68,17 @@ const columns: IColumn[] = [
   },
   {
     key: 'column3',
-    name: 'Priviledge',
+    name: 'Privilege',
     minWidth: 80,
     isMultiline: false,
     onRender: (user: MailUser): React.ReactNode => {
       return user.status === MailUserStatus.Active ? (
         <Text>
-          {user.privileges.length ? user.privileges.join(', ') : 'normal'}
+          {user.privileges.length ? (
+            <strong>{user.privileges.join(', ')}</strong>
+          ) : (
+            'normal'
+          )}
         </Text>
       ) : null;
     },
