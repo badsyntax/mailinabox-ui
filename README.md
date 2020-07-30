@@ -11,13 +11,14 @@
 ## State
 
 - [x] Redux store
+- [ ] Reduce the amount of selectors - extract from state directly (see redux-toolkit advanced docs)
 - [x] Top-level URL state
-- [ ] Sub-level URL state
+- [ ] Sub-level URL state (eg `/mail/users/add`)
+- [ ] Don't always refresh data lists on mount, instead refresh them after actions, and store open groups in  state
 
 ## Main layout
 
-- [x] Nav
-- [ ] Centered nav
+- [x] Primary Nav
 
 ## Status Checks
 
@@ -33,10 +34,9 @@
 
 - [x] Show certificate status
 - [x] Form to install custom certificates
-- [ ] Replace certificates
-- [ ] Install letsencrypt certificate
-- [ ] Replace letsencrypt certificate
-- [ ] can_provision logic
+- [ ] Install custom certificate
+- [ ] Replace custom certificate
+- [ ] can_provision logic (`/ssl/provision`)
 
 ## External DNS
 
@@ -61,6 +61,6 @@
 
 ## Accessibility
 
-- [ ] Mobile support
+- [ ] Mobile support (not possible with fluentui)
 - [ ] ARIA labels
 - [ ] Audit
