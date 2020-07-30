@@ -12,8 +12,8 @@ import {
 import { getCodeList } from 'country-list';
 import { SSLStatus } from 'mailinabox-api';
 import React, { useCallback, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { sslGenerateCSRReset } from '../../../features/sslSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { generateCSRReset, selectSSLAction } from '../../../features/sslSlice';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { InstallCertificateComboBoxLabel } from './InstallCertificateComboBoxLabel';
 import { InstallCertificateWithCSR } from './InstallCertificateWithCSR';
@@ -59,19 +59,25 @@ export const InstallCertificate: React.FunctionComponent<
   }
 > = ({ items, ...props }) => {
   const dispatch = useDispatch();
-  const [selectedDomain, setSelectedDomain] = useState<IComboBoxOption>();
+  const sslAction = useSelector(selectSSLAction);
+  const [selectedDomain, setSelectedDomain] = useState<IComboBoxOption>({
+    key: sslAction?.sslStatus?.domain || '',
+    text: sslAction?.sslStatus?.domain || '',
+  });
   const [selectedCountry, setSelectedCountry] = useState<IComboBoxOption>();
 
   const onDomainChange = useCallback(
-    (event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
-      dispatch(sslGenerateCSRReset());
-      setSelectedDomain(option);
+    (_event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+      if (option) {
+        dispatch(generateCSRReset());
+        setSelectedDomain(option);
+      }
     },
     [dispatch]
   );
   const onCountryChange = useCallback(
-    (event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
-      dispatch(sslGenerateCSRReset());
+    (_event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+      dispatch(generateCSRReset());
       setSelectedCountry(option);
     },
     [dispatch]
@@ -115,7 +121,7 @@ export const InstallCertificate: React.FunctionComponent<
             onChange={onDomainChange}
             styles={comboBoxStyles}
           />
-          {selectedDomain && (
+          {selectedDomain?.key && (
             <VirtualizedComboBox
               placeholder="Select a country"
               label="What country are you in?"

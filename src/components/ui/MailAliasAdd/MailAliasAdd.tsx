@@ -15,10 +15,10 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  aliasesCheck,
-  aliasUpsertReset,
+  getAliases,
   selectIsUpsertingAlias,
   selectUpsertAliasResponse,
+  upsertAliasReset,
 } from '../../../features/aliasesSlice';
 import { MailAliasUpsert } from '../MailAliasUpsert/MailAliasUpsert';
 import { Pre } from '../Pre/Pre';
@@ -46,7 +46,7 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
   const onDialogDismissed = useCallback((): void => {
-    dispatch(aliasUpsertReset());
+    dispatch(upsertAliasReset());
   }, [dispatch]);
 
   const onDialogClose = useCallback(
@@ -70,13 +70,13 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
 
   useEffect(() => {
     return (): void => {
-      dispatch(aliasUpsertReset());
+      dispatch(upsertAliasReset());
     };
   }, [dispatch]);
 
   useEffect(() => {
     if (upsertAliasResponse) {
-      dispatch(aliasesCheck());
+      dispatch(getAliases());
     }
   }, [dispatch, upsertAliasResponse]);
 

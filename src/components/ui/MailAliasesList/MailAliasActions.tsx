@@ -2,17 +2,17 @@ import { DialogType, Text } from '@fluentui/react';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  AliasAction,
-  aliasesCheck,
-  aliasRemove,
-  aliasRemoveReset,
-  aliasResetUpdateAction,
-  aliasUpsertReset,
-  selectAliasUpdate,
+  AliasActionType,
+  getAliases,
+  removeAlias,
+  removeAliasReset,
+  resetAliasAction,
+  selectAliasAction,
   selectIsRemovingAlias,
   selectRemoveAliasError,
   selectRemoveAliasResponse,
   selectUpsertAliasResponse,
+  upsertAliasReset,
 } from '../../../features/aliasesSlice';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 import { MailAliasUpdateDialog } from './MailAliasUpdateDialog';
@@ -20,43 +20,43 @@ import { MailAliasUpdateDialog } from './MailAliasUpdateDialog';
 export const MailAliasActions: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const isRemovingAlias = useSelector(selectIsRemovingAlias);
-  const aliasUpdate = useSelector(selectAliasUpdate);
+  const aliasAction = useSelector(selectAliasAction);
   const removeAliasError = useSelector(selectRemoveAliasError);
   const removeAliasResponse = useSelector(selectRemoveAliasResponse);
   const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
 
   const onActionDialogDismiss = useCallback((): void => {
-    dispatch(aliasResetUpdateAction());
+    dispatch(resetAliasAction());
   }, [dispatch]);
 
   const onConfirmDialogDismissed = useCallback((): void => {
     if (removeAliasResponse) {
-      dispatch(aliasesCheck());
+      dispatch(getAliases());
     }
-    dispatch(aliasRemoveReset());
+    dispatch(removeAliasReset());
   }, [dispatch, removeAliasResponse]);
 
   const onUpdateAliasDialogDismissed = useCallback((): void => {
     if (upsertAliasResponse) {
-      dispatch(aliasesCheck());
+      dispatch(getAliases());
     }
-    dispatch(aliasUpsertReset());
+    dispatch(upsertAliasReset());
   }, [dispatch, upsertAliasResponse]);
 
-  const removeAlias = useCallback((): void => {
-    if (aliasUpdate?.alias) {
-      dispatch(aliasRemove(aliasUpdate?.alias.address));
+  const onRemoveAliasConfirm = useCallback((): void => {
+    if (aliasAction?.alias) {
+      dispatch(removeAlias(aliasAction?.alias.address));
     }
-  }, [aliasUpdate, dispatch]);
+  }, [aliasAction, dispatch]);
 
   return (
     <>
       <ActionConfirmDialog
-        hidden={aliasUpdate?.action !== AliasAction.remove}
+        hidden={aliasAction?.type !== AliasActionType.remove}
         isLoading={isRemovingAlias}
         onDismiss={onActionDialogDismiss}
         onDismissed={onConfirmDialogDismissed}
-        onConfirm={removeAlias}
+        onConfirm={onRemoveAliasConfirm}
         error={removeAliasError}
         actionResponse={removeAliasResponse}
         confirmButtonText="Remove Alias"
@@ -70,12 +70,12 @@ export const MailAliasActions: React.FunctionComponent = () => {
       >
         <Text>
           Are you sure you want to remove alias:{' '}
-          <strong>{aliasUpdate?.alias?.addressDisplay}</strong>?
+          <strong>{aliasAction?.alias?.addressDisplay}</strong>?
         </Text>
       </ActionConfirmDialog>
       <MailAliasUpdateDialog
-        hidden={aliasUpdate?.action !== AliasAction.update}
-        alias={aliasUpdate?.alias}
+        hidden={aliasAction?.type !== AliasActionType.update}
+        alias={aliasAction?.alias}
         onDismiss={onActionDialogDismiss}
         onDismissed={onUpdateAliasDialogDismissed}
       ></MailAliasUpdateDialog>

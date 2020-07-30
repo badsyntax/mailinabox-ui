@@ -1,30 +1,27 @@
 import { DirectionalHint, IconButton } from '@fluentui/react';
-import { MailAlias } from 'mailinabox-api';
+import { SSLStatus, SSLStatusType } from 'mailinabox-api';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  AliasActionType,
-  setAliasAction,
-} from '../../../features/aliasesSlice';
+import { setSSLAction, SSLActionType } from '../../../features/sslSlice';
 
-interface MailAliasActionsListProps {
-  alias: MailAlias;
+interface CertificateActionsListProps {
+  sslStatus: SSLStatus;
 }
 
-export const MailAliasActionsList: React.FunctionComponent<MailAliasActionsListProps> = ({
-  alias,
+export const CertificateActionsList: React.FunctionComponent<CertificateActionsListProps> = ({
+  sslStatus,
 }) => {
   const dispatch = useDispatch();
   const doAction = useCallback(
-    (type: AliasActionType): void => {
+    (type: SSLActionType): void => {
       dispatch(
-        setAliasAction({
-          alias,
+        setSSLAction({
+          sslStatus,
           type,
         })
       );
     },
-    [dispatch, alias]
+    [dispatch, sslStatus]
   );
   return (
     <IconButton
@@ -43,14 +40,11 @@ export const MailAliasActionsList: React.FunctionComponent<MailAliasActionsListP
         directionalHint: DirectionalHint.bottomRightEdge,
         items: [
           {
-            key: 'updatealias' + alias.address,
-            text: 'Update',
-            onClick: (): void => doAction(AliasActionType.update),
-          },
-          {
-            key: 'removeealias' + alias.address,
-            text: 'Remove',
-            onClick: (): void => doAction(AliasActionType.remove),
+            key: 'installCertificate' + sslStatus.domain,
+            text: `${
+              sslStatus.status === SSLStatusType.Success ? 'Replace' : 'Install'
+            } Certificate`,
+            onClick: (): void => doAction(SSLActionType.install),
           },
         ],
       }}

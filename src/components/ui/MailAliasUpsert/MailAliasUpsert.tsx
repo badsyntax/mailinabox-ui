@@ -17,10 +17,10 @@ import { UpsertAliasRequest } from 'mailinabox-api';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  aliasUpsert,
-  aliasUpsertResetError,
   selectUpsertAliasError,
   selectUpsertAliasResponse,
+  upsertAlias,
+  upsertAliasResetError,
 } from '../../../features/aliasesSlice';
 import { MessageBar } from '../MessageBar/MessageBar';
 import {
@@ -137,7 +137,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
     (
       ev?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
-      dispatch(aliasUpsertResetError());
+      dispatch(upsertAliasResetError());
     },
     [dispatch]
   );
@@ -150,7 +150,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
         permittedSenders:
           senderType === SenderType.manual ? alias.permittedSenders : null,
       };
-      dispatch(aliasUpsert(addAlias));
+      dispatch(upsertAlias(addAlias));
     },
     [alias, dispatch, senderType]
   );

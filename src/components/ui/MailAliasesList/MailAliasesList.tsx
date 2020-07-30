@@ -2,8 +2,10 @@ import {
   ConstrainMode,
   DetailsList,
   DetailsListLayoutMode,
+  DetailsRow,
   IColumn,
   IDetailsGroupDividerProps,
+  IDetailsRowProps,
   IGroup,
   IGroupHeaderProps,
   IRenderFunction,
@@ -85,12 +87,29 @@ export const MailAliasesList: React.FunctionComponent<
         constrainMode={ConstrainMode.horizontalConstrained}
         useReducedRowRenderer
         usePageCache
+        onRenderRow={(props?: IDetailsRowProps): JSX.Element | null => {
+          if (props) {
+            return (
+              <DetailsRow
+                {...props}
+                styles={{
+                  root: {
+                    animation: 'none',
+                  },
+                }}
+              />
+            );
+          }
+          return null;
+        }}
         groupProps={{
           isAllGroupsCollapsed: true,
           onRenderHeader: (
             props?: IDetailsGroupDividerProps,
             defaultRender?: IRenderFunction<IGroupHeaderProps>
           ): JSX.Element | null => {
+            console.log('props', props);
+
             if (defaultRender) {
               return (
                 <div

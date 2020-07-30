@@ -1,6 +1,5 @@
 import {
   Callout,
-  DefaultButton,
   IconButton,
   IOnRenderComboBoxLabelProps,
   Stack,
@@ -48,9 +47,6 @@ export const InstallCertificateComboBoxLabel: React.FunctionComponent<
         >
           <Stack horizontalAlign="start" padding="m" gap="m">
             <Text>{props.calloutText}</Text>
-            <DefaultButton onClick={toggleIsCalloutVisible}>
-              Close
-            </DefaultButton>
           </Stack>
         </Callout>
       )}

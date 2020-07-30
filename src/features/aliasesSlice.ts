@@ -8,14 +8,14 @@ import {
 import { aliasesApi, getRequestFailMessage } from '../api';
 import { RootState } from '../store';
 
-export enum AliasAction {
+export enum AliasActionType {
   remove,
   update,
 }
 
-export interface AliasUpdate {
+export interface AliasAction {
   alias?: MailAlias;
-  action?: AliasAction;
+  type?: AliasActionType;
 }
 
 export interface AliasesState {
@@ -28,7 +28,7 @@ export interface AliasesState {
   upsertAliasResponse: string | null;
   removeAliasError: string | null;
   removeAliasResponse: string | null;
-  aliasUpdate: AliasUpdate | null;
+  aliasAction: AliasAction | null;
 }
 
 const initialState: AliasesState = {
@@ -41,67 +41,67 @@ const initialState: AliasesState = {
   upsertAliasResponse: null,
   removeAliasError: null,
   removeAliasResponse: null,
-  aliasUpdate: null,
+  aliasAction: null,
 };
 
 export const aliases = createSlice({
   name: 'aliases',
   initialState,
   reducers: {
-    aliasesGetStart: (state): void => {
+    getAliasesStart: (state): void => {
       state.getAliasesError = null;
       state.isGettingAliases = true;
     },
-    aliasesGetSuccess: (state, action): void => {
+    getAliasesSuccess: (state, action): void => {
       state.isGettingAliases = false;
       state.aliases = action.payload;
     },
-    aliasesGetError: (state, action): void => {
+    getAliasesError: (state, action): void => {
       state.getAliasesError = action.payload;
       state.isGettingAliases = false;
     },
-    aliasUpsertStart: (state): void => {
+    upsertAliasStart: (state): void => {
       state.isUpsertingAlias = true;
       state.upsertAliasError = null;
     },
-    aliasUpsertSuccess: (state, action): void => {
+    upsertAliasSuccess: (state, action): void => {
       state.isUpsertingAlias = false;
       state.upsertAliasResponse = action.payload;
     },
-    aliasUpsertError: (state, action): void => {
+    upsertAliasError: (state, action): void => {
       state.upsertAliasError = action.payload;
       state.isUpsertingAlias = false;
     },
-    aliasUpsertReset: (state): void => {
+    upsertAliasReset: (state): void => {
       state.isUpsertingAlias = false;
       state.upsertAliasError = null;
       state.upsertAliasResponse = null;
     },
-    aliasUpsertResetError: (state): void => {
+    upsertAliasResetError: (state): void => {
       state.upsertAliasError = null;
     },
-    aliasResetUpdateAction: (state): void => {
-      state.aliasUpdate = {
-        action: undefined,
-        alias: state.aliasUpdate?.alias,
+    resetAliasAction: (state): void => {
+      state.aliasAction = {
+        ...state.aliasAction,
+        type: undefined,
       };
     },
-    aliasUpdate: (state, action): void => {
-      state.aliasUpdate = action.payload;
+    setAliasAction: (state, action): void => {
+      state.aliasAction = action.payload;
     },
-    aliasRemoveStart: (state): void => {
+    removeAliasStart: (state): void => {
       state.isRemovingAlias = true;
       state.removeAliasError = null;
     },
-    aliasRemoveSuccess: (state, action): void => {
+    removeAliasSuccess: (state, action): void => {
       state.isRemovingAlias = false;
       state.removeAliasResponse = action.payload;
     },
-    aliasRemoveError: (state, action): void => {
+    removeAliasError: (state, action): void => {
       state.removeAliasError = action.payload;
       state.isRemovingAlias = false;
     },
-    aliasRemoveReset: (state): void => {
+    removeAliasReset: (state): void => {
       state.removeAliasError = null;
       state.isRemovingAlias = false;
       state.removeAliasResponse = null;
@@ -110,20 +110,20 @@ export const aliases = createSlice({
 });
 
 export const {
-  aliasesGetSuccess,
-  aliasesGetStart,
-  aliasesGetError,
-  aliasUpsertStart,
-  aliasUpsertSuccess,
-  aliasUpsertError,
-  aliasUpsertReset,
-  aliasUpsertResetError,
-  aliasResetUpdateAction,
-  aliasUpdate,
-  aliasRemoveStart,
-  aliasRemoveSuccess,
-  aliasRemoveError,
-  aliasRemoveReset,
+  getAliasesSuccess,
+  getAliasesStart,
+  getAliasesError,
+  upsertAliasStart,
+  upsertAliasSuccess,
+  upsertAliasError,
+  upsertAliasReset,
+  upsertAliasResetError,
+  resetAliasAction,
+  setAliasAction,
+  removeAliasStart,
+  removeAliasSuccess,
+  removeAliasError,
+  removeAliasReset,
 } = aliases.actions;
 
 export const { reducer: aliasesReducer } = aliases;
@@ -149,8 +149,8 @@ export const selectUpsertAliasError = (state: RootState): string | null =>
 export const selectIsRemovingAlias = (state: RootState): boolean =>
   state.aliases.isRemovingAlias;
 
-export const selectAliasUpdate = (state: RootState): AliasUpdate | null =>
-  state.aliases.aliasUpdate;
+export const selectAliasAction = (state: RootState): AliasAction | null =>
+  state.aliases.aliasAction;
 
 export const selectRemoveAliasError = (state: RootState): string | null =>
   state.aliases.removeAliasError;
@@ -158,50 +158,50 @@ export const selectRemoveAliasError = (state: RootState): string | null =>
 export const selectRemoveAliasResponse = (state: RootState): string | null =>
   state.aliases.removeAliasResponse;
 
-export const aliasesCheck = (
+export const getAliases = (
   showProgress = true
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
   if (showProgress) {
-    dispatch(aliasesGetStart());
+    dispatch(getAliasesStart());
   }
   try {
     const result = await aliasesApi.getAliases({
       format: MailAliasesResponseFormat.Json,
     });
-    dispatch(aliasesGetSuccess(result));
+    dispatch(getAliasesSuccess(result));
   } catch (err) {
-    dispatch(aliasesGetError(await getRequestFailMessage(err as Response)));
+    dispatch(getAliasesError(await getRequestFailMessage(err as Response)));
   }
 };
 
-export const aliasUpsert = (
+export const upsertAlias = (
   alias: UpsertAliasRequest
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(aliasUpsertStart());
+  dispatch(upsertAliasStart());
   try {
     const result = await aliasesApi.upsertAlias(alias);
-    dispatch(aliasUpsertSuccess(result));
+    dispatch(upsertAliasSuccess(result));
   } catch (err) {
-    dispatch(aliasUpsertError(await getRequestFailMessage(err as Response)));
+    dispatch(upsertAliasError(await getRequestFailMessage(err as Response)));
   }
 };
 
-export const aliasRemove = (
+export const removeAlias = (
   address: string
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(aliasRemoveStart());
+  dispatch(removeAliasStart());
   try {
     const result = await aliasesApi.removeAlias({
       address,
     });
-    dispatch(aliasRemoveSuccess(result));
+    dispatch(removeAliasSuccess(result));
   } catch (err) {
-    dispatch(aliasRemoveError(await getRequestFailMessage(err as Response)));
+    dispatch(removeAliasError(await getRequestFailMessage(err as Response)));
   }
 };

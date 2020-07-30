@@ -11,12 +11,15 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  resetSSLAction,
   selectIsCheckingSSLStatus,
+  selectSSLAction,
   selectSSLStatus,
   selectSSLStatusError,
+  SSLActionType,
   sslStatusCheck,
 } from '../../../../../features/sslSlice';
 import { Body } from '../../../../ui/Body/Body';
@@ -30,16 +33,41 @@ const className = mergeStyles({
   marginTop: theme.spacing.m,
 });
 
+enum SectionKeys {
+  status = 'section-status',
+  install = 'section-install',
+}
+
 const CertificateSections: React.FunctionComponent = () => {
-  const sslStatus = useSelector(selectSSLStatus);
-  const items = sslStatus.status;
+  const dispatch = useDispatch();
+  const { status: items } = useSelector(selectSSLStatus);
+  const sslAction = useSelector(selectSSLAction);
+
+  const onPivotLinkClick = useCallback(
+    (item?: PivotItem, ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      if (item?.props.itemKey === SectionKeys.status) {
+        dispatch(resetSSLAction());
+      }
+    },
+    [dispatch]
+  );
+
+  const selectedKey =
+    sslAction?.type === SSLActionType.install ? SectionKeys.install : undefined;
   return (
     <>
-      <Pivot linkSize={PivotLinkSize.large}>
-        <PivotItem headerText="Certificate Status">
+      <Pivot
+        linkSize={PivotLinkSize.large}
+        selectedKey={selectedKey}
+        onLinkClick={onPivotLinkClick}
+      >
+        <PivotItem headerText="Certificate Status" itemKey={SectionKeys.status}>
           <CertificatesList className={className} items={items} />
         </PivotItem>
-        <PivotItem headerText="Install Custom Certificate">
+        <PivotItem
+          headerText="Install Custom Certificate"
+          itemKey={SectionKeys.install}
+        >
           <InstallCertificate className={className} items={items} />
         </PivotItem>
       </Pivot>
@@ -62,6 +90,7 @@ export const Certificates: React.FunctionComponent & {
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
         <Breadcrumb
+          onReduceData={(): undefined => undefined}
           styles={{
             root: {
               marginTop: 0,

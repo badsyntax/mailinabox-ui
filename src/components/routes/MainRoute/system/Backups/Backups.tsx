@@ -74,6 +74,7 @@ export const Backups: React.FunctionComponent & {
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
         <Breadcrumb
+          onReduceData={(): undefined => undefined}
           styles={{
             root: {
               marginTop: 0,

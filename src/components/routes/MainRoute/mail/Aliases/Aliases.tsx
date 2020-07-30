@@ -14,7 +14,7 @@ import { MailAlias, MailAliasByDomain } from 'mailinabox-api';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  aliasesCheck,
+  getAliases,
   selectAliases,
   selectAliasesError,
   selectIsGettingAliases,
@@ -54,7 +54,7 @@ const AliasesSections: React.FunctionComponent = () => {
   });
 
   useEffect(() => {
-    dispatch(aliasesCheck());
+    dispatch(getAliases());
   }, [dispatch]);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
