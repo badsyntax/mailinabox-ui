@@ -1,73 +1,141 @@
-# mailinabox UI
+# Mail-in-a-Box User Interface
 
-## Features
+An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 
-## API
+- React & Redux
+- TypeScript
+- [fluentui](https://github.com/microsoft/fluentui) design system
+- [Mail-in-a-Box API client](https://github.com/badsyntax/mailinabox-api)
+
+## Running locally
+
+### Requirements
+
+- Node.js
+
+### Instructions
+
+- Clone the repo
+- Change directory to root of project
+- Run `npm install`
+- Run `npm start`
+
+## Running in production
+
+TODO
+
+## Features & TODO
+
+### Status Checks
+
+- [x] List checks
+- [ ] Reboot
+- [x] Disable new versions
+- [x] Prevent virtual rendering?
+- [ ] Add filter for domain
+- [x] Add summary
+
+### TLS Certificates
+
+- [x] List certificate status
+- [x] Install custom certificate
+  - [ ] Generate CSR without country selection
+- [ ] can_provision logic (`/ssl/provision`)
+- [x] Replace/Install actions
+
+### Backup Status
+
+- [ ] List backup status
+- [x] Save config
+  - [x] Reflect current backup config in form
+
+### Custom DNS
+
+- [x] List custom DNS records
+- [x] Add custom DNS record
+- [x] Remove custom DNS record
+- [x] Add secondary nameserver
+  - [ ] Add secondary nameserver clear instructions
+- [ ] Update API schema to support omitting type (for dynadns) - add new endpoints
+
+### External DNS
+
+- [x] List all DNS records with corresponding info
+- [ ] Download Zone file (Zone file generator)
+
+### Mail Instructions
+
+- [x] List instructions
+- [ ] Download instructions PDF
+
+### Mail Users
+
+- [x] List mail users
+- [x] Update mail user privilege (normal/admin)
+- [x] Update mail user password
+- [x] Archive mail user account
+- [x] Add mail user
+
+### Mail Aliases
+
+- [x] List mail aliases
+- [x] Update mail alias
+  - [x] Prevent update of alias address
+  - [x] Prevent changing type
+- [x] Remove mail alias
+- [x] Add mail alias
+
+### Contacts/Calendar
+
+- [x] List Contacts & Calendar Synchronization information
+- [ ] Download sync guide
+
+### Web
+
+- [x] List domains
+- [x] Change domain root directory
+- [x] List uploading instructions
+
+### API
 
 - [x] API client
 - [ ] Mock data returned from API client via middleware
-- [ ] Error handling for all requests
+- [x] Error handling for all requests
 
-## State
+### State
 
 - [x] Redux store
 - [ ] Reduce the amount of selectors - extract from state directly (see redux-toolkit advanced docs)
 - [x] Top-level URL state
 - [ ] Sub-level URL state (eg `/mail/users/add`)
-- [ ] Don't always refresh data lists on mount, instead refresh them after actions, and store open groups in  state
+- [ ] Don't always refresh data lists on mount, instead refresh them after actions, and store open groups in state
 - [ ] Normalise store (eg when performing actions, don't replicate entities): https://redux.js.org/introduction/learning-resources#normalization
 
-## Main layout
+### Main layout
 
 - [x] Primary Nav
 - [x] Body containers
 
-## Status Checks
-
-- [x] Render checks in a list view
-- [ ] Reboot
-- [ ] Disable new versions
-- [ ] Select headings
-- [x] Prevent virtual rendering
-- [ ] Add filter for domain
-- [x] Add summary
-
-## TLS Certificates
-
-- [x] Show certificate status
-- [x] Form to install custom certificates
-- [x] Install custom certificate
-- [x] Replace custom certificate
-- [ ] can_provision logic (`/ssl/provision`)
-- [ ] Generate CSR without country selection
-
-## External DNS
-
-- [ ] Download Zone file
-
-## Mail
-
-- [ ] Download instructions PDF
-
-## Backups
-
-- [x] Save config
-
-## Forms
+### Forms
 
 - [ ] Simplify field data handling - use object instead of separate vars
 
-## Auth
+### Auth
 
- - [ ] Log out
- - [ ] Middleware for redirections with 405
+- [x] Log out
+- [ ] Middleware for redirections with 405
 
-## Performance
+### Performance
 
 - [ ] Async imports & code splitting
+- [ ] Try reduce bundle size
 
-## Accessibility
+### Accessibility
 
 - [ ] Mobile support (not possible with fluentui)
 - [ ] ARIA labels
 - [ ] Audit
+
+### Production
+
+- [ ] Customise the root box url
