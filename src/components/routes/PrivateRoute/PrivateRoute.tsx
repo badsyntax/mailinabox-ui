@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { selectIsAuthenticated } from '../../../features/authSlice';
+import { RootState } from '../../../store';
 import { LoginRoute } from '../LoginRoute/LoginRoute';
 
 export const PrivateRoute: React.FunctionComponent<RouteProps> = ({
   children,
   ...rest
 }) => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   return (
     <Route
       {...rest}

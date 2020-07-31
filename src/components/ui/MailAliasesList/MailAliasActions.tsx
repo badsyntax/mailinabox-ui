@@ -7,23 +7,22 @@ import {
   removeAlias,
   removeAliasReset,
   resetAliasAction,
-  selectAliasAction,
-  selectIsRemovingAlias,
-  selectRemoveAliasError,
-  selectRemoveAliasResponse,
-  selectUpsertAliasResponse,
   upsertAliasReset,
 } from '../../../features/aliasesSlice';
+import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 import { MailAliasUpdateDialog } from './MailAliasUpdateDialog';
 
 export const MailAliasActions: React.FunctionComponent = () => {
+  const {
+    isRemovingAlias,
+    aliasAction,
+    removeAliasError,
+    removeAliasResponse,
+    upsertAliasResponse,
+  } = useSelector((state: RootState) => state.aliases);
+
   const dispatch = useDispatch();
-  const isRemovingAlias = useSelector(selectIsRemovingAlias);
-  const aliasAction = useSelector(selectAliasAction);
-  const removeAliasError = useSelector(selectRemoveAliasError);
-  const removeAliasResponse = useSelector(selectRemoveAliasResponse);
-  const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
 
   const onActionDialogDismiss = useCallback((): void => {
     dispatch(resetAliasAction());

@@ -130,36 +130,6 @@ export const {
 
 export const { reducer: aliasesReducer } = aliases;
 
-export const selectIsGettingAliases = (state: RootState): boolean =>
-  state.aliases.isGettingAliases;
-
-export const selectAliasesError = (state: RootState): string | null =>
-  state.aliases.getAliasesError;
-
-export const selectAliases = (state: RootState): MailAliasesResponse =>
-  state.aliases.aliases;
-
-export const selectIsUpsertingAlias = (state: RootState): boolean =>
-  state.aliases.isUpsertingAlias;
-
-export const selectUpsertAliasResponse = (state: RootState): string | null =>
-  state.aliases.upsertAliasResponse;
-
-export const selectUpsertAliasError = (state: RootState): string | null =>
-  state.aliases.upsertAliasError;
-
-export const selectIsRemovingAlias = (state: RootState): boolean =>
-  state.aliases.isRemovingAlias;
-
-export const selectAliasAction = (state: RootState): AliasAction | null =>
-  state.aliases.aliasAction;
-
-export const selectRemoveAliasError = (state: RootState): string | null =>
-  state.aliases.removeAliasError;
-
-export const selectRemoveAliasResponse = (state: RootState): string | null =>
-  state.aliases.removeAliasResponse;
-
 export const selectAliasesWithGroups = (
   state: RootState
 ): [Array<MailAlias>, Array<IGroup>] => {

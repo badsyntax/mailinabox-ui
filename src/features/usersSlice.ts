@@ -1,29 +1,23 @@
-import {
-  Action,
-  createSlice,
-  PayloadAction,
-  ThunkAction,
-} from '@reduxjs/toolkit';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
   MailUser,
   MailUserPrivilege,
   MailUsersResponse,
   MailUsersResponseFormat,
-  MailUserStatus,
 } from 'mailinabox-api';
 import { getRequestFailMessage, usersApi } from '../api';
 import { RootState } from '../store';
 
-export enum UserAction {
+export enum UserActionType {
   addAdminPrivilege,
   removeAdminPrivilege,
   setPassword,
   archive,
 }
 
-export interface UserUpdate {
+export interface UserAction {
   user?: MailUser;
-  action?: UserAction;
+  type?: UserActionType;
 }
 
 export interface UsersState {
@@ -34,7 +28,7 @@ export interface UsersState {
   isAddingUser: boolean;
   updateUserError: string | null;
   updateUserResponse: string | null;
-  userUpdate: UserUpdate | null;
+  userAction: UserAction | null;
   addUserResponse: string | null;
   addUserError: string | null;
 }
@@ -47,7 +41,7 @@ const initialState: UsersState = {
   isAddingUser: false,
   updateUserError: null,
   updateUserResponse: null,
-  userUpdate: null,
+  userAction: null,
   addUserResponse: null,
   addUserError: null,
 };
@@ -56,249 +50,187 @@ export const users = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    usersGetStart: (state): void => {
+    getUsersStart: (state): void => {
       state.getUsersError = null;
       state.isGettingUsers = true;
     },
-    usersGetSuccess: (state, action): void => {
+    getUsersSuccess: (state, action): void => {
       state.isGettingUsers = false;
       state.users = action.payload;
     },
-    usersGetError: (state, action): void => {
+    getUsersError: (state, action): void => {
       state.getUsersError = action.payload;
       state.isGettingUsers = false;
     },
-    userUpdateStart: (state): void => {
+    updateUserStart: (state): void => {
       state.updateUserError = null;
       state.isUpdatingUser = true;
     },
-    userUpdateSuccess: (state, action): void => {
+    updateUserSuccess: (state, action): void => {
       state.isUpdatingUser = false;
       state.updateUserResponse = action.payload;
     },
-    userUpdateError: (state, action): void => {
+    updateUserError: (state, action): void => {
       state.updateUserError = action.payload;
       state.isUpdatingUser = false;
     },
-    userUpdateReset: (state): void => {
+    updateUserReset: (state): void => {
       state.isUpdatingUser = false;
       state.updateUserError = null;
       state.updateUserResponse = null;
     },
-    userUpdate: (state, action): void => {
-      state.userUpdate = action.payload;
+    setUserAction: (state, action): void => {
+      state.userAction = action.payload;
     },
-    userResetUpdateAction: (state): void => {
-      state.userUpdate = {
-        action: undefined,
-        user: state.userUpdate?.user,
+    resetUserAction: (state): void => {
+      state.userAction = {
+        ...state.userAction,
+        type: undefined,
       };
     },
-    userAddStart: (state): void => {
+    addUserStart: (state): void => {
       state.addUserError = null;
       state.isAddingUser = true;
     },
-    userAddSuccess: (
-      state,
-      action: PayloadAction<{
-        response: string;
-        email: string;
-        privileges: Array<MailUserPrivilege>;
-      }>
-    ): void => {
-      const { response, email, privileges } = action.payload;
-      const domain = email.split('@').pop() as string;
-      const domainIndex = state.users.findIndex(
-        (domainUsers) => domainUsers.domain === domain
-      );
-      const newUser: MailUser = {
-        email,
-        privileges: privileges.filter((privilege) => !!privilege),
-        status: MailUserStatus.Active,
-      };
-      if (domainIndex >= 0) {
-        state.users[domainIndex].users.push(newUser);
-      } else {
-        state.users.push({
-          domain,
-          users: [newUser],
-        });
-      }
+    addUserSuccess: (state, action): void => {
       state.isAddingUser = false;
-      state.addUserResponse = response;
+      state.addUserResponse = action.payload;
     },
-    userAddError: (state, action): void => {
+    addUserError: (state, action): void => {
       state.addUserError = action.payload;
       state.isAddingUser = false;
     },
-    userAddReset: (state): void => {
+    addUserReset: (state): void => {
       state.addUserError = null;
       state.isAddingUser = false;
       state.addUserResponse = null;
     },
-    userAddResetError: (state): void => {
+    addUserResetError: (state): void => {
       state.addUserError = null;
     },
   },
 });
 
 export const {
-  usersGetSuccess,
-  usersGetStart,
-  usersGetError,
-  userUpdateStart,
-  userUpdateSuccess,
-  userUpdateError,
-  userUpdateReset,
-  userUpdate,
-  userResetUpdateAction,
-  userAddStart,
-  userAddSuccess,
-  userAddError,
-  userAddReset,
-  userAddResetError,
+  getUsersSuccess,
+  getUsersStart,
+  getUsersError,
+  updateUserStart,
+  updateUserSuccess,
+  updateUserError,
+  updateUserReset,
+  setUserAction,
+  resetUserAction,
+  addUserStart,
+  addUserSuccess,
+  addUserError,
+  addUserReset,
+  addUserResetError,
 } = users.actions;
 
 export const { reducer: usersReducer } = users;
 
-export const selectIsGettingUsers = (state: RootState): boolean =>
-  state.users.isGettingUsers;
-
-export const selectUsersError = (state: RootState): string | null =>
-  state.users.getUsersError;
-
-export const selectUsers = (state: RootState): MailUsersResponse =>
-  state.users.users;
-
-export const selectIsUpdatingUser = (state: RootState): boolean =>
-  state.users.isUpdatingUser;
-
-export const selectUpdateUserError = (state: RootState): string | null =>
-  state.users.updateUserError;
-
-export const selectUpdateUserResponse = (state: RootState): string | null =>
-  state.users.updateUserResponse;
-
-export const selectUserUpdate = (state: RootState): UserUpdate | null =>
-  state.users.userUpdate;
-
-export const selectIsAddingUser = (state: RootState): boolean =>
-  state.users.isAddingUser;
-
-export const selectAddUserError = (state: RootState): string | null =>
-  state.users.addUserError;
-
-export const selectAddUserResponse = (state: RootState): string | null =>
-  state.users.addUserResponse;
-
-export const usersCheck = (
-  showProgress = true
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
-  if (showProgress) {
-    dispatch(usersGetStart());
-  }
+export const getUsers = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => async (dispatch): Promise<void> => {
+  dispatch(getUsersStart());
   try {
     const result = await usersApi.getMailUsers({
       format: MailUsersResponseFormat.Json,
     });
-    dispatch(usersGetSuccess(result));
+    dispatch(getUsersSuccess(result));
   } catch (err) {
-    dispatch(usersGetError(await getRequestFailMessage(err)));
+    dispatch(getUsersError(await getRequestFailMessage(err)));
   }
 };
 
-export const userAddAdminPrivilege = (
+export const addUserAdminPrivilege = (
   user: MailUser
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userUpdateStart());
+  dispatch(updateUserStart());
   try {
     const result = await usersApi.addMailUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
-    dispatch(userUpdateSuccess(result));
+    dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err)));
+    dispatch(updateUserError(await getRequestFailMessage(err)));
   }
 };
 
-export const userRemoveAdminPrivilege = (
+export const removeUserAdminPrivilege = (
   user: MailUser
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userUpdateStart());
+  dispatch(updateUserStart());
   try {
     const result = await usersApi.removeMailUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
-    dispatch(userUpdateSuccess(result));
+    dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err)));
+    dispatch(updateUserError(await getRequestFailMessage(err)));
   }
 };
 
-export const userSetPassword = (
+export const setUserPassword = (
   user: MailUser,
   password: string
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userUpdateStart());
+  dispatch(updateUserStart());
   try {
     const result = await usersApi.setMailUserPassword({
       email: user.email,
       password: password,
     });
-    dispatch(userUpdateSuccess(result));
+    dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err)));
+    dispatch(updateUserError(await getRequestFailMessage(err)));
   }
 };
 
-export const userRemove = (
+export const removeUser = (
   user: MailUser
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userUpdateStart());
+  dispatch(updateUserStart());
   try {
     const result = await usersApi.removeMailUser({
       email: user.email,
     });
-    dispatch(userUpdateSuccess(result));
+    dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err)));
+    dispatch(updateUserError(await getRequestFailMessage(err)));
   }
 };
 
-export const userAdd = (
+export const addUser = (
   email: string,
   password: string,
   privilege: MailUserPrivilege
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(userAddStart());
+  dispatch(addUserStart());
   try {
     const result = await usersApi.addMailUser({
       email,
       password,
       privileges: privilege,
     });
-    dispatch(
-      userAddSuccess({
-        response: result,
-        email,
-        privileges: [privilege],
-      })
-    );
+    dispatch(addUserSuccess(result));
   } catch (err) {
-    dispatch(userAddError(await getRequestFailMessage(err)));
+    dispatch(addUserError(await getRequestFailMessage(err)));
   }
 };

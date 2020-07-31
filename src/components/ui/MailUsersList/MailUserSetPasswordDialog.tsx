@@ -13,8 +13,8 @@ import {
 import { MailUser } from 'mailinabox-api';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUsername } from '../../../features/authSlice';
-import { userSetPassword, userUpdateReset } from '../../../features/usersSlice';
+import { setUserPassword, updateUserReset } from '../../../features/usersSlice';
+import { RootState } from '../../../store';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { Pre } from '../Pre/Pre';
@@ -41,12 +41,13 @@ export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPassw
   updateUserError,
   updateUserResponse,
 }) => {
+  const { username } = useSelector((state: RootState) => state.auth);
+
   const dispatch = useDispatch();
-  const userName = useSelector(selectUsername);
   const [password, setPassword] = useState<string>('');
   const onModalDismissed = useCallback((): void => {
     setPassword('');
-    dispatch(userUpdateReset());
+    dispatch(updateUserReset());
   }, [dispatch]);
   const onPasswordChange = useCallback(
     (ev: React.FormEvent<HTMLElement>, newValue?: string): void => {
@@ -58,12 +59,12 @@ export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPassw
     (ev: React.FormEvent<HTMLElement>): void => {
       ev.preventDefault();
       if (user) {
-        dispatch(userSetPassword(user, password));
+        dispatch(setUserPassword(user, password));
       }
     },
     [dispatch, password, user]
   );
-  const updateSelf = userName === user?.email;
+  const updateSelf = username === user?.email;
   return (
     <Dialog
       hidden={hidden}

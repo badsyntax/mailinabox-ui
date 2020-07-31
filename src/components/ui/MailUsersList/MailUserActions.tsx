@@ -1,55 +1,51 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectIsUpdatingUser,
-  selectUpdateUserError,
-  selectUpdateUserResponse,
-  selectUserUpdate,
-  UserAction,
-  userResetUpdateAction,
-  usersCheck,
-} from '../../../features/usersSlice';
+import { getUsers, UserActionType } from '../../../features/usersSlice';
+import { RootState } from '../../../store';
 import { MailUserArchiveDialog } from './MailUserArchiveDialog';
 import { MailUserSetPasswordDialog } from './MailUserSetPasswordDialog';
 import { MailUserUpdatePrivilege } from './MailUserUpdatePrivilege';
 
 export const MailUserActions: React.FunctionComponent = () => {
+  const {
+    isUpdatingUser,
+    updateUserError,
+    updateUserResponse,
+    userAction,
+  } = useSelector((state: RootState) => state.users);
+
   const dispatch = useDispatch();
-  const isUpdatingUser = useSelector(selectIsUpdatingUser);
-  const updateUserError = useSelector(selectUpdateUserError);
-  const updateUserResponse = useSelector(selectUpdateUserResponse);
-  const userUpdate = useSelector(selectUserUpdate);
 
   const resetUserAction = useCallback((): void => {
-    dispatch(userResetUpdateAction());
+    dispatch(resetUserAction());
   }, [dispatch]);
 
   useEffect(() => {
     if (updateUserResponse) {
-      dispatch(usersCheck(false));
+      dispatch(getUsers());
     }
-  }, [dispatch, resetUserAction, updateUserResponse]);
+  }, [dispatch, updateUserResponse]);
   return (
     <>
       <MailUserUpdatePrivilege
         onDialogDismiss={resetUserAction}
-        user={userUpdate?.user}
+        user={userAction?.user}
         isUpdatingUser={isUpdatingUser}
         updateUserError={updateUserError}
         updateUserResponse={updateUserResponse}
       />
       <MailUserSetPasswordDialog
-        hidden={userUpdate?.action !== UserAction.setPassword}
+        hidden={userAction?.type !== UserActionType.setPassword}
         onDismiss={resetUserAction}
-        user={userUpdate?.user}
+        user={userAction?.user}
         isUpdatingUser={isUpdatingUser}
         updateUserError={updateUserError}
         updateUserResponse={updateUserResponse}
       />
       <MailUserArchiveDialog
-        hidden={userUpdate?.action !== UserAction.archive}
+        hidden={userAction?.type !== UserActionType.archive}
         onDismiss={resetUserAction}
-        user={userUpdate?.user}
+        user={userAction?.user}
         isUpdatingUser={isUpdatingUser}
         updateUserError={updateUserError}
         updateUserResponse={updateUserResponse}

@@ -11,8 +11,8 @@ import { useBoolean } from '@uifabric/react-hooks';
 import { MailUser } from 'mailinabox-api';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUsername } from '../../../features/authSlice';
-import { userRemove, userUpdateReset } from '../../../features/usersSlice';
+import { removeUser, updateUserReset } from '../../../features/usersSlice';
+import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 
 const dialogContentProps: IDialogContentProps = {
@@ -37,15 +37,16 @@ export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialo
   updateUserError,
   updateUserResponse,
 }) => {
+  const { username } = useSelector((state: RootState) => state.auth);
+
   const dispatch = useDispatch();
   const [
     archiveErrorDialogHidden,
     { setFalse: showArchiveErrorDialog, setTrue: hideArchiveErrorDialog },
   ] = useBoolean(true);
-  const userName = useSelector(selectUsername);
 
   const onModalDismissed = useCallback((): void => {
-    dispatch(userUpdateReset());
+    dispatch(updateUserReset());
   }, [dispatch]);
 
   const onConfirmClick = useCallback((): void => {
@@ -58,7 +59,7 @@ export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialo
     onDismissed: onModalDismissed,
   };
 
-  const updateSelfError = !hidden && userName === user?.email;
+  const updateSelfError = !hidden && username === user?.email;
 
   useEffect(() => {
     if (updateSelfError) {
@@ -91,7 +92,7 @@ export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialo
         actionResponse={updateUserResponse}
         onConfirm={(): void => {
           if (user) {
-            dispatch(userRemove(user));
+            dispatch(removeUser(user));
           }
         }}
       >

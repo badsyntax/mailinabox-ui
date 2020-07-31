@@ -21,14 +21,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getStatus,
-  selectConfig,
-  selectIsUpdatingConfig,
-  selectUpdateConfigError,
-  selectUpdateConfigResponse,
   updateConfig,
   updateConfigReset,
   updateConfigResetError,
 } from '../../../features/system/backupsSlice';
+import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { BackupConfigureLocal } from './local/BackupConfigureLocal';
 import { BackupInfoLocal } from './local/BackupInfoLocal';
@@ -81,11 +78,14 @@ function getBackupType(
 export const BackupConfigure: React.FunctionComponent<
   IStackProps & SystemBackupStatusResponse
 > = ({ backups, unmatchedFileSize, ...props }) => {
+  const {
+    updateConfigError,
+    updateConfigResponse,
+    isUpdatingConfig,
+    config: backupConfig,
+  } = useSelector((state: RootState) => state.system.backups);
+
   const dispatch = useDispatch();
-  const updateConfigError = useSelector(selectUpdateConfigError);
-  const updateConfigResponse = useSelector(selectUpdateConfigResponse);
-  const isUpdatingConfig = useSelector(selectIsUpdatingConfig);
-  const backupConfig = useSelector(selectConfig);
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 

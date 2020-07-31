@@ -4,56 +4,65 @@ import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
 
 export interface SystemPrivacyState {
-  isChecking: boolean;
-  isUpdating: boolean;
+  isGettingPrivacy: boolean;
+  isUpdatingPrivacy: boolean;
   status: boolean;
-  error: string | null;
+  getPrivacyError: string | null;
+  updatePrivacyError: string | null;
 }
 
 const initialState: SystemPrivacyState = {
-  isChecking: false,
-  isUpdating: false,
+  isGettingPrivacy: false,
+  isUpdatingPrivacy: false,
   status: false,
-  error: null,
+  getPrivacyError: null,
+  updatePrivacyError: null,
 };
 
 const systemPrivacy = createSlice({
   name: 'privacy',
   initialState,
   reducers: {
-    systemPrivacyGetStart: (state): void => {
-      state.error = null;
-      state.isChecking = true;
+    getPrivacyStart: (state): void => {
+      state.getPrivacyError = null;
+      state.isGettingPrivacy = true;
     },
-    systemPrivacyGetSuccess: (state, action): void => {
-      state.isChecking = false;
+    getPrivacySuccess: (state, action): void => {
+      state.isGettingPrivacy = false;
       state.status = action.payload;
     },
-    systemPrivacyUpdateStart: (state): void => {
-      state.error = null;
-      state.isUpdating = true;
+    getPrivacyError: (state, action): void => {
+      state.isGettingPrivacy = false;
+      state.getPrivacyError = action.payload;
     },
-    systemPrivacyUpdateSuccess: (state, action): void => {
-      state.isUpdating = false;
+    updatePrivacyStart: (state): void => {
+      state.getPrivacyError = null;
+      state.isUpdatingPrivacy = true;
+    },
+    updatePrivacySuccess: (state, action): void => {
+      state.isUpdatingPrivacy = false;
       const { result, privacy } = action.payload;
       if (result === 'OK') {
         state.status = privacy;
       }
     },
-    systemPrivacyError: (state, action): void => {
-      state.error = action.payload;
-      state.isChecking = false;
+    updatePrivacyError: (state, action): void => {
+      state.isUpdatingPrivacy = false;
+      state.updatePrivacyError = action.payload;
     },
   },
 });
 
 export const {
-  systemPrivacyGetSuccess,
-  systemPrivacyGetStart,
-  systemPrivacyError,
-  systemPrivacyUpdateStart,
-  systemPrivacyUpdateSuccess,
+  getPrivacySuccess,
+  getPrivacyStart,
+  getPrivacyError,
+  updatePrivacyStart,
+  updatePrivacySuccess,
+  updatePrivacyError,
 } = systemPrivacy.actions;
+
+export const { reducer: systemPrivacyReducer } = systemPrivacy;
 
 export const systemPrivacyCheck = (): ThunkAction<
   void,
@@ -61,46 +70,32 @@ export const systemPrivacyCheck = (): ThunkAction<
   unknown,
   Action<string>
 > => async (dispatch): Promise<void> => {
-  dispatch(systemPrivacyGetStart());
+  dispatch(getPrivacyStart());
   try {
     const result = await systemApi.getSystemPrivacyStatus();
-    dispatch(systemPrivacyGetSuccess(result));
+    dispatch(getPrivacySuccess(result));
   } catch (err) {
-    dispatch(systemPrivacyError(await getRequestFailMessage(err)));
+    dispatch(getPrivacyError(await getRequestFailMessage(err)));
   }
 };
 
-export const systemPrivacyUpdate = (
+export const updatePrivacy = (
   privacy: boolean
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
   dispatch
 ): Promise<void> => {
-  dispatch(systemPrivacyUpdateStart());
+  dispatch(updatePrivacyStart());
   try {
     const result = await systemApi.updateSystemPrivacy({
       value: privacy ? SystemPrivacyStatus.Private : SystemPrivacyStatus.Off,
     });
     dispatch(
-      systemPrivacyUpdateSuccess({
+      updatePrivacySuccess({
         result,
         privacy,
       })
     );
   } catch (err) {
-    dispatch(systemPrivacyError(await getRequestFailMessage(err)));
+    dispatch(updatePrivacyError(await getRequestFailMessage(err)));
   }
 };
-
-export const { reducer: systemPrivacyReducer } = systemPrivacy;
-
-export const selectIsCheckingPrivacy = (state: RootState): boolean =>
-  state.system.privacy.isChecking;
-
-export const selectIsUpdatingPrivacy = (state: RootState): boolean =>
-  state.system.privacy.isUpdating;
-
-export const selectPrivacyError = (state: RootState): string | null =>
-  state.system.privacy.error;
-
-export const selectPrivacy = (state: RootState): boolean =>
-  state.system.privacy.status;

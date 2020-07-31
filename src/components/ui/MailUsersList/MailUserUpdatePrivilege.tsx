@@ -10,15 +10,14 @@ import { useBoolean } from '@uifabric/react-hooks';
 import { MailUser } from 'mailinabox-api';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUsername } from '../../../features/authSlice';
 import {
-  selectUserUpdate,
-  UserAction,
-  userAddAdminPrivilege,
-  userRemoveAdminPrivilege,
-  userResetUpdateAction,
-  userUpdateReset,
+  addUserAdminPrivilege,
+  removeUserAdminPrivilege,
+  resetUserAction,
+  updateUserReset,
+  UserActionType,
 } from '../../../features/usersSlice';
+import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 
 const modifyPrivilegesDialogContentProps: IDialogContentProps = {
@@ -41,9 +40,10 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
   updateUserError,
   updateUserResponse,
 }) => {
+  const { userAction } = useSelector((state: RootState) => state.users);
+  const { username } = useSelector((state: RootState) => state.auth);
+
   const dispatch = useDispatch();
-  const userName = useSelector(selectUsername);
-  const userUpdate = useSelector(selectUserUpdate);
   const [
     removeErrorDialogHidden,
     { setFalse: showRemoveErrorDialog, setTrue: hideRemoveErrorDialog },
@@ -54,21 +54,33 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
   }, [onDialogDismiss]);
 
   const onModalDismissed = useCallback((): void => {
-    dispatch(userUpdateReset());
+    dispatch(updateUserReset());
   }, [dispatch]);
 
   const removeAdminDialogHidden =
-    userUpdate?.action !== UserAction.removeAdminPrivilege;
+    userAction?.type !== UserActionType.removeAdminPrivilege;
 
   const addAdminDialogHidden =
-    userUpdate?.action !== UserAction.addAdminPrivilege;
+    userAction?.type !== UserActionType.addAdminPrivilege;
 
-  const updateSelfError = !removeAdminDialogHidden && userName === user?.email;
+  const updateSelfError = !removeAdminDialogHidden && username === user?.email;
 
   const modalProps = {
     isBlocking: true,
     onDismissed: onModalDismissed,
   };
+
+  const onRemoveAdminConfirm = useCallback((): void => {
+    if (user) {
+      dispatch(removeUserAdminPrivilege(user));
+    }
+  }, [dispatch, user]);
+
+  const onAddAdminConfirm = useCallback((): void => {
+    if (user) {
+      dispatch(addUserAdminPrivilege(user));
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (updateSelfError) {
@@ -83,7 +95,7 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
       updateUserResponse &&
       (!removeAdminDialogHidden || !addAdminDialogHidden)
     ) {
-      dispatch(userResetUpdateAction());
+      dispatch(resetUserAction());
     }
   }, [
     addAdminDialogHidden,
@@ -115,11 +127,7 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
             }
             error={updateUserError}
             hidden={removeAdminDialogHidden}
-            onConfirm={(): void => {
-              if (user) {
-                dispatch(userRemoveAdminPrivilege(user));
-              }
-            }}
+            onConfirm={onRemoveAdminConfirm}
             confirmButtonText="Remove"
           >
             <Text>
@@ -136,11 +144,7 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
             }
             error={updateUserError}
             hidden={addAdminDialogHidden}
-            onConfirm={(): void => {
-              if (user) {
-                dispatch(userAddAdminPrivilege(user));
-              }
-            }}
+            onConfirm={onAddAdminConfirm}
             confirmButtonText="Add"
           >
             <Text>

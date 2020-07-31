@@ -3,39 +3,43 @@ import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
 
 export interface SystemRebootState {
-  isChecking: boolean;
+  isGettingRebootStatus: boolean;
   status: boolean;
-  error: string | null;
+  getRebootStatusError: string | null;
 }
+
+const initialState: SystemRebootState = {
+  isGettingRebootStatus: false,
+  status: false,
+  getRebootStatusError: null,
+};
 
 const systemReboot = createSlice({
   name: 'reboot',
-  initialState: {
-    isChecking: false,
-    status: false,
-    error: null,
-  } as SystemRebootState,
+  initialState,
   reducers: {
-    systemRebootStart: (state): void => {
-      state.error = null;
-      state.isChecking = true;
+    getRebootStatusStart: (state): void => {
+      state.getRebootStatusError = null;
+      state.isGettingRebootStatus = true;
     },
-    systemRebootSuccess: (state, action): void => {
-      state.isChecking = false;
+    getRebootStatusSuccess: (state, action): void => {
+      state.isGettingRebootStatus = false;
       state.status = action.payload;
     },
-    systemRebootError: (state, action): void => {
-      state.error = action.payload;
-      state.isChecking = false;
+    getRebootStatusError: (state, action): void => {
+      state.getRebootStatusError = action.payload;
+      state.isGettingRebootStatus = false;
     },
   },
 });
 
 export const {
-  systemRebootSuccess,
-  systemRebootStart,
-  systemRebootError,
+  getRebootStatusSuccess,
+  getRebootStatusStart,
+  getRebootStatusError,
 } = systemReboot.actions;
+
+export const { reducer: systemRebootReducer } = systemReboot;
 
 export const systemRebootCheck = (): ThunkAction<
   void,
@@ -43,22 +47,11 @@ export const systemRebootCheck = (): ThunkAction<
   unknown,
   Action<string>
 > => async (dispatch): Promise<void> => {
-  dispatch(systemRebootStart());
+  dispatch(getRebootStatusStart());
   try {
     const result = await systemApi.getSystemRebootStatus();
-    dispatch(systemRebootSuccess(result));
+    dispatch(getRebootStatusSuccess(result));
   } catch (err) {
-    dispatch(systemRebootError(await getRequestFailMessage(err)));
+    dispatch(getRebootStatusError(await getRequestFailMessage(err)));
   }
 };
-
-export const { reducer: systemRebootReducer } = systemReboot;
-
-export const selectIsCheckingReboot = (state: RootState): boolean =>
-  state.system.reboot.isChecking;
-
-export const selectRebootError = (state: RootState): string | null =>
-  state.system.reboot.error;
-
-export const selectReboot = (state: RootState): boolean =>
-  state.system.reboot.status;

@@ -15,11 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getConfig,
   getStatus,
-  selectConfigError,
-  selectIsGettingStatus,
-  selectStatus,
-  selectStatusError,
 } from '../../../../../features/system/backupsSlice';
+import { RootState } from '../../../../../store';
 import { BackupConfigure } from '../../../../ui/BackupConfigure/BackupConfigure';
 import { BackupsList } from '../../../../ui/BackupsList/BackupsList';
 import { Body } from '../../../../ui/Body/Body';
@@ -33,7 +30,8 @@ const className = mergeStyles({
 });
 
 const BackupSections: React.FunctionComponent = () => {
-  const { backups, unmatchedFileSize } = useSelector(selectStatus);
+  const { status } = useSelector((state: RootState) => state.system.backups);
+  const { backups, unmatchedFileSize } = status;
   return (
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Backup Status">
@@ -64,11 +62,14 @@ const BackupSections: React.FunctionComponent = () => {
 export const Backups: React.FunctionComponent & {
   path: string;
 } = () => {
+  const {
+    isGettingStatus,
+    isGettingConfig,
+    getStatusError,
+    getConfigError,
+  } = useSelector((state: RootState) => state.system.backups);
+
   const dispatch = useDispatch();
-  const isGettingStatus = useSelector(selectIsGettingStatus);
-  const isGettingConfig = useSelector(selectIsGettingStatus);
-  const statusError = useSelector(selectStatusError);
-  const configError = useSelector(selectConfigError);
 
   useEffect(() => {
     dispatch(getStatus());
@@ -76,7 +77,7 @@ export const Backups: React.FunctionComponent & {
   }, [dispatch]);
 
   const isLoading = isGettingStatus || isGettingConfig;
-  const error = statusError || configError;
+  const error = getStatusError || getConfigError;
 
   return (
     <Body>

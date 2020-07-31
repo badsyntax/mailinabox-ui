@@ -10,10 +10,8 @@ import {
 import { useId } from '@uifabric/react-hooks';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectIsUpdatingPrivacy,
-  systemPrivacyUpdate,
-} from '../../../features/system/privacySlice';
+import { updatePrivacy } from '../../../features/system/privacySlice';
+import { RootState } from '../../../store';
 
 const theme = getTheme();
 
@@ -58,20 +56,18 @@ const onRenderItem = (item: IOverflowSetItemProps): JSX.Element => {
 
 const onRenderOverflowButton = (): null => null;
 
-interface StatusActionsMenuProps {
-  privacy: boolean;
-  reboot: boolean;
-}
+export const SystemStatusActionsMenu: React.FunctionComponent = () => {
+  const { isUpdatingPrivacy, status: privacyStatus } = useSelector(
+    (state: RootState) => state.system.privacy
+  );
+  const { status: rebootStatus } = useSelector(
+    (state: RootState) => state.system.reboot
+  );
 
-export const SystemStatusActionsMenu: React.FunctionComponent<StatusActionsMenuProps> = ({
-  privacy,
-  reboot,
-}) => {
   const dispatch = useDispatch();
-  const isUpdatingPrivacy = useSelector(selectIsUpdatingPrivacy);
   const onPrivacyButtonClick = useCallback(() => {
-    dispatch(systemPrivacyUpdate(!privacy));
-  }, [dispatch, privacy]);
+    dispatch(updatePrivacy(!privacyStatus));
+  }, [dispatch, privacyStatus]);
   return (
     <OverflowSet
       role="menubar"
@@ -87,8 +83,8 @@ export const SystemStatusActionsMenu: React.FunctionComponent<StatusActionsMenuP
         {
           key: 'item1',
           icon: 'DisableUpdates',
-          name: `${privacy ? 'Enable' : 'Disable'} New-Version Check`,
-          tooltip: privacy
+          name: `${privacyStatus ? 'Enable' : 'Disable'} New-Version Check`,
+          tooltip: privacyStatus
             ? 'When enabled, status checks phone-home to check for a new release of Mail-in-a-Box.'
             : null,
           tooltipId: useId('tooltip'),
@@ -99,7 +95,7 @@ export const SystemStatusActionsMenu: React.FunctionComponent<StatusActionsMenuP
           key: 'item2',
           icon: 'Sync',
           name: 'Reboot Server',
-          disabled: !reboot,
+          disabled: !rebootStatus,
         },
       ]}
       onRenderOverflowButton={onRenderOverflowButton}

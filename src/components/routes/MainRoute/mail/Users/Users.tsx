@@ -13,12 +13,8 @@ import {
 import { MailUser, MailUserByDomain } from 'mailinabox-api';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectIsGettingUsers,
-  selectUsers,
-  selectUsersError,
-  usersCheck,
-} from '../../../../../features/usersSlice';
+import { getUsers } from '../../../../../features/usersSlice';
+import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { MailUserAdd } from '../../../../ui/MailUserAdd/MailUserAdd';
@@ -32,10 +28,11 @@ const className = mergeStyles({
 });
 
 const UsersSections: React.FunctionComponent = () => {
+  const { isGettingUsers, users: mailUsers, getUsersError } = useSelector(
+    (state: RootState) => state.users
+  );
+
   const dispatch = useDispatch();
-  const isCheckingUsers = useSelector(selectIsGettingUsers);
-  const mailUsers = useSelector(selectUsers);
-  const usersError = useSelector(selectUsersError);
   const users: Array<MailUser> = [];
   const groups: Array<IGroup> = [];
 
@@ -53,22 +50,22 @@ const UsersSections: React.FunctionComponent = () => {
   });
 
   useEffect(() => {
-    dispatch(usersCheck());
+    dispatch(getUsers());
   }, [dispatch]);
   return (
     <Pivot linkSize={PivotLinkSize.large}>
       <PivotItem headerText="Existing Mail Users">
-        {usersError && (
+        {getUsersError && (
           <MessageBar
             messageBarType={MessageBarType.error}
             isMultiline
             className={className}
           >
-            {usersError}
+            {getUsersError}
           </MessageBar>
         )}
-        {isCheckingUsers && <ProgressIndicator label="Loading users..." />}
-        {!isCheckingUsers && !usersError && (
+        {isGettingUsers && <ProgressIndicator label="Loading users..." />}
+        {!isGettingUsers && !getUsersError && (
           <MailUsersList users={users} groups={groups} className={className} />
         )}
       </PivotItem>

@@ -14,12 +14,8 @@ import {
 } from '@fluentui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getAliases,
-  selectIsUpsertingAlias,
-  selectUpsertAliasResponse,
-  upsertAliasReset,
-} from '../../../features/aliasesSlice';
+import { getAliases, upsertAliasReset } from '../../../features/aliasesSlice';
+import { RootState } from '../../../store';
 import { MailAliasUpsert } from '../MailAliasUpsert/MailAliasUpsert';
 import { Pre } from '../Pre/Pre';
 
@@ -39,9 +35,11 @@ const modalProps: IModalProps = {
 export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
+  const { isUpsertingAlias, upsertAliasResponse } = useSelector(
+    (state: RootState) => state.aliases
+  );
   const dispatch = useDispatch();
-  const isAddingAlias = useSelector(selectIsUpsertingAlias);
-  const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
+
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
@@ -110,7 +108,7 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
         </Stack>
         <MailAliasUpsert>
           <Stack horizontal>
-            <PrimaryButton type="submit" disabled={isAddingAlias}>
+            <PrimaryButton type="submit" disabled={isUpsertingAlias}>
               Add Alias
             </PrimaryButton>
           </Stack>

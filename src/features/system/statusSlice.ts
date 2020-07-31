@@ -10,39 +10,43 @@ import { getRequestFailMessage, systemApi } from '../../api';
 import { RootState } from '../../store';
 
 export interface SystemStatusState {
-  isChecking: boolean;
+  isGettingStatus: boolean;
   status: Array<StatusEntry>;
-  error: string | null;
+  getStatusError: string | null;
 }
+
+const initialState: SystemStatusState = {
+  isGettingStatus: false,
+  status: [],
+  getStatusError: null,
+};
 
 const systemStatus = createSlice({
   name: 'status',
-  initialState: {
-    isChecking: false,
-    status: [],
-    error: null,
-  } as SystemStatusState,
+  initialState,
   reducers: {
-    systemStatusStart: (state): void => {
-      state.error = null;
-      state.isChecking = true;
+    getStatusStart: (state): void => {
+      state.getStatusError = null;
+      state.isGettingStatus = true;
     },
-    systemStatusSuccess: (state, action): void => {
-      state.isChecking = false;
+    getStatusSuccess: (state, action): void => {
+      state.isGettingStatus = false;
       state.status = action.payload;
     },
-    systemStatusError: (state, action): void => {
-      state.error = action.payload;
-      state.isChecking = false;
+    getStatusError: (state, action): void => {
+      state.getStatusError = action.payload;
+      state.isGettingStatus = false;
     },
   },
 });
 
 export const {
-  systemStatusSuccess,
-  systemStatusStart,
-  systemStatusError,
+  getStatusSuccess,
+  getStatusStart,
+  getStatusError,
 } = systemStatus.actions;
+
+export const { reducer: systemStatusReducer } = systemStatus;
 
 export const systemStatusCheck = (): ThunkAction<
   void,
@@ -50,25 +54,23 @@ export const systemStatusCheck = (): ThunkAction<
   unknown,
   Action<string>
 > => async (dispatch): Promise<void> => {
-  dispatch(systemStatusStart());
+  dispatch(getStatusStart());
   try {
     const result = await systemApi.getSystemStatus();
-    dispatch(systemStatusSuccess(result));
+    dispatch(getStatusSuccess(result));
   } catch (err) {
-    dispatch(systemStatusError(await getRequestFailMessage(err)));
+    dispatch(getStatusError(await getRequestFailMessage(err)));
   }
 };
 
-export const { reducer: systemStatusReducer } = systemStatus;
+// export const selectIsCheckingStatus = (state: RootState): boolean =>
+//   state.system.status.isGettingStatus;
 
-export const selectIsCheckingStatus = (state: RootState): boolean =>
-  state.system.status.isChecking;
+// export const selectStatusError = (state: RootState): string | null =>
+//   state.system.status.getStatusError;
 
-export const selectStatusError = (state: RootState): string | null =>
-  state.system.status.error;
-
-export const selectStatus = (state: RootState): Array<StatusEntry> =>
-  state.system.status.status;
+// export const selectStatus = (state: RootState): Array<StatusEntry> =>
+//   state.system.status.status;
 
 type StatusGroup = IGroup;
 
@@ -82,7 +84,7 @@ export const selectSystemStatusItemsAndGroups = (
   const groups: Array<StatusGroup> = [];
   const items: Array<StatusItem> = [];
   let group: StatusGroup | undefined = undefined;
-  const entries = selectStatus(state);
+  const { status: entries } = state.system.status;
   entries.forEach((statusEntry, i) => {
     const isHeadingEntry = statusEntry.type === StatusEntryType.Heading;
     if (!isHeadingEntry) {

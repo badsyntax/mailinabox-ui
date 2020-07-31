@@ -2,7 +2,7 @@ import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { MeAuthStatus } from 'mailinabox-api';
 import { getRequestFailMessage, userApi } from '../api';
 import { RootState } from '../store';
-import { authUpdate } from './authSlice';
+import { updateAuth } from './authSlice';
 
 export interface LoginState {
   loginError: string | null;
@@ -56,7 +56,7 @@ export const loginCheck = (
       dispatch(loginSuccess());
       setTimeout(() => {
         dispatch(
-          authUpdate({
+          updateAuth({
             username: result.email,
             password: result.apiKey,
             isAuthenticated: true,

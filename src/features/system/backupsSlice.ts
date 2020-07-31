@@ -107,33 +107,6 @@ export const {
 
 export const { reducer: systemBackupsReducer } = systemBackups;
 
-export const selectIsGettingStatus = (state: RootState): boolean =>
-  state.system.backups.isGettingStatus;
-
-export const selectStatusError = (state: RootState): string | null =>
-  state.system.backups.getStatusError;
-
-export const selectStatus = (state: RootState): SystemBackupStatusResponse =>
-  state.system.backups.status;
-
-export const selectIsGettingConfig = (state: RootState): boolean =>
-  state.system.backups.isGettingConfig;
-
-export const selectConfigError = (state: RootState): string | null =>
-  state.system.backups.getConfigError;
-
-export const selectConfig = (state: RootState): SystemBackupConfigResponse =>
-  state.system.backups.config;
-
-export const selectIsUpdatingConfig = (state: RootState): boolean =>
-  state.system.backups.isUpdatingConfig;
-
-export const selectUpdateConfigError = (state: RootState): string | null =>
-  state.system.backups.updateConfigError;
-
-export const selectUpdateConfigResponse = (state: RootState): string | null =>
-  state.system.backups.updateConfigResponse;
-
 export const getStatus = (): ThunkAction<
   void,
   RootState,

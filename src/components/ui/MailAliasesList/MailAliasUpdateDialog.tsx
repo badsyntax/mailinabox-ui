@@ -9,10 +9,7 @@ import {
 import { MailAlias, UpsertMailAliasRequest } from 'mailinabox-api';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  selectIsUpsertingAlias,
-  selectUpsertAliasResponse,
-} from '../../../features/aliasesSlice';
+import { RootState } from '../../../store';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
 import { MailAliasUpsert } from '../MailAliasUpsert/MailAliasUpsert';
 import { Pre } from '../Pre/Pre';
@@ -29,8 +26,9 @@ const updateAliasDialogContentProps: IDialogContentProps = {
 export const MailAliasUpdateDialog: React.FunctionComponent<
   IDialogProps & MailAliasUpdateDialogProps
 > = ({ alias, ...dialogProps }) => {
-  const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
-  const isUpsertingAlias = useSelector(selectIsUpsertingAlias);
+  const { upsertAliasResponse, isUpsertingAlias } = useSelector(
+    (state: RootState) => state.aliases
+  );
 
   const onDialogCloseButtonClick = useCallback(() => {
     dialogProps.onDismiss?.();

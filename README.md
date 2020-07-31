@@ -32,7 +32,7 @@ TODO
 
 - [x] List checks
 - [ ] Reboot
-- [x] Disable new versions
+- [ ] Disable new versions
 - [x] Prevent virtual rendering?
 - [ ] Add filter for domain
 - [x] Add summary
@@ -143,3 +143,8 @@ TODO
 ### Production
 
 - [ ] Customise the root box url
+
+### Project Setup
+
+- [ ] README updated
+- [ ] LICENSE added

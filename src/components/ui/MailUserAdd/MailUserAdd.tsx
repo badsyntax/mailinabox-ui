@@ -21,14 +21,12 @@ import { MailUserPrivilege } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectAddUserError,
-  selectAddUserResponse,
-  selectIsAddingUser,
-  userAdd,
-  userAddReset,
-  userAddResetError,
-  usersCheck,
+  addUser,
+  addUserReset,
+  addUserResetError,
+  getUsers,
 } from '../../../features/usersSlice';
+import { RootState } from '../../../store';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { Pre } from '../Pre/Pre';
@@ -74,10 +72,11 @@ const initialFormState: FormState = {
 export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
+  const { isAddingUser, addUserResponse, addUserError } = useSelector(
+    (state: RootState) => state.users
+  );
+
   const dispatch = useDispatch();
-  const userAddResponse = useSelector(selectAddUserResponse);
-  const userAddError = useSelector(selectAddUserError);
-  const isAddingUser = useSelector(selectIsAddingUser);
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
@@ -122,7 +121,7 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
     (event: React.FormEvent<HTMLElement>): void => {
       event.preventDefault();
       dispatch(
-        userAdd(
+        addUser(
           user.email,
           user.password,
           user.privilege.key as MailUserPrivilege
@@ -140,24 +139,24 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   );
 
   const onDialogDismissed = useCallback((): void => {
-    dispatch(userAddReset());
+    dispatch(addUserReset());
     setUser(initialFormState);
   }, [dispatch]);
 
-  const onMessageBarDismiss = useCallback(
+  const onErrorMessageBarDismiss = useCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
-      dispatch(userAddResetError());
+      dispatch(addUserResetError());
     },
     [dispatch]
   );
 
   useEffect(() => {
-    if (userAddResponse && isDialogHidden && !hasDialogOpened) {
+    if (addUserResponse && isDialogHidden && !hasDialogOpened) {
       setIsDialogHidden(false);
     }
-  }, [hasDialogOpened, isDialogHidden, userAddResponse]);
+  }, [addUserResponse, hasDialogOpened, isDialogHidden]);
 
   useEffect(() => {
     if (!isDialogHidden) {
@@ -166,14 +165,14 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   }, [isDialogHidden]);
 
   useEffect(() => {
-    if (userAddResponse) {
-      dispatch(usersCheck());
+    if (addUserResponse) {
+      dispatch(getUsers());
     }
-  }, [dispatch, userAddResponse]);
+  }, [addUserResponse, dispatch]);
 
   useEffect(() => {
     return (): void => {
-      dispatch(userAddReset());
+      dispatch(addUserReset());
     };
   }, [dispatch]);
   return (
@@ -186,7 +185,7 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
         maxWidth={480}
         onDismissed={onDialogDismissed}
       >
-        <Pre>{userAddResponse}</Pre>
+        <Pre>{addUserResponse}</Pre>
         <DialogFooter>
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
@@ -221,14 +220,13 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
           className={columnClassName}
           onSubmit={onFormSubmit}
         >
-          {userAddError && (
+          {addUserError && (
             <MessageBar
               messageBarType={MessageBarType.error}
-              isMultiline={false}
-              onDismiss={onMessageBarDismiss}
+              onDismiss={onErrorMessageBarDismiss}
               dismissButtonAriaLabel="Close"
             >
-              {userAddError}
+              {addUserError}
             </MessageBar>
           )}
           <TextField

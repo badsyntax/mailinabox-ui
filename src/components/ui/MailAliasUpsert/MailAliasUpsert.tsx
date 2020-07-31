@@ -17,11 +17,10 @@ import { UpsertMailAliasRequest } from 'mailinabox-api';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectUpsertAliasError,
-  selectUpsertAliasResponse,
   upsertAlias,
   upsertAliasResetError,
 } from '../../../features/aliasesSlice';
+import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import {
   onRenderTextFieldLabel,
@@ -63,9 +62,11 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   children,
   updateAlias = defaultAlias,
 }) => {
+  const { upsertAliasResponse, upsertAliasError } = useSelector(
+    (state: RootState) => state.aliases
+  );
+
   const dispatch = useDispatch();
-  const upsertAliasResponse = useSelector(selectUpsertAliasResponse);
-  const upsertAliasError = useSelector(selectUpsertAliasError);
   const [aliasType, setAliasType] = useState<AliasType>(
     getInitialAliasType(updateAlias)
   );
@@ -91,7 +92,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
         setSenderType(option.key as SenderType);
       }
     },
-    []
+    [setSenderType]
   );
 
   const onPivotLinkClick = useCallback(
@@ -100,40 +101,24 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
         setAliasType(item.props.itemKey as AliasType);
       }
     },
-    []
+    [setAliasType]
   );
 
-  const onAddressChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
+  const onFieldChange = useCallback(
+    (
+      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      newValue?: string
+    ): void => {
       setAlias({
         ...alias,
-        address: newValue ?? '',
+        [(event.target as HTMLInputElement | HTMLTextAreaElement).name]:
+          newValue || '',
       });
     },
     [alias]
   );
 
-  const onForwardsToChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setAlias({
-        ...alias,
-        forwardsTo: newValue ?? '',
-      });
-    },
-    [alias]
-  );
-
-  const onSendersChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setAlias({
-        ...alias,
-        permittedSenders: newValue ?? '',
-      });
-    },
-    [alias]
-  );
-
-  const onMessageBarDismiss = useCallback(
+  const onErrorMessageBarDismiss = useCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
@@ -145,12 +130,13 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   const onFormSubmit = useCallback(
     (event: React.FormEvent<HTMLElement>): void => {
       event.preventDefault();
-      const addAlias: UpsertMailAliasRequest = {
-        ...alias,
-        permittedSenders:
-          senderType === SenderType.manual ? alias.permittedSenders : '',
-      };
-      dispatch(upsertAlias(addAlias));
+      dispatch(
+        upsertAlias({
+          ...alias,
+          permittedSenders:
+            senderType === SenderType.manual ? alias.permittedSenders : '',
+        })
+      );
     },
     [alias, dispatch, senderType]
   );
@@ -187,7 +173,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
         <MessageBar
           messageBarType={MessageBarType.error}
           isMultiline={false}
-          onDismiss={onMessageBarDismiss}
+          onDismiss={onErrorMessageBarDismiss}
           dismissButtonAriaLabel="Close"
         >
           {upsertAliasError}
@@ -229,7 +215,8 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
         placeholder={formData[aliasType].alias.placeholder}
         description={formData[aliasType].alias.info}
         styles={{ description: { ...theme.fonts.small } }}
-        onChange={onAddressChange}
+        onChange={onFieldChange}
+        name="address"
         value={alias.address}
         autoFocus={!updateAlias.address}
         disabled={!!updateAlias.address}
@@ -245,7 +232,8 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
           description: { ...theme.fonts.small },
           ...textfieldWithLabelInfoStyles,
         }}
-        onChange={onForwardsToChange}
+        name="forwardsTo"
+        onChange={onFieldChange}
         value={alias.forwardsTo}
         onRenderLabel={onForwardsToRenderLabel}
         autoFocus={!!updateAlias.address}
@@ -262,8 +250,9 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
           multiline
           rows={3}
           required
+          name={'permittedSenders'}
           placeholder="one user per line or separated by commas"
-          onChange={onSendersChange}
+          onChange={onFieldChange}
           value={alias.permittedSenders ?? ''}
         />
       )}

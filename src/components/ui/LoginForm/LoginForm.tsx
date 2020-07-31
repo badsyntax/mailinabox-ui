@@ -13,23 +13,20 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { authUpdate, selectIsAuthenticated } from '../../../features/authSlice';
-import {
-  loginCheck,
-  loginResetError,
-  selectIsLoggingIn,
-  selectLoginError,
-} from '../../../features/loginSlice';
+import { updateAuth } from '../../../features/authSlice';
+// import { authUpdate, selectIsAuthenticated } from '../../../features/authSlice';
+import { loginCheck, loginResetError } from '../../../features/loginSlice';
+import { RootState } from '../../../store';
 import { MainRoute } from '../../routes/MainRoute/MainRoute';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 export const LoginForm: React.FunctionComponent = () => {
+  const { isLoggingIn, loginError } = useSelector(
+    (state: RootState) => state.login
+  );
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const isLogginIn = useSelector(selectIsLoggingIn);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const loginError = useSelector(selectLoginError);
 
   const [remember, setRemember] = useState(true);
   const [email, setEmail] = useState<string>('');
@@ -74,7 +71,7 @@ export const LoginForm: React.FunctionComponent = () => {
     if (isAuthenticated) {
       history.push(MainRoute.path);
     } else {
-      dispatch(authUpdate({ username: email, password }));
+      dispatch(updateAuth({ username: email, password }));
     }
   });
   return (
@@ -112,8 +109,8 @@ export const LoginForm: React.FunctionComponent = () => {
         />
       </Stack>
       <Stack horizontalAlign="end" verticalAlign="center" horizontal gap="s1">
-        {isLogginIn && <Spinner size={SpinnerSize.medium} />}
-        <PrimaryButton type="submit" text="Sign in" disabled={isLogginIn} />
+        {isLoggingIn && <Spinner size={SpinnerSize.medium} />}
+        <PrimaryButton type="submit" text="Sign in" disabled={isLoggingIn} />
       </Stack>
     </Stack>
   );

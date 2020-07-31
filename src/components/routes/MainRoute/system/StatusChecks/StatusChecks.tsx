@@ -12,11 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { systemPrivacyCheck } from '../../../../../features/system/privacySlice';
 import { systemRebootCheck } from '../../../../../features/system/rebootSlice';
 import {
-  selectIsCheckingStatus,
-  selectStatusError,
   selectSystemStatusItemsAndGroups,
   systemStatusCheck,
 } from '../../../../../features/system/statusSlice';
+import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { SystemChecksDetailsList } from '../../../../ui/SystemChecksDetailsList/SystemChecksDetailsList';
@@ -28,9 +27,11 @@ const messageBarClassName = mergeStyles({
 });
 
 export const StatusChecks: React.FunctionComponent & { path: string } = () => {
+  const { isGettingStatus, getStatusError } = useSelector(
+    (state: RootState) => state.system.status
+  );
+
   const dispatch = useDispatch();
-  const isCheckingStatus = useSelector(selectIsCheckingStatus);
-  const statusError = useSelector(selectStatusError);
 
   const [items, groups] = useSelector(selectSystemStatusItemsAndGroups);
 
@@ -38,8 +39,7 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
     dispatch(systemStatusCheck());
     dispatch(systemRebootCheck());
     dispatch(systemPrivacyCheck());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <Body>
@@ -63,7 +63,7 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
           ]}
         />
       </Stack>
-      {!isCheckingStatus && !statusError && (
+      {!isGettingStatus && !getStatusError && (
         <Stack horizontal gap="l1">
           <BodyPanel grow={1} styles={{ root: { flexBasis: 0 } }}>
             <SystemStatusChart />
@@ -78,19 +78,19 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
         </Stack>
       )}
       <BodyPanel>
-        {statusError && (
+        {getStatusError && (
           <MessageBar
             messageBarType={MessageBarType.error}
             isMultiline
             className={messageBarClassName}
           >
-            {statusError}
+            {getStatusError}
           </MessageBar>
         )}
-        {isCheckingStatus && (
+        {isGettingStatus && (
           <ProgressIndicator label="Checking system status..." />
         )}
-        {!isCheckingStatus && !statusError && (
+        {!isGettingStatus && !getStatusError && (
           <SystemChecksDetailsList items={items} groups={groups} />
         )}
       </BodyPanel>
