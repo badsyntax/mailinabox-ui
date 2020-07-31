@@ -14,7 +14,7 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
-import { AddDnsCustomRecordTypeEnum } from 'mailinabox-api';
+import { DNSRecordType } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -33,7 +33,7 @@ import { recordTypes } from './recordTypes';
 
 const recordTypeOptions = Object.keys(recordTypes).map((key) => ({
   key,
-  text: recordTypes[key as AddDnsCustomRecordTypeEnum].text,
+  text: recordTypes[key as DNSRecordType].text,
 }));
 
 const columnClassName = mergeStyles({
@@ -120,7 +120,7 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
       dispatch(
         addCustomRecord({
           domain,
-          type: type.key as AddDnsCustomRecordTypeEnum,
+          type: type.key as DNSRecordType,
           body: value,
         })
       );
@@ -225,9 +225,7 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
           value={value}
           onChange={onValueChange}
         />
-        <MessageBar>
-          {recordTypes[type.key as AddDnsCustomRecordTypeEnum].hint}
-        </MessageBar>
+        <MessageBar>{recordTypes[type.key as DNSRecordType].hint}</MessageBar>
         <Stack horizontal>
           <PrimaryButton type="submit" disabled={isAddingCustomRecord}>
             Save Record

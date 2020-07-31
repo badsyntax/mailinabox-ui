@@ -1,9 +1,11 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
   AddDnsCustomRecordRequest,
+  AddDnsSecondaryNameserverRequest,
   DNSCustomRecord,
   DNSDumpResponse,
   DNSSecondaryNameserverResponse,
+  RemoveDnsCustomRecordRequest,
 } from 'mailinabox-api';
 import { dnsApi, getRequestFailMessage } from '../api';
 import { RootState } from '../store';
@@ -23,18 +25,21 @@ export interface SSLState {
   isCheckingCustomRecords: boolean;
   isCheckingDump: boolean;
   isAddingCustomRecord: boolean;
+  isAddingSecondaryNameserver: boolean;
   isRemovingCustomRecord: boolean;
   secondaryNameserver: DNSSecondaryNameserverResponse;
   zones: Array<string>;
   customRecords: Array<DNSCustomRecord>;
   dump: DNSDumpResponse;
   addCustomRecordResponse: string | null;
+  addSecondaryNameserverResponse: string | null;
   removeCustomRecordResponse: string | null;
   getSecondaryNameserverError: string | null;
   getZonesError: string | null;
   getCustomRecordsError: string | null;
   getDumpError: string | null;
   addCustomRecordError: string | null;
+  addSecondaryNameserverError: string | null;
   removeCustomRecordError: string | null;
   dnsAction: DNSAction | null;
 }
@@ -45,6 +50,7 @@ const initialState: SSLState = {
   isCheckingCustomRecords: false,
   isCheckingDump: false,
   isAddingCustomRecord: false,
+  isAddingSecondaryNameserver: false,
   isRemovingCustomRecord: false,
   secondaryNameserver: {
     hostnames: [],
@@ -53,12 +59,14 @@ const initialState: SSLState = {
   zones: [],
   customRecords: [],
   addCustomRecordResponse: null,
+  addSecondaryNameserverResponse: null,
   removeCustomRecordResponse: null,
   getSecondaryNameserverError: null,
   getZonesError: null,
   getCustomRecordsError: null,
   getDumpError: null,
   addCustomRecordError: null,
+  addSecondaryNameserverError: null,
   removeCustomRecordError: null,
   dnsAction: null,
 };
@@ -155,8 +163,31 @@ export const dns = createSlice({
       state.removeCustomRecordError = null;
       state.removeCustomRecordResponse = null;
     },
+    addSecondaryNameserverStart: (state): void => {
+      state.addSecondaryNameserverError = null;
+      state.isAddingSecondaryNameserver = true;
+    },
+    addSecondaryNameserverSuccess: (state, action): void => {
+      state.isAddingSecondaryNameserver = false;
+      state.addSecondaryNameserverResponse = action.payload;
+    },
+    addSecondaryNameserverError: (state, action): void => {
+      state.isAddingSecondaryNameserver = false;
+      state.addSecondaryNameserverError = action.payload;
+    },
+    addSecondaryNameserverResetError: (state): void => {
+      state.addSecondaryNameserverError = null;
+    },
+    addSecondaryNameserverReset: (state): void => {
+      state.isAddingSecondaryNameserver = false;
+      state.addSecondaryNameserverError = null;
+      state.addSecondaryNameserverResponse = null;
+    },
     resetDNSAction: (state): void => {
-      state.dnsAction = null;
+      state.dnsAction = {
+        ...state.dnsAction,
+        type: undefined,
+      };
     },
     setDNSAction: (state, action): void => {
       state.dnsAction = action.payload;
@@ -182,6 +213,11 @@ export const {
   addCustomRecordError,
   addCustomRecordResetError,
   addCustomRecordReset,
+  addSecondaryNameserverStart,
+  addSecondaryNameserverSuccess,
+  addSecondaryNameserverError,
+  addSecondaryNameserverResetError,
+  addSecondaryNameserverReset,
   removeCustomRecordStart,
   removeCustomRecordSuccess,
   removeCustomRecordError,
@@ -239,6 +275,17 @@ export const selectAddCustomRecordError = (state: RootState): string | null =>
 export const selectAddCustomRecordResponse = (
   state: RootState
 ): string | null => state.dns.addCustomRecordResponse;
+
+export const selectIsAddingSecondaryNameserver = (state: RootState): boolean =>
+  state.dns.isAddingSecondaryNameserver;
+
+export const selectAddSecondaryNameserverError = (
+  state: RootState
+): string | null => state.dns.addSecondaryNameserverError;
+
+export const selectAddSecondaryNameserverResponse = (
+  state: RootState
+): string | null => state.dns.addSecondaryNameserverResponse;
 
 export const selectIsRemovingCustomRecord = (state: RootState): boolean =>
   state.dns.isRemovingCustomRecord;
@@ -357,6 +404,40 @@ export const addCustomRecord = (
   } catch (err) {
     dispatch(
       addCustomRecordError(await getRequestFailMessage(err as Response))
+    );
+  }
+};
+
+export const removeCustomRecord = (
+  customRecordRequest: RemoveDnsCustomRecordRequest
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(removeCustomRecordStart());
+  try {
+    const result = await dnsApi.removeDnsCustomRecord(customRecordRequest);
+    dispatch(removeCustomRecordSuccess(result));
+  } catch (err) {
+    dispatch(
+      removeCustomRecordError(await getRequestFailMessage(err as Response))
+    );
+  }
+};
+
+export const addSecondaryNameserver = (
+  secondaryNameserverRequest: AddDnsSecondaryNameserverRequest
+): ThunkAction<void, RootState, unknown, Action<string>> => async (
+  dispatch
+): Promise<void> => {
+  dispatch(addSecondaryNameserverStart());
+  try {
+    const result = await dnsApi.addDnsSecondaryNameserver(
+      secondaryNameserverRequest
+    );
+    dispatch(addSecondaryNameserverSuccess(result));
+  } catch (err) {
+    dispatch(
+      addSecondaryNameserverError(await getRequestFailMessage(err as Response))
     );
   }
 };

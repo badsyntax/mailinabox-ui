@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   DNSActionType,
   getCustomRecords,
+  removeCustomRecord,
   removeCustomRecordReset,
   resetDNSAction,
   selectDNSAction,
@@ -36,38 +37,40 @@ export const CustomDnsRecordActions: React.FunctionComponent = () => {
 
   const onRemoveAliasConfirm = useCallback((): void => {
     if (dnsAction?.dnsRecord) {
-      // TODO
-      // dispatch(removeCustomRecord(dnsAction?.alias.address));
+      const { qname: domain, rtype: type, value: body } = dnsAction.dnsRecord;
+      dispatch(
+        removeCustomRecord({
+          domain,
+          type,
+          body,
+        })
+      );
     }
-  }, [dnsAction]);
+  }, [dispatch, dnsAction]);
 
   return (
-    <>
-      <ActionConfirmDialog
-        hidden={dnsAction?.type !== DNSActionType.remove}
-        isLoading={isRemovingCustomRecord}
-        onDismiss={onActionDialogDismiss}
-        onDismissed={onActionDialogDismissed}
-        onConfirm={onRemoveAliasConfirm}
-        error={removeCustomRecordError}
-        actionResponse={removeCustomRecordResponse}
-        confirmButtonText="Remove Record"
-        dialogContentProps={{
-          type: DialogType.largeHeader,
-          title: 'Remove DNS Record',
-        }}
-        modalProps={{
-          isBlocking: true,
-        }}
-        minWidth={480}
-      >
-        <Text>Are you sure you want to remove the custom record: </Text>
-        <Pre>
-          <strong>
-            {dnsAction?.dnsRecord?.qname}&nbsp;({dnsAction?.dnsRecord?.rtype})
-          </strong>
-        </Pre>
-      </ActionConfirmDialog>
-    </>
+    <ActionConfirmDialog
+      hidden={dnsAction?.type !== DNSActionType.remove}
+      isLoading={isRemovingCustomRecord}
+      onDismiss={onActionDialogDismiss}
+      onDismissed={onActionDialogDismissed}
+      onConfirm={onRemoveAliasConfirm}
+      error={removeCustomRecordError}
+      actionResponse={removeCustomRecordResponse}
+      confirmButtonText="Remove Record"
+      dialogContentProps={{
+        type: DialogType.largeHeader,
+        title: 'Remove DNS Record',
+      }}
+      modalProps={{
+        isBlocking: true,
+      }}
+      minWidth={480}
+    >
+      <Text>Are you sure you want to remove the custom record:</Text>
+      <Pre>
+        {dnsAction?.dnsRecord?.qname}&nbsp;({dnsAction?.dnsRecord?.rtype})
+      </Pre>
+    </ActionConfirmDialog>
   );
 };
