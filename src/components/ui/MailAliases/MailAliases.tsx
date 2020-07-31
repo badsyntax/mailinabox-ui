@@ -3,6 +3,7 @@ import {
   mergeStyles,
   MessageBar,
   MessageBarType,
+  Overlay,
   Pivot,
   PivotItem,
   PivotLinkSize,
@@ -17,11 +18,8 @@ import {
   useLocation,
   useRouteMatch,
 } from 'react-router-dom';
-import {
-  getAliases,
-  selectAliasesError,
-  selectIsGettingAliases,
-} from '../../../features/aliasesSlice';
+import { getAliases } from '../../../features/aliasesSlice';
+import { RootState } from '../../../store';
 import { MailAliasAdd } from '../MailAliasAdd/MailAliasAdd';
 import { MailAliasesList } from '../MailAliasesList/MailAliasesList';
 
@@ -32,17 +30,18 @@ const className = mergeStyles({
 });
 
 export const MailAliases: React.FunctionComponent = () => {
+  const { isGettingAliases, getAliasesError, aliases } = useSelector(
+    (state: RootState) => state.aliases
+  );
   const openedGroupsState = useState<string[]>([]);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const isCheckingAliases = useSelector(selectIsGettingAliases);
-  const aliasesError = useSelector(selectAliasesError);
   const { path, url } = useRouteMatch();
 
   const onPivotLinkClick = useCallback(
-    (item?: PivotItem, ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      if (item && item?.props.itemKey) {
+    (item?: PivotItem, _event?: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      if (item?.props.itemKey) {
         history.push(item.props.itemKey);
       }
     },
@@ -50,8 +49,10 @@ export const MailAliases: React.FunctionComponent = () => {
   );
 
   useEffect(() => {
-    dispatch(getAliases());
-  }, [dispatch]);
+    if (!aliases.length) {
+      dispatch(getAliases());
+    }
+  }, [aliases.length, dispatch]);
   return (
     <>
       <Pivot
@@ -64,26 +65,43 @@ export const MailAliases: React.FunctionComponent = () => {
       </Pivot>
       <Switch>
         <Route exact path={path}>
-          <>
-            {aliasesError && (
+          <div
+            style={{
+              position: 'relative',
+            }}
+          >
+            {getAliasesError && (
               <MessageBar
                 messageBarType={MessageBarType.error}
-                isMultiline
                 className={className}
               >
-                {aliasesError}
+                {getAliasesError}
               </MessageBar>
             )}
-            {isCheckingAliases && (
+            {isGettingAliases && Boolean(aliases.length) && (
+              <Overlay
+                styles={{
+                  root: {
+                    zIndex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+                }}
+              >
+                <ProgressIndicator label="Loading aliases..." />
+              </Overlay>
+            )}
+            {isGettingAliases && !Boolean(aliases.length) && (
               <ProgressIndicator label="Loading aliases..." />
             )}
-            {!isCheckingAliases && !aliasesError && (
+            {!getAliasesError && Boolean(aliases.length) && (
               <MailAliasesList
                 className={className}
                 openedGroupsState={openedGroupsState}
               />
             )}
-          </>
+          </div>
         </Route>
         <Route exact path={`${path}/add`}>
           <MailAliasAdd />
