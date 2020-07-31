@@ -1,21 +1,15 @@
 import {
-  ConstrainMode,
-  DetailsList,
-  DetailsListLayoutMode,
-  DetailsRow,
   IColumn,
-  IDetailsGroupDividerProps,
-  IDetailsRowProps,
-  IGroup,
-  IGroupHeaderProps,
-  IRenderFunction,
   IStackProps,
-  SelectionMode,
+  mergeStyles,
   Stack,
   Text,
 } from '@fluentui/react';
 import { MailAlias } from 'mailinabox-api';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAliasesWithGroups } from '../../../features/aliasesSlice';
+import { GroupedDetailsList } from '../GroupedDetailsList/GroupedDetailsList';
 import { MailAliasActions } from './MailAliasActions';
 import { MailAliasActionsList } from './MailAliasActionsList';
 
@@ -63,72 +57,32 @@ const columns: IColumn[] = [
     name: 'Actions',
     isMultiline: false,
     minWidth: 50,
+    isPadded: false,
     onRender: (alias: MailAlias): React.ReactNode => {
       return <MailAliasActionsList alias={alias} />;
     },
+    className: mergeStyles({
+      displayName: 'DetailsRow-actions-cell',
+    }),
   },
 ];
 
+interface MailAliasesListProps {
+  openedGroupsState: [string[], Dispatch<SetStateAction<string[]>>];
+}
+
 export const MailAliasesList: React.FunctionComponent<
-  IStackProps & {
-    aliases: Array<MailAlias>;
-    groups: Array<IGroup>;
-  }
-> = ({ aliases = [], groups = [], ...props }) => {
+  IStackProps & MailAliasesListProps
+> = ({ openedGroupsState, ...props }) => {
+  const [aliases, groups] = useSelector(selectAliasesWithGroups);
   return (
     <Stack as="section" {...props}>
       <MailAliasActions />
-      <DetailsList
+      <GroupedDetailsList
+        openedGroupsState={openedGroupsState}
         items={aliases}
         groups={groups}
         columns={columns}
-        layoutMode={DetailsListLayoutMode.justified}
-        selectionMode={SelectionMode.none}
-        constrainMode={ConstrainMode.horizontalConstrained}
-        useReducedRowRenderer
-        usePageCache
-        onRenderRow={(props?: IDetailsRowProps): JSX.Element | null => {
-          if (props) {
-            return (
-              <DetailsRow
-                {...props}
-                styles={{
-                  root: {
-                    animation: 'none',
-                  },
-                }}
-              />
-            );
-          }
-          return null;
-        }}
-        groupProps={{
-          isAllGroupsCollapsed: true,
-          onRenderHeader: (
-            props?: IDetailsGroupDividerProps,
-            defaultRender?: IRenderFunction<IGroupHeaderProps>
-          ): JSX.Element | null => {
-            console.log('props', props);
-
-            if (defaultRender) {
-              return (
-                <div
-                  onClick={(
-                    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-                  ): void => {
-                    if (props && props.group) {
-                      event.preventDefault();
-                      props.onToggleCollapse?.(props.group);
-                    }
-                  }}
-                >
-                  {defaultRender(props)}
-                </div>
-              );
-            }
-            return null;
-          },
-        }}
       />
     </Stack>
   );

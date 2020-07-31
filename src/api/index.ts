@@ -34,8 +34,11 @@ export const usersApi = new UsersApi(apiConfig);
 export const webApi = new WebApi(apiConfig);
 
 export async function getRequestFailMessage(
-  response: Response
+  response: Response | Error
 ): Promise<string> {
+  if (response instanceof Error) {
+    return response.message;
+  }
   const { statusText, status } = response;
   const responseText = await response.text();
   return (

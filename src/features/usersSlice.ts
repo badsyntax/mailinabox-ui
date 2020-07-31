@@ -205,7 +205,7 @@ export const usersCheck = (
     });
     dispatch(usersGetSuccess(result));
   } catch (err) {
-    dispatch(usersGetError(await getRequestFailMessage(err as Response)));
+    dispatch(usersGetError(await getRequestFailMessage(err)));
   }
 };
 
@@ -222,7 +222,7 @@ export const userAddAdminPrivilege = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err)));
   }
 };
 
@@ -239,7 +239,7 @@ export const userRemoveAdminPrivilege = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err)));
   }
 };
 
@@ -257,7 +257,7 @@ export const userSetPassword = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err)));
   }
 };
 
@@ -273,7 +273,7 @@ export const userRemove = (
     });
     dispatch(userUpdateSuccess(result));
   } catch (err) {
-    dispatch(userUpdateError(await getRequestFailMessage(err as Response)));
+    dispatch(userUpdateError(await getRequestFailMessage(err)));
   }
 };
 
@@ -299,6 +299,6 @@ export const userAdd = (
       })
     );
   } catch (err) {
-    dispatch(userAddError(await getRequestFailMessage(err as Response)));
+    dispatch(userAddError(await getRequestFailMessage(err)));
   }
 };

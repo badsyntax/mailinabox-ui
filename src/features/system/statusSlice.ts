@@ -55,7 +55,7 @@ export const systemStatusCheck = (): ThunkAction<
     const result = await systemApi.getSystemStatus();
     dispatch(systemStatusSuccess(result));
   } catch (err) {
-    dispatch(systemStatusError(await getRequestFailMessage(err as Response)));
+    dispatch(systemStatusError(await getRequestFailMessage(err)));
   }
 };
 

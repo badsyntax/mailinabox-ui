@@ -145,7 +145,7 @@ export const getStatus = (): ThunkAction<
     const result = await systemApi.getSystemBackupStatus();
     dispatch(getStatusSuccess(result));
   } catch (err) {
-    dispatch(getStatusError(await getRequestFailMessage(err as Response)));
+    dispatch(getStatusError(await getRequestFailMessage(err)));
   }
 };
 
@@ -160,7 +160,7 @@ export const getConfig = (): ThunkAction<
     const result = await systemApi.getSystemBackupConfig();
     dispatch(getConfigSuccess(result));
   } catch (err) {
-    dispatch(getConfigError(await getRequestFailMessage(err as Response)));
+    dispatch(getConfigError(await getRequestFailMessage(err)));
   }
 };
 
@@ -174,6 +174,6 @@ export const updateConfig = (
     const result = await systemApi.updateSystemBackupConfig(config);
     dispatch(updateConfigSuccess(result));
   } catch (err) {
-    dispatch(updateConfigError(await getRequestFailMessage(err as Response)));
+    dispatch(updateConfigError(await getRequestFailMessage(err)));
   }
 };

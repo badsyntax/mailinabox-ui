@@ -2,7 +2,7 @@ import { CommandBar, ContextualMenuItemType, Stack } from '@fluentui/react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LogoutRoute } from '../../routes/LogoutRoute/LogoutRoute';
-import { Aliases } from '../../routes/MainRoute/mail/Aliases/Aliases';
+import { AliasesRoute } from '../../routes/MainRoute/mail/AliasesRoute/AliasesRoute';
 import { Instructions } from '../../routes/MainRoute/mail/Instructions/Instructions';
 import { Users } from '../../routes/MainRoute/mail/Users/Users';
 import { SyncGuide } from '../../routes/MainRoute/SyncGuide/SyncGuide';
@@ -22,6 +22,7 @@ export const PrimaryNav: React.FunctionComponent = () => {
           width: '100%',
         },
       }}
+      as="nav"
     >
       <CommandBar
         styles={{
@@ -31,7 +32,7 @@ export const PrimaryNav: React.FunctionComponent = () => {
         }}
         farItems={[
           {
-            key: 'logout',
+            key: 'navLogout',
             text: 'Log out',
             iconProps: { iconName: 'SignOut' },
             onClick: (): void => {
@@ -47,27 +48,23 @@ export const PrimaryNav: React.FunctionComponent = () => {
             subMenuProps: {
               items: [
                 {
-                  key: 'statusChecks',
+                  key: 'navStatusChecks',
                   text: 'Status Checks',
-                  // iconProps: { iconName: 'Health' },
                   onClick: (): void => history.push(StatusChecks.path),
                 },
                 {
-                  key: 'certificates',
+                  key: 'navCertificates',
                   text: 'TLS (SSL) Certificates',
-                  // iconProps: { iconName: 'Lock' },
                   onClick: (): void => history.push(Certificates.path),
                 },
                 {
-                  key: 'backup',
+                  key: 'navBackupStatus',
                   text: 'Backup Status',
-                  // iconProps: { iconName: 'CloudUpload' },
                   onClick: (): void => history.push(Backups.path),
                 },
                 {
-                  key: 'advanced',
+                  key: 'navAdvanced',
                   text: 'Advanced',
-                  // iconProps: { iconName: 'LightningBolt' },
                   itemType: ContextualMenuItemType.Section,
                   sectionProps: {
                     topDivider: true,
@@ -75,21 +72,18 @@ export const PrimaryNav: React.FunctionComponent = () => {
                     title: 'Advanced',
                     items: [
                       {
-                        key: 'customDns',
+                        key: 'navCustomDns',
                         text: 'Custom DNS',
-                        // iconProps: { iconName: 'InternetSharing' },
                         onClick: (): void => history.push(CustomDns.path),
                       },
                       {
-                        key: 'externalDns',
+                        key: 'navExternalDnsRoute',
                         text: 'External DNS',
-                        // iconProps: { iconName: 'NetworkTower' },
                         onClick: (): void => history.push(ExternalDns.path),
                       },
                       {
-                        key: 'monitoring',
+                        key: 'navMonitoring',
                         text: 'Munin Monitoring',
-                        // iconProps: { iconName: 'Chart' },
                       },
                     ],
                   },
@@ -98,40 +92,37 @@ export const PrimaryNav: React.FunctionComponent = () => {
             },
           },
           {
-            key: 'mail',
+            key: 'navMail',
             text: 'Mail',
             iconProps: { iconName: 'Mail' },
             subMenuProps: {
               items: [
                 {
-                  key: 'instructions',
+                  key: 'navInstructions',
                   text: 'Instructions',
-                  // iconProps: { iconName: 'Settings' },
                   onClick: (): void => history.push(Instructions.path),
                 },
                 {
-                  key: 'users',
+                  key: 'navUsers',
                   text: 'Users',
-                  // iconProps: { iconName: 'Contact' },
                   onClick: (): void => history.push(Users.path),
                 },
                 {
-                  key: 'aliases',
+                  key: 'navAliases',
                   text: 'Aliases',
-                  // iconProps: { iconName: 'ConnectContacts' },
-                  onClick: (): void => history.push(Aliases.path),
+                  onClick: (): void => history.push(AliasesRoute.path),
                 },
               ],
             },
           },
           {
-            key: 'contacts',
+            key: 'navContacts',
             text: 'Contacts/Calendar',
             iconProps: { iconName: 'Calendar' },
             onClick: (): void => history.push(SyncGuide.path),
           },
           {
-            key: 'web',
+            key: 'navWeb',
             text: 'Web',
             iconProps: { iconName: 'SiteScan' },
             onClick: (): void => history.push(Web.path),

@@ -187,7 +187,7 @@ export const getDomains = (): ThunkAction<
     const result = await webApi.getWebDomains();
     dispatch(getDomainsSuccess(result));
   } catch (err) {
-    dispatch(getDomainsError(await getRequestFailMessage(err as Response)));
+    dispatch(getDomainsError(await getRequestFailMessage(err)));
   }
 };
 
@@ -202,6 +202,6 @@ export const updateWeb = (): ThunkAction<
     const result = await webApi.updateWeb();
     dispatch(updateSuccess(result || 'Nothing changed.'));
   } catch (err) {
-    dispatch(updateError(await getRequestFailMessage(err as Response)));
+    dispatch(updateError(await getRequestFailMessage(err)));
   }
 };

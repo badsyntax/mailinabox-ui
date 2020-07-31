@@ -339,9 +339,7 @@ export const getSecondaryNameserver = (): ThunkAction<
     const result = await dnsApi.getDnsSecondaryNameserver();
     dispatch(getSecondaryNameserverSuccess(result));
   } catch (err) {
-    dispatch(
-      getSecondaryNameserverError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(getSecondaryNameserverError(await getRequestFailMessage(err)));
   }
 };
 
@@ -356,7 +354,7 @@ export const getZones = (): ThunkAction<
     const result = await dnsApi.getDnsZones();
     dispatch(getZonesSuccess(result));
   } catch (err) {
-    dispatch(getZonesError(await getRequestFailMessage(err as Response)));
+    dispatch(getZonesError(await getRequestFailMessage(err)));
   }
 };
 
@@ -371,9 +369,7 @@ export const getCustomRecords = (): ThunkAction<
     const result = await dnsApi.getDnsCustomRecords();
     dispatch(getCustomRecordsSuccess(result));
   } catch (err) {
-    dispatch(
-      getCustomRecordsError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(getCustomRecordsError(await getRequestFailMessage(err)));
   }
 };
 
@@ -388,7 +384,7 @@ export const getDump = (): ThunkAction<
     const result = await dnsApi.getDnsDump();
     dispatch(getDumpSuccess(result));
   } catch (err) {
-    dispatch(getDumpError(await getRequestFailMessage(err as Response)));
+    dispatch(getDumpError(await getRequestFailMessage(err)));
   }
 };
 
@@ -402,9 +398,7 @@ export const addCustomRecord = (
     const result = await dnsApi.addDnsCustomRecord(customRecordRequest);
     dispatch(addCustomRecordSuccess(result));
   } catch (err) {
-    dispatch(
-      addCustomRecordError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(addCustomRecordError(await getRequestFailMessage(err)));
   }
 };
 
@@ -418,9 +412,7 @@ export const removeCustomRecord = (
     const result = await dnsApi.removeDnsCustomRecord(customRecordRequest);
     dispatch(removeCustomRecordSuccess(result));
   } catch (err) {
-    dispatch(
-      removeCustomRecordError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(removeCustomRecordError(await getRequestFailMessage(err)));
   }
 };
 
@@ -436,8 +428,6 @@ export const addSecondaryNameserver = (
     );
     dispatch(addSecondaryNameserverSuccess(result));
   } catch (err) {
-    dispatch(
-      addSecondaryNameserverError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(addSecondaryNameserverError(await getRequestFailMessage(err)));
   }
 };

@@ -148,7 +148,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
       const addAlias: UpsertMailAliasRequest = {
         ...alias,
         permittedSenders:
-          senderType === SenderType.manual ? alias.permittedSenders : null,
+          senderType === SenderType.manual ? alias.permittedSenders : '',
       };
       dispatch(upsertAlias(addAlias));
     },

@@ -47,6 +47,7 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
 
   const onDialogDismissed = useCallback((): void => {
     dispatch(upsertAliasReset());
+    setHasDialogOpened(false);
   }, [dispatch]);
 
   const onDialogClose = useCallback(
@@ -69,19 +70,19 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
   }, [isDialogHidden]);
 
   useEffect(() => {
-    return (): void => {
-      dispatch(upsertAliasReset());
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
     if (upsertAliasResponse) {
       dispatch(getAliases());
     }
   }, [dispatch, upsertAliasResponse]);
 
+  useEffect(() => {
+    return (): void => {
+      dispatch(upsertAliasReset());
+    };
+  }, [dispatch]);
+
   return (
-    <>
+    <Stack>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={dialogContentProps}
@@ -115,6 +116,6 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
           </Stack>
         </MailAliasUpsert>
       </Stack>
-    </>
+    </Stack>
   );
 };

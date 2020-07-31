@@ -1,6 +1,6 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { MeAuthStatus } from 'mailinabox-api';
-import { userApi } from '../api';
+import { getRequestFailMessage, userApi } from '../api';
 import { RootState } from '../store';
 import { authUpdate } from './authSlice';
 
@@ -66,12 +66,7 @@ export const loginCheck = (
       });
     }
   } catch (err) {
-    const { statusText, status } = err as Response;
-    dispatch(
-      loginError(
-        `Request error: ${statusText}${status ? ' (' + status + ')' : ''}`
-      )
-    );
+    dispatch(loginError(await getRequestFailMessage(err)));
   }
 };
 

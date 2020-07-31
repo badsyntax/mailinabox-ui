@@ -3,7 +3,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Header } from '../../ui/Header/Header';
 import { LogoutRoute } from '../LogoutRoute/LogoutRoute';
-import { Aliases } from './mail/Aliases/Aliases';
+import { AliasesRoute } from './mail/AliasesRoute/AliasesRoute';
 import { Instructions } from './mail/Instructions/Instructions';
 import { Users } from './mail/Users/Users';
 import { SyncGuide } from './SyncGuide/SyncGuide';
@@ -40,8 +40,8 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
         <Route exact path={Users.path}>
           <Users />
         </Route>
-        <Route exact path={Aliases.path}>
-          <Aliases />
+        <Route path={AliasesRoute.path}>
+          <AliasesRoute />
         </Route>
         <Route exact path={SyncGuide.path}>
           <SyncGuide />

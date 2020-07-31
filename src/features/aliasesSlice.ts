@@ -1,6 +1,8 @@
+import { IGroup } from '@fluentui/react';
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
   MailAlias,
+  MailAliasByDomain,
   MailAliasesResponse,
   MailAliasesResponseFormat,
   UpsertMailAliasRequest,
@@ -158,6 +160,25 @@ export const selectRemoveAliasError = (state: RootState): string | null =>
 export const selectRemoveAliasResponse = (state: RootState): string | null =>
   state.aliases.removeAliasResponse;
 
+export const selectAliasesWithGroups = (
+  state: RootState
+): [Array<MailAlias>, Array<IGroup>] => {
+  const aliases: Array<MailAlias> = [];
+  const groups: Array<IGroup> = [];
+  state.aliases.aliases.forEach((aliasDomain: MailAliasByDomain) => {
+    const { domain, aliases: aliasesByDomain } = aliasDomain;
+    groups.push({
+      key: 'group' + domain,
+      name: domain,
+      startIndex: aliases.length,
+      level: 0,
+      count: aliasesByDomain.length,
+    });
+    aliases.push(...aliasesByDomain);
+  });
+  return [aliases, groups];
+};
+
 export const getAliases = (
   showProgress = true
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (
@@ -172,7 +193,7 @@ export const getAliases = (
     });
     dispatch(getAliasesSuccess(result));
   } catch (err) {
-    dispatch(getAliasesError(await getRequestFailMessage(err as Response)));
+    dispatch(getAliasesError(await getRequestFailMessage(err)));
   }
 };
 
@@ -186,7 +207,7 @@ export const upsertAlias = (
     const result = await aliasesApi.upsertMailAlias(alias);
     dispatch(upsertAliasSuccess(result));
   } catch (err) {
-    dispatch(upsertAliasError(await getRequestFailMessage(err as Response)));
+    dispatch(upsertAliasError(await getRequestFailMessage(err)));
   }
 };
 
@@ -202,6 +223,6 @@ export const removeAlias = (
     });
     dispatch(removeAliasSuccess(result));
   } catch (err) {
-    dispatch(removeAliasError(await getRequestFailMessage(err as Response)));
+    dispatch(removeAliasError(await getRequestFailMessage(err)));
   }
 };

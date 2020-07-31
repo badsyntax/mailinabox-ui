@@ -17,6 +17,14 @@ mergeStyles({
       padding: 0,
       height: '100vh',
     },
+    // Even though we can define cell styles when defining the columns, the default cell styles
+    // still take priority. This is a hack to override the default cell styles using parent selector.
+    ':global(.ms-DetailsRow [class^="DetailsRow-actions-cell"])': {
+      padding: '0',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   },
 });
 

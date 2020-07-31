@@ -66,7 +66,7 @@ export const systemPrivacyCheck = (): ThunkAction<
     const result = await systemApi.getSystemPrivacyStatus();
     dispatch(systemPrivacyGetSuccess(result));
   } catch (err) {
-    dispatch(systemPrivacyError(await getRequestFailMessage(err as Response)));
+    dispatch(systemPrivacyError(await getRequestFailMessage(err)));
   }
 };
 
@@ -87,7 +87,7 @@ export const systemPrivacyUpdate = (
       })
     );
   } catch (err) {
-    dispatch(systemPrivacyError(await getRequestFailMessage(err as Response)));
+    dispatch(systemPrivacyError(await getRequestFailMessage(err)));
   }
 };
 

@@ -165,7 +165,7 @@ export const sslStatusCheck = (): ThunkAction<
     const result = await sslApi.getSSLStatus();
     dispatch(getSSLStatusSuccess(result));
   } catch (err) {
-    dispatch(getSSLStatusError(await getRequestFailMessage(err as Response)));
+    dispatch(getSSLStatusError(await getRequestFailMessage(err)));
   }
 };
 
@@ -183,7 +183,7 @@ export const generateCSR = (
     });
     dispatch(generateCSRSuccess(result));
   } catch (err) {
-    dispatch(generateCSRError(await getRequestFailMessage(err as Response)));
+    dispatch(generateCSRError(await getRequestFailMessage(err)));
   }
 };
 
@@ -197,8 +197,6 @@ export const installCertificate = (
     const result = await sslApi.installSSLCertificate(request);
     dispatch(installCertificateSuccess(result));
   } catch (err) {
-    dispatch(
-      installCertificateError(await getRequestFailMessage(err as Response))
-    );
+    dispatch(installCertificateError(await getRequestFailMessage(err)));
   }
 };
