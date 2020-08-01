@@ -1,27 +1,25 @@
 import {
   Breadcrumb,
   getTheme,
-  IGroup,
   Link,
   mergeStyles,
   MessageBar,
   MessageBarType,
-  Pivot,
   PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
   Stack,
   Text,
 } from '@fluentui/react';
-import { DNSDumpDomainRecord, DNSDumpDomains } from 'mailinabox-api';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getDump } from '../../../../../features/dnsSlice';
 import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { DnsDumpList } from '../../../../ui/DnsDumpList/DnsDumpList';
 import { DnsZoneFileGenerator } from '../../../../ui/DnsZoneFileGenerator/DnsZoneFileGenerator';
+import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
 const theme = getTheme();
 
@@ -30,46 +28,45 @@ const className = mergeStyles({
 });
 
 const ExternalDnsSections: React.FunctionComponent = () => {
-  const { dump } = useSelector((state: RootState) => state.dns);
-
-  const records: Array<DNSDumpDomainRecord> = [];
-  const groups: Array<IGroup> = [];
-
-  dump.forEach((dnsDomains: DNSDumpDomains) => {
-    const [domainName, dnsRecords] = dnsDomains;
-    groups.push({
-      key: 'group' + groups.length,
-      name: domainName as string,
-      startIndex: records.length,
-      isCollapsed: false,
-      level: 0,
-      count: dnsRecords.length,
-    });
-    records.push(...(dnsRecords as Array<DNSDumpDomainRecord>));
-  });
+  const { path, url } = useRouteMatch();
+  const openedGroupsState = useState<string[]>([]);
   return (
-    <Pivot linkSize={PivotLinkSize.large}>
-      <PivotItem headerText="DNS Records">
-        <DnsDumpList records={records} groups={groups} className={className} />
-      </PivotItem>
-      <PivotItem headerText="Zone File Generator" className={className}>
-        <DnsZoneFileGenerator />
-      </PivotItem>
-    </Pivot>
+    <>
+      <PivotRoutes>
+        <PivotItem itemKey={url} headerText="DNS Records" />
+        <PivotItem
+          itemKey={`${url}/zone-file`}
+          headerText="Zone File Generator"
+        />
+      </PivotRoutes>
+      <Switch>
+        <Route exact path={path}>
+          <DnsDumpList
+            className={className}
+            openedGroupsState={openedGroupsState}
+          />
+        </Route>
+        <Route exact path={`${path}/zone-file`}>
+          <DnsZoneFileGenerator />
+        </Route>
+      </Switch>
+    </>
   );
 };
 
-export const ExternalDns: React.FunctionComponent & {
+export const ExternalDnsRoute: React.FunctionComponent & {
   path: string;
 } = () => {
-  const { isGettingDump, getDumpError } = useSelector(
+  const { isGettingDump, getDumpError, dump } = useSelector(
     (state: RootState) => state.dns
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getDump());
-  }, [dispatch]);
+    if (!dump.length) {
+      dispatch(getDump());
+    }
+  }, [dispatch, dump.length]);
 
   return (
     <Body>
@@ -139,4 +136,4 @@ export const ExternalDns: React.FunctionComponent & {
   );
 };
 
-ExternalDns.path = '/dns/external';
+ExternalDnsRoute.path = '/dns/external';

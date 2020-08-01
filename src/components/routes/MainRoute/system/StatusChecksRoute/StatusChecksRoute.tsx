@@ -26,7 +26,9 @@ const messageBarClassName = mergeStyles({
   ...AnimationStyles.fadeIn500,
 });
 
-export const StatusChecks: React.FunctionComponent & { path: string } = () => {
+export const StatusChecksRoute: React.FunctionComponent & {
+  path: string;
+} = () => {
   const { isGettingStatus, getStatusError } = useSelector(
     (state: RootState) => state.system.status
   );
@@ -98,4 +100,4 @@ export const StatusChecks: React.FunctionComponent & { path: string } = () => {
   );
 };
 
-StatusChecks.path = '/system/status';
+StatusChecksRoute.path = '/system/status';

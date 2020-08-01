@@ -3,15 +3,14 @@ import {
   getTheme,
   mergeStyles,
   MessageBarType,
-  Pivot,
   PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
   getConfig,
   getStatus,
@@ -22,6 +21,7 @@ import { BackupsList } from '../../../../ui/BackupsList/BackupsList';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
+import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
 const theme = getTheme();
 
@@ -32,34 +32,69 @@ const className = mergeStyles({
 const BackupSections: React.FunctionComponent = () => {
   const { status } = useSelector((state: RootState) => state.system.backups);
   const { backups, unmatchedFileSize } = status;
+  const { path, url } = useRouteMatch();
   return (
-    <Pivot linkSize={PivotLinkSize.large}>
-      <PivotItem headerText="Backup Status">
-        {backups && (
-          <BackupsList
+    <>
+      <PivotRoutes>
+        <PivotItem itemKey={url} headerText="Backup Status" />
+        <PivotItem
+          itemKey={`${url}/config`}
+          headerText="Backup Configuration"
+        />
+      </PivotRoutes>
+
+      <Switch>
+        <Route exact path={path}>
+          {backups && (
+            <BackupsList
+              className={className}
+              backups={backups}
+              unmatchedFileSize={unmatchedFileSize}
+            />
+          )}
+          {!backups && (
+            <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+              Backups are turned off.
+            </MessageBar>
+          )}
+        </Route>
+        <Route exact path={`${path}/config`}>
+          <BackupConfigure
             className={className}
             backups={backups}
             unmatchedFileSize={unmatchedFileSize}
           />
-        )}
-        {!backups && (
-          <MessageBar messageBarType={MessageBarType.warning} isMultiline>
-            Backups are turned off.
-          </MessageBar>
-        )}
-      </PivotItem>
-      <PivotItem headerText="Backup Configuration">
-        <BackupConfigure
-          className={className}
-          backups={backups}
-          unmatchedFileSize={unmatchedFileSize}
-        />
-      </PivotItem>
-    </Pivot>
+        </Route>
+      </Switch>
+
+      {/* <Pivot linkSize={PivotLinkSize.large}>
+        <PivotItem headerText="Backup Status">
+          {backups && (
+            <BackupsList
+              className={className}
+              backups={backups}
+              unmatchedFileSize={unmatchedFileSize}
+            />
+          )}
+          {!backups && (
+            <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+              Backups are turned off.
+            </MessageBar>
+          )}
+        </PivotItem>
+        <PivotItem headerText="Backup Configuration">
+          <BackupConfigure
+            className={className}
+            backups={backups}
+            unmatchedFileSize={unmatchedFileSize}
+          />
+        </PivotItem>
+      </Pivot> */}
+    </>
   );
 };
 
-export const Backups: React.FunctionComponent & {
+export const BackupsRoute: React.FunctionComponent & {
   path: string;
 } = () => {
   const {
@@ -122,4 +157,4 @@ export const Backups: React.FunctionComponent & {
   );
 };
 
-Backups.path = '/system/backup';
+BackupsRoute.path = '/system/backup';

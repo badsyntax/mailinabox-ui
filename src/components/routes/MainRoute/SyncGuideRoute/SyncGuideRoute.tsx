@@ -19,7 +19,7 @@ const columnClassName = mergeStyles({
   flexBasis: 0,
 });
 
-export const SyncGuide: React.FunctionComponent & {
+export const SyncGuideRoute: React.FunctionComponent & {
   path: string;
 } = () => {
   const tooltipId = useId('tooltip');
@@ -90,4 +90,4 @@ export const SyncGuide: React.FunctionComponent & {
   );
 };
 
-SyncGuide.path = '/sync-guide';
+SyncGuideRoute.path = '/sync-guide';

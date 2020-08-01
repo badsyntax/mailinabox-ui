@@ -1,20 +1,16 @@
 import {
-  ConstrainMode,
-  DetailsList,
-  DetailsListLayoutMode,
   FontSizes,
   IColumn,
-  IDetailsGroupDividerProps,
-  IGroup,
-  IGroupHeaderProps,
-  IRenderFunction,
   IStackProps,
-  SelectionMode,
+  mergeStyles,
   Stack,
   Text,
 } from '@fluentui/react';
 import { DNSCustomRecord, DNSDumpDomainRecord } from 'mailinabox-api';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useSelector } from 'react-redux';
+import { selectDumpWithGroups } from '../../../features/dnsSlice';
+import { GroupedDetailsList } from '../GroupedDetailsList/GroupedDetailsList';
 import { InfoButton } from '../InfoButton/InfoButton';
 
 const columns: IColumn[] = [
@@ -74,51 +70,27 @@ const columns: IColumn[] = [
         />
       );
     },
+    className: mergeStyles({
+      displayName: 'DetailsRow-actions-cell',
+    }),
   },
 ];
 
+interface DnsDumpListProps {
+  openedGroupsState: [string[], Dispatch<SetStateAction<string[]>>];
+}
+
 export const DnsDumpList: React.FunctionComponent<
-  IStackProps & {
-    records: Array<DNSDumpDomainRecord>;
-    groups: Array<IGroup>;
-  }
-> = ({ records = [], groups = [], ...props }) => {
+  IStackProps & DnsDumpListProps
+> = ({ openedGroupsState, ...props }) => {
+  const [records, groups] = useSelector(selectDumpWithGroups);
   return (
     <Stack as="section" {...props}>
-      <DetailsList
+      <GroupedDetailsList
         items={records}
         groups={groups}
         columns={columns}
-        layoutMode={DetailsListLayoutMode.justified}
-        selectionMode={SelectionMode.none}
-        constrainMode={ConstrainMode.horizontalConstrained}
-        useReducedRowRenderer
-        usePageCache
-        groupProps={{
-          isAllGroupsCollapsed: true,
-          onRenderHeader: (
-            props?: IDetailsGroupDividerProps,
-            defaultRender?: IRenderFunction<IGroupHeaderProps>
-          ): JSX.Element | null => {
-            if (defaultRender) {
-              return (
-                <div
-                  onClick={(
-                    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-                  ): void => {
-                    if (props && props.group) {
-                      event.preventDefault();
-                      props.onToggleCollapse?.(props.group);
-                    }
-                  }}
-                >
-                  {defaultRender(props)}
-                </div>
-              );
-            }
-            return null;
-          },
-        }}
+        openedGroupsState={openedGroupsState}
       />
     </Stack>
   );

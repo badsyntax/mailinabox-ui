@@ -1,20 +1,14 @@
 import {
-  ConstrainMode,
-  DetailsList,
-  DetailsListLayoutMode,
   IColumn,
-  IDetailsGroupDividerProps,
-  IGroupHeaderProps,
-  IRenderFunction,
+  IStackProps,
   Link,
+  mergeStyles,
   MessageBarType,
-  ProgressIndicator,
-  SelectionMode,
   Stack,
   Text,
 } from '@fluentui/react';
 import { WebDomain } from 'mailinabox-api';
-import React, { useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getDomains,
@@ -22,6 +16,9 @@ import {
   WebDomainWithDomainInfo,
 } from '../../../features/webSlice';
 import { RootState } from '../../../store';
+import { GroupedDetailsList } from '../GroupedDetailsList/GroupedDetailsList';
+import { LoadingOverlay } from '../LoadingOverlay/LoadingOverlay';
+import { LoadingOverlayContainer } from '../LoadingOverlay/LoadingOverlayContainer';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { WebDomainActions } from './WebDomainActions';
 import { WebDomainsActionsList } from './WebDomainsActionsList';
@@ -56,16 +53,19 @@ const columns: IColumn[] = [
     onRender: (webDomain: WebDomainWithDomainInfo): React.ReactNode => (
       <WebDomainsActionsList webDomain={webDomain} />
     ),
+    className: mergeStyles({
+      displayName: 'DetailsRow-actions-cell',
+    }),
   },
 ];
 
 interface WebDomainsListProps {
-  className: string;
+  openedGroupsState: [string[], Dispatch<SetStateAction<string[]>>];
 }
 
-export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
-  className,
-}) => {
+export const WebDomainsList: React.FunctionComponent<
+  IStackProps & WebDomainsListProps
+> = ({ openedGroupsState, ...props }) => {
   const { isGettingDomains, getDomainsError } = useSelector(
     (state: RootState) => state.web
   );
@@ -80,61 +80,41 @@ export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
     }
   }, [dispatch, domains, getDomainsError, isGettingDomains]);
   return (
-    <Stack className={className}>
+    <Stack {...props}>
       <WebDomainActions />
       {getDomainsError && (
         <MessageBar messageBarType={MessageBarType.error} isMultiline>
           {getDomainsError}
         </MessageBar>
       )}
-      {isGettingDomains && <ProgressIndicator label="Loading domains..." />}
-      {!isGettingDomains && !getDomainsError && (
-        <>
-          <MessageBar>
-            To add a domain to this table, create a dummy
-            <Link href="#users">mail user</Link> or
-            <Link href="#aliases">alias</Link> on the domain first and see the
-            <Link href="https://mailinabox.email/guide.html#domain-name-configuration">
-              setup guide
-            </Link>{' '}
-            for adding nameserver records to the new domain at your registrar
-            (but <i>not</i> glue records).
-          </MessageBar>
-          <DetailsList
-            items={domains}
-            columns={columns}
-            groups={groups}
-            groupProps={{
-              isAllGroupsCollapsed: true,
-              onRenderHeader: (
-                props?: IDetailsGroupDividerProps,
-                defaultRender?: IRenderFunction<IGroupHeaderProps>
-              ): JSX.Element | null => {
-                if (defaultRender) {
-                  return (
-                    <div
-                      onClick={(
-                        event: React.MouseEvent<HTMLDivElement, MouseEvent>
-                      ): void => {
-                        if (props && props.group) {
-                          event.preventDefault();
-                          props.onToggleCollapse?.(props.group);
-                        }
-                      }}
-                    >
-                      {defaultRender(props)}
-                    </div>
-                  );
-                }
-                return null;
-              },
-            }}
-            layoutMode={DetailsListLayoutMode.justified}
-            selectionMode={SelectionMode.none}
-            constrainMode={ConstrainMode.horizontalConstrained}
+      <LoadingOverlayContainer>
+        {isGettingDomains && (
+          <LoadingOverlay
+            loadingLabel="Loading domains..."
+            hasLoaded={Boolean(domains.length)}
           />
-        </>
-      )}
+        )}
+        {!isGettingDomains && !getDomainsError && (
+          <Stack gap="m">
+            <MessageBar>
+              To add a domain to this table, create a dummy
+              <Link href="#users">mail user</Link> or
+              <Link href="#aliases">alias</Link> on the domain first and see the
+              <Link href="https://mailinabox.email/guide.html#domain-name-configuration">
+                setup guide
+              </Link>{' '}
+              for adding nameserver records to the new domain at your registrar
+              (but <i>not</i> glue records).
+            </MessageBar>
+            <GroupedDetailsList
+              items={domains}
+              columns={columns}
+              groups={groups}
+              openedGroupsState={openedGroupsState}
+            />
+          </Stack>
+        )}
+      </LoadingOverlayContainer>
     </Stack>
   );
 };

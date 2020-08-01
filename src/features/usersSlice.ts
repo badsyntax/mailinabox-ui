@@ -1,6 +1,8 @@
+import { IGroup } from '@fluentui/react';
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
   MailUser,
+  MailUserByDomain,
   MailUserPrivilege,
   MailUsersResponse,
   MailUsersResponseFormat,
@@ -129,6 +131,29 @@ export const {
 } = users.actions;
 
 export const { reducer: usersReducer } = users;
+
+export const selectUsersWithGroups = (
+  state: RootState
+): [Array<MailUser>, Array<IGroup>] => {
+  const { users: mailUsers } = state.users;
+  const users: Array<MailUser> = [];
+  const groups: Array<IGroup> = [];
+
+  mailUsers.forEach((userDomain: MailUserByDomain) => {
+    const { domain, users: usersByDomain } = userDomain;
+    groups.push({
+      key: 'group' + groups.length,
+      name: domain,
+      startIndex: users.length,
+      isCollapsed: true,
+      level: 0,
+      count: usersByDomain.length,
+    });
+    users.push(...usersByDomain);
+  });
+
+  return [users, groups];
+};
 
 export const getUsers = (): ThunkAction<
   void,

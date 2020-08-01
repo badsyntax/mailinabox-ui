@@ -47,12 +47,12 @@ export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialo
 
   const onModalDismissed = useCallback((): void => {
     dispatch(updateUserReset());
-  }, [dispatch]);
+    onDismiss();
+  }, [dispatch, onDismiss]);
 
   const onConfirmClick = useCallback((): void => {
     hideArchiveErrorDialog();
-    onDismiss();
-  }, [hideArchiveErrorDialog, onDismiss]);
+  }, [hideArchiveErrorDialog]);
 
   const modalProps = {
     isBlocking: true,

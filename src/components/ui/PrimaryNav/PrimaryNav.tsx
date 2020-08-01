@@ -3,15 +3,15 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LogoutRoute } from '../../routes/LogoutRoute/LogoutRoute';
 import { AliasesRoute } from '../../routes/MainRoute/mail/AliasesRoute/AliasesRoute';
-import { Instructions } from '../../routes/MainRoute/mail/Instructions/Instructions';
-import { Users } from '../../routes/MainRoute/mail/Users/Users';
-import { SyncGuide } from '../../routes/MainRoute/SyncGuide/SyncGuide';
-import { Backups } from '../../routes/MainRoute/system/Backups/Backups';
-import { Certificates } from '../../routes/MainRoute/system/Certificates/Certificates';
-import { CustomDns } from '../../routes/MainRoute/system/CustomDns/CustomDns';
-import { ExternalDns } from '../../routes/MainRoute/system/ExternalDns/ExternalDns';
-import { StatusChecks } from '../../routes/MainRoute/system/StatusChecks/StatusChecks';
-import { Web } from '../../routes/MainRoute/Web/Web';
+import { InstructionsRoute } from '../../routes/MainRoute/mail/InstructionsRoute/InstructionsRoute';
+import { UsersRoute } from '../../routes/MainRoute/mail/UsersRoute/UsersRoute';
+import { SyncGuideRoute } from '../../routes/MainRoute/SyncGuideRoute/SyncGuideRoute';
+import { BackupsRoute } from '../../routes/MainRoute/system/BackupsRoute/BackupsRoute';
+import { CertificatesRoute } from '../../routes/MainRoute/system/CertificatesRoute/CertificatesRoute';
+import { CustomDnsRoute } from '../../routes/MainRoute/system/CustomDnsRoute/CustomDnsRoute';
+import { ExternalDnsRoute } from '../../routes/MainRoute/system/ExternalDnsRoute/ExternalDnsRoute';
+import { StatusChecksRoute } from '../../routes/MainRoute/system/StatusChecksRoute/StatusChecksRoute';
+import { WebRoute } from '../../routes/MainRoute/WebRoute/WebRoute';
 
 export const PrimaryNav: React.FunctionComponent = () => {
   const history = useHistory();
@@ -50,17 +50,17 @@ export const PrimaryNav: React.FunctionComponent = () => {
                 {
                   key: 'navStatusChecks',
                   text: 'Status Checks',
-                  onClick: (): void => history.push(StatusChecks.path),
+                  onClick: (): void => history.push(StatusChecksRoute.path),
                 },
                 {
                   key: 'navCertificates',
                   text: 'TLS (SSL) Certificates',
-                  onClick: (): void => history.push(Certificates.path),
+                  onClick: (): void => history.push(CertificatesRoute.path),
                 },
                 {
                   key: 'navBackupStatus',
                   text: 'Backup Status',
-                  onClick: (): void => history.push(Backups.path),
+                  onClick: (): void => history.push(BackupsRoute.path),
                 },
                 {
                   key: 'navAdvanced',
@@ -74,12 +74,13 @@ export const PrimaryNav: React.FunctionComponent = () => {
                       {
                         key: 'navCustomDns',
                         text: 'Custom DNS',
-                        onClick: (): void => history.push(CustomDns.path),
+                        onClick: (): void => history.push(CustomDnsRoute.path),
                       },
                       {
                         key: 'navExternalDnsRoute',
                         text: 'External DNS',
-                        onClick: (): void => history.push(ExternalDns.path),
+                        onClick: (): void =>
+                          history.push(ExternalDnsRoute.path),
                       },
                       {
                         key: 'navMonitoring',
@@ -100,12 +101,12 @@ export const PrimaryNav: React.FunctionComponent = () => {
                 {
                   key: 'navInstructions',
                   text: 'Instructions',
-                  onClick: (): void => history.push(Instructions.path),
+                  onClick: (): void => history.push(InstructionsRoute.path),
                 },
                 {
                   key: 'navUsers',
                   text: 'Users',
-                  onClick: (): void => history.push(Users.path),
+                  onClick: (): void => history.push(UsersRoute.path),
                 },
                 {
                   key: 'navAliases',
@@ -119,13 +120,13 @@ export const PrimaryNav: React.FunctionComponent = () => {
             key: 'navContacts',
             text: 'Contacts/Calendar',
             iconProps: { iconName: 'Calendar' },
-            onClick: (): void => history.push(SyncGuide.path),
+            onClick: (): void => history.push(SyncGuideRoute.path),
           },
           {
             key: 'navWeb',
             text: 'Web',
             iconProps: { iconName: 'SiteScan' },
-            onClick: (): void => history.push(Web.path),
+            onClick: (): void => history.push(WebRoute.path),
           },
         ]}
       />

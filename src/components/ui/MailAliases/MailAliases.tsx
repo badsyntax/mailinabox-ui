@@ -1,33 +1,14 @@
-import {
-  getTheme,
-  mergeStyles,
-  MessageBar,
-  MessageBarType,
-  Overlay,
-  Pivot,
-  PivotItem,
-  PivotLinkSize,
-  ProgressIndicator,
-} from '@fluentui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { MessageBar, MessageBarType, PivotItem } from '@fluentui/react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getAliases } from '../../../features/aliasesSlice';
 import { RootState } from '../../../store';
+import { LoadingOverlay } from '../LoadingOverlay/LoadingOverlay';
+import { LoadingOverlayContainer } from '../LoadingOverlay/LoadingOverlayContainer';
 import { MailAliasAdd } from '../MailAliasAdd/MailAliasAdd';
 import { MailAliasesList } from '../MailAliasesList/MailAliasesList';
-
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
+import { PivotRoutes } from '../PivotRoutes/PivotRoutes';
 
 export const MailAliases: React.FunctionComponent = () => {
   const { isGettingAliases, getAliasesError, aliases } = useSelector(
@@ -35,18 +16,7 @@ export const MailAliases: React.FunctionComponent = () => {
   );
   const openedGroupsState = useState<string[]>([]);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
   const { path, url } = useRouteMatch();
-
-  const onPivotLinkClick = useCallback(
-    (item?: PivotItem, _event?: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      if (item?.props.itemKey) {
-        history.push(item.props.itemKey);
-      }
-    },
-    [history]
-  );
 
   useEffect(() => {
     if (!aliases.length) {
@@ -55,53 +25,28 @@ export const MailAliases: React.FunctionComponent = () => {
   }, [aliases.length, dispatch]);
   return (
     <>
-      <Pivot
-        linkSize={PivotLinkSize.large}
-        selectedKey={location.pathname}
-        onLinkClick={onPivotLinkClick}
-      >
+      <PivotRoutes>
         <PivotItem itemKey={url} headerText="Existing Mail Aliases" />
         <PivotItem itemKey={`${url}/add`} headerText="Add a Mail Alias" />
-      </Pivot>
+      </PivotRoutes>
       <Switch>
         <Route exact path={path}>
-          <div
-            style={{
-              position: 'relative',
-            }}
-          >
+          <LoadingOverlayContainer>
             {getAliasesError && (
-              <MessageBar
-                messageBarType={MessageBarType.error}
-                className={className}
-              >
+              <MessageBar messageBarType={MessageBarType.error}>
                 {getAliasesError}
               </MessageBar>
             )}
-            {isGettingAliases && Boolean(aliases.length) && (
-              <Overlay
-                styles={{
-                  root: {
-                    zIndex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  },
-                }}
-              >
-                <ProgressIndicator label="Loading aliases..." />
-              </Overlay>
-            )}
-            {isGettingAliases && !Boolean(aliases.length) && (
-              <ProgressIndicator label="Loading aliases..." />
-            )}
-            {!getAliasesError && Boolean(aliases.length) && (
-              <MailAliasesList
-                className={className}
-                openedGroupsState={openedGroupsState}
+            {isGettingAliases && (
+              <LoadingOverlay
+                loadingLabel="Loading aliases..."
+                hasLoaded={Boolean(aliases.length)}
               />
             )}
-          </div>
+            {!getAliasesError && Boolean(aliases.length) && (
+              <MailAliasesList openedGroupsState={openedGroupsState} />
+            )}
+          </LoadingOverlayContainer>
         </Route>
         <Route exact path={`${path}/add`}>
           <MailAliasAdd />

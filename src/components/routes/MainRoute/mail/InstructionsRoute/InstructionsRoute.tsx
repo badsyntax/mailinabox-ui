@@ -18,7 +18,7 @@ const columnClassName = mergeStyles({
   flexBasis: 0,
 });
 
-export const Instructions: React.FunctionComponent & {
+export const InstructionsRoute: React.FunctionComponent & {
   path: string;
 } = () => {
   const tooltipId = useId('tooltip');
@@ -174,4 +174,4 @@ export const Instructions: React.FunctionComponent & {
   );
 };
 
-Instructions.path = '/mail/instructions';
+InstructionsRoute.path = '/mail/instructions';

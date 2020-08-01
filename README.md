@@ -77,6 +77,7 @@ TODO
 - [x] Update mail user password
 - [x] Archive mail user account
 - [x] Add mail user
+- [ ] Fix user actions (eg archive)
 
 ### Mail Aliases
 
@@ -133,6 +134,11 @@ TODO
 
 - [ ] Async imports & code splitting
 - [ ] Try reduce bundle size
+
+### Routes
+
+- [ ] Fix 404
+- [ ] External DNS route jumps when changing nested routes
 
 ### Accessibility
 

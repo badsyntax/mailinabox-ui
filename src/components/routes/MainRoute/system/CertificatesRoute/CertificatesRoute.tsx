@@ -4,15 +4,20 @@ import {
   mergeStyles,
   MessageBar,
   MessageBarType,
-  Pivot,
   PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom';
 import {
   getSSLStatus,
   resetSSLAction,
@@ -23,6 +28,7 @@ import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CertificatesList } from '../../../../ui/CertificatesList/CertificatesList';
 import { InstallCertificate } from '../../../../ui/InstallCertificate/InstallCertificate';
+import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
 const theme = getTheme();
 
@@ -31,59 +37,65 @@ const className = mergeStyles({
 });
 
 enum SectionKeys {
-  status = 'section-status',
-  install = 'section-install',
+  status = '',
+  install = '/install',
 }
 
 const CertificateSections: React.FunctionComponent = () => {
   const { sslStatus, sslAction } = useSelector((state: RootState) => state.ssl);
   const { status: items } = sslStatus;
   const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
+  const { path, url } = useRouteMatch();
 
-  const onPivotLinkClick = useCallback(
-    (item?: PivotItem, ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      if (item?.props.itemKey === SectionKeys.status) {
-        dispatch(resetSSLAction());
-      }
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    if (sslAction?.type === SSLActionType.install) {
+      history.push(`${url}${SectionKeys.install}`);
+    }
+  }, [history, sslAction, url]);
 
-  const selectedKey =
-    sslAction?.type === SSLActionType.install ? SectionKeys.install : undefined;
+  useEffect(() => {
+    if (location.pathname === url) {
+      dispatch(resetSSLAction());
+    }
+  }, [dispatch, location.pathname, url]);
+
   return (
     <>
-      <Pivot
-        linkSize={PivotLinkSize.large}
-        selectedKey={selectedKey}
-        onLinkClick={onPivotLinkClick}
-      >
-        <PivotItem headerText="Certificate Status" itemKey={SectionKeys.status}>
-          <CertificatesList className={className} items={items} />
-        </PivotItem>
+      <PivotRoutes>
+        <PivotItem itemKey={url} headerText="Certificate Status" />
         <PivotItem
+          itemKey={`${url}${SectionKeys.install}`}
           headerText="Install Custom Certificate"
-          itemKey={SectionKeys.install}
-        >
+        />
+      </PivotRoutes>
+      <Switch>
+        <Route exact path={path}>
+          <CertificatesList className={className} items={items} />
+        </Route>
+        <Route exact path={`${path}${SectionKeys.install}`}>
           <InstallCertificate className={className} items={items} />
-        </PivotItem>
-      </Pivot>
+        </Route>
+      </Switch>
     </>
   );
 };
 
-export const Certificates: React.FunctionComponent & {
+export const CertificatesRoute: React.FunctionComponent & {
   path: string;
 } = () => {
-  const { isGettingStatus, getStatusError } = useSelector(
+  const { isGettingStatus, getStatusError, sslStatus } = useSelector(
     (state: RootState) => state.ssl
   );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSSLStatus());
-  }, [dispatch]);
+    if (!sslStatus.status.length) {
+      dispatch(getSSLStatus());
+    }
+  }, [dispatch, sslStatus.status.length]);
 
   return (
     <Body>
@@ -135,4 +147,4 @@ export const Certificates: React.FunctionComponent & {
   );
 };
 
-Certificates.path = '/system/ssl';
+CertificatesRoute.path = '/system/ssl';

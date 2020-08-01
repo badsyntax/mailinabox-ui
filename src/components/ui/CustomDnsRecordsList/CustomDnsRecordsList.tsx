@@ -2,9 +2,9 @@ import {
   ConstrainMode,
   DetailsList,
   DetailsListLayoutMode,
-  getTheme,
   IColumn,
   IStackProps,
+  mergeStyles,
   SelectionMode,
   Stack,
   Text,
@@ -13,8 +13,6 @@ import { DNSCustomRecord } from 'mailinabox-api';
 import React from 'react';
 import { CustomDnsRecordActions } from './CustomDnsRecordActions';
 import { CustomDnsRecordsActionsList } from './CustomDnsRecordsActionsList';
-
-const theme = getTheme();
 
 const columns: IColumn[] = [
   {
@@ -53,6 +51,9 @@ const columns: IColumn[] = [
     onRender: (dnsRecord: DNSCustomRecord): React.ReactNode => {
       return <CustomDnsRecordsActionsList dnsRecord={dnsRecord} />;
     },
+    className: mergeStyles({
+      displayName: 'DetailsRow-actions-cell',
+    }),
   },
 ];
 

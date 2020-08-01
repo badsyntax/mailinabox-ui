@@ -1,8 +1,11 @@
+import { IGroup } from '@fluentui/react';
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
   AddDnsCustomRecordRequest,
   AddDnsSecondaryNameserverRequest,
   DNSCustomRecord,
+  DNSDumpDomainRecord,
+  DNSDumpDomains,
   DNSDumpResponse,
   DNSSecondaryNameserverResponse,
   RemoveDnsCustomRecordRequest,
@@ -254,6 +257,29 @@ export const selectCustomRecordsSorted = (
     .map(reverseFqdn)
     .sort(sort)
     .map(reverseFqdn);
+};
+
+export const selectDumpWithGroups = (
+  state: RootState
+): [Array<DNSDumpDomainRecord>, Array<IGroup>] => {
+  const { dump } = state.dns;
+  const records: Array<DNSDumpDomainRecord> = [];
+  const groups: Array<IGroup> = [];
+
+  dump.forEach((dnsDomains: DNSDumpDomains) => {
+    const [domainName, dnsRecords] = dnsDomains;
+    groups.push({
+      key: 'group' + groups.length,
+      name: domainName as string,
+      startIndex: records.length,
+      isCollapsed: false,
+      level: 0,
+      count: dnsRecords.length,
+    });
+    records.push(...(dnsRecords as Array<DNSDumpDomainRecord>));
+  });
+
+  return [records, groups];
 };
 
 export const getSecondaryNameserver = (): ThunkAction<

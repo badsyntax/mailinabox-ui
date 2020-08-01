@@ -20,6 +20,8 @@ import {
 import { MailUserPrivilege } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getDump } from '../../../features/dnsSlice';
+import { getSSLStatus } from '../../../features/sslSlice';
 import {
   addUser,
   addUserReset,
@@ -167,6 +169,8 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   useEffect(() => {
     if (addUserResponse) {
       dispatch(getUsers());
+      dispatch(getSSLStatus());
+      dispatch(getDump());
     }
   }, [addUserResponse, dispatch]);
 

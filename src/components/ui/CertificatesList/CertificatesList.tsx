@@ -8,6 +8,7 @@ import {
   IDetailsRowProps,
   IStackProps,
   Link,
+  mergeStyles,
   SelectionMode,
   Stack,
   Text,
@@ -67,6 +68,9 @@ const columns: IColumn[] = [
         <CertificateActionsList sslStatus={sslStatus} />
       );
     },
+    className: mergeStyles({
+      displayName: 'DetailsRow-actions-cell',
+    }),
   },
 ];
 

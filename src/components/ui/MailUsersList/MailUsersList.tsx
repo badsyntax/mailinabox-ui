@@ -1,39 +1,23 @@
 import {
-  ConstrainMode,
-  DetailsList,
-  DetailsListLayoutMode,
   IColumn,
-  IDetailsGroupDividerProps,
-  IGroup,
-  IGroupHeaderProps,
-  IRenderFunction,
   IStackProps,
-  mergeStyleSets,
+  mergeStyles,
   MessageBarType,
-  SelectionMode,
   Stack,
   Text,
 } from '@fluentui/react';
 import { MailUser, MailUserStatus } from 'mailinabox-api';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUsersWithGroups } from '../../../features/usersSlice';
+import { GroupedDetailsList } from '../GroupedDetailsList/GroupedDetailsList';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { MailUserActions } from './MailUserActions';
 import { MailUserActionsList } from './MailUserActionsList';
 
-const classNames = mergeStyleSets({
-  fileIconHeaderIcon: {
-    padding: 0,
-    fontSize: '16px',
-  },
-  fileIconCell: {
-    textAlign: 'center',
-    padding: 0,
-  },
-});
-
 const columns: IColumn[] = [
   {
-    key: 'column2',
+    key: 'column1',
     name: 'Email Address',
     minWidth: 320,
     isMultiline: true,
@@ -67,7 +51,7 @@ const columns: IColumn[] = [
     },
   },
   {
-    key: 'column3',
+    key: 'column2',
     name: 'Privilege',
     minWidth: 80,
     isMultiline: false,
@@ -84,62 +68,37 @@ const columns: IColumn[] = [
     },
   },
   {
-    key: 'column4',
+    key: 'column3',
     name: 'Actions',
     minWidth: 50,
     isMultiline: false,
-    className: classNames.fileIconCell,
     onRender: (user: MailUser): React.ReactNode => {
       return user.status === MailUserStatus.Active ? (
         <MailUserActionsList user={user} />
       ) : null;
     },
+    className: mergeStyles({
+      displayName: 'DetailsRow-actions-cell',
+    }),
   },
 ];
 
+interface MailUsersListProps {
+  openedGroupsState: [string[], Dispatch<SetStateAction<string[]>>];
+}
+
 export const MailUsersList: React.FunctionComponent<
-  IStackProps & {
-    users: Array<MailUser>;
-    groups: Array<IGroup>;
-  }
-> = ({ users = [], groups = [], ...props }) => {
+  IStackProps & MailUsersListProps
+> = ({ openedGroupsState, ...props }) => {
+  const [users, groups] = useSelector(selectUsersWithGroups);
   return (
     <Stack as="section" {...props}>
       <MailUserActions />
-      <DetailsList
+      <GroupedDetailsList
+        openedGroupsState={openedGroupsState}
         items={users}
         groups={groups}
         columns={columns}
-        layoutMode={DetailsListLayoutMode.justified}
-        selectionMode={SelectionMode.none}
-        constrainMode={ConstrainMode.horizontalConstrained}
-        useReducedRowRenderer
-        usePageCache
-        groupProps={{
-          isAllGroupsCollapsed: true,
-          onRenderHeader: (
-            props?: IDetailsGroupDividerProps,
-            defaultRender?: IRenderFunction<IGroupHeaderProps>
-          ): JSX.Element | null => {
-            if (defaultRender) {
-              return (
-                <div
-                  onClick={(
-                    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-                  ): void => {
-                    if (props && props.group) {
-                      event.preventDefault();
-                      props.onToggleCollapse?.(props.group);
-                    }
-                  }}
-                >
-                  {defaultRender(props)}
-                </div>
-              );
-            }
-            return null;
-          },
-        }}
       />
     </Stack>
   );

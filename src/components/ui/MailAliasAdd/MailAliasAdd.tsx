@@ -15,6 +15,8 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAliases, upsertAliasReset } from '../../../features/aliasesSlice';
+import { getDump } from '../../../features/dnsSlice';
+import { getSSLStatus } from '../../../features/sslSlice';
 import { RootState } from '../../../store';
 import { MailAliasUpsert } from '../MailAliasUpsert/MailAliasUpsert';
 import { Pre } from '../Pre/Pre';
@@ -70,6 +72,8 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
   useEffect(() => {
     if (upsertAliasResponse) {
       dispatch(getAliases());
+      dispatch(getSSLStatus());
+      dispatch(getDump());
     }
   }, [dispatch, upsertAliasResponse]);
 

@@ -4,15 +4,14 @@ import {
   mergeStyles,
   MessageBar,
   MessageBarType,
-  Pivot,
   PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
   getCustomRecords,
   getSecondaryNameserver,
@@ -25,6 +24,7 @@ import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CustomDnsAdd } from '../../../../ui/CustomDnsAdd/CustomDnsAdd';
 import { CustomDnsRecordsList } from '../../../../ui/CustomDnsRecordsList/CustomDnsRecordsList';
 import { CustomDnsSecondaryNameserver } from '../../../../ui/CustomDnsSecondaryNameserver/CustomDnsSecondaryNameserver';
+import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
 const theme = getTheme();
 
@@ -34,25 +34,36 @@ const className = mergeStyles({
 
 const CustomDnsSections: React.FunctionComponent = () => {
   const customDnsRecords = useSelector(selectCustomRecordsSorted);
+  const { path, url } = useRouteMatch();
   return (
-    <Pivot linkSize={PivotLinkSize.large}>
-      <PivotItem headerText="DNS Records">
-        <CustomDnsRecordsList
-          className={className}
-          records={customDnsRecords}
+    <>
+      <PivotRoutes>
+        <PivotItem itemKey={url} headerText="DNS Records" />
+        <PivotItem itemKey={`${url}/add`} headerText="Add Custom Record" />
+        <PivotItem
+          itemKey={`${url}/nameserver`}
+          headerText="Secondary Nameserver"
         />
-      </PivotItem>
-      <PivotItem headerText="Add Custom Record">
-        <CustomDnsAdd className={className} />
-      </PivotItem>
-      <PivotItem headerText="Secondary Nameserver">
-        <CustomDnsSecondaryNameserver className={className} />
-      </PivotItem>
-    </Pivot>
+      </PivotRoutes>
+      <Switch>
+        <Route exact path={path}>
+          <CustomDnsRecordsList
+            className={className}
+            records={customDnsRecords}
+          />
+        </Route>
+        <Route exact path={`${path}/add`}>
+          <CustomDnsAdd className={className} />
+        </Route>
+        <Route exact path={`${path}/nameserver`}>
+          <CustomDnsSecondaryNameserver className={className} />
+        </Route>
+      </Switch>
+    </>
   );
 };
 
-export const CustomDns: React.FunctionComponent & {
+export const CustomDnsRoute: React.FunctionComponent & {
   path: string;
 } = () => {
   const {
@@ -119,4 +130,4 @@ export const CustomDns: React.FunctionComponent & {
   );
 };
 
-CustomDns.path = '/dns/custom';
+CustomDnsRoute.path = '/dns/custom';
