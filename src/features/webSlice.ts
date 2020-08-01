@@ -29,9 +29,9 @@ export interface WebState {
   domains: Array<WebDomain>;
   getDomainsError: string | null;
   domainAction: WebDomainAction | null;
-  isUpdating: boolean;
-  updateError: string | null;
-  updateResponse: string | null;
+  isUpdatingWeb: boolean;
+  updateWebError: string | null;
+  updateWebResponse: string | null;
 }
 
 const initialState: WebState = {
@@ -39,9 +39,9 @@ const initialState: WebState = {
   domains: [],
   getDomainsError: null,
   domainAction: null,
-  isUpdating: false,
-  updateError: null,
-  updateResponse: null,
+  isUpdatingWeb: false,
+  updateWebError: null,
+  updateWebResponse: null,
 };
 
 export const web = createSlice({
@@ -60,22 +60,22 @@ export const web = createSlice({
       state.isGettingDomains = false;
       state.getDomainsError = action.payload;
     },
-    updateStart: (state): void => {
-      state.updateError = null;
-      state.isUpdating = true;
+    updateWebStart: (state): void => {
+      state.updateWebError = null;
+      state.isUpdatingWeb = true;
     },
-    updateSuccess: (state, action): void => {
-      state.isUpdating = false;
-      state.updateResponse = action.payload;
+    updateWebSuccess: (state, action): void => {
+      state.isUpdatingWeb = false;
+      state.updateWebResponse = action.payload;
     },
-    updateError: (state, action): void => {
-      state.isUpdating = false;
-      state.updateError = action.payload;
+    updateWebError: (state, action): void => {
+      state.isUpdatingWeb = false;
+      state.updateWebError = action.payload;
     },
-    updateReset: (state): void => {
-      state.isUpdating = false;
-      state.updateError = null;
-      state.updateResponse = null;
+    updateWebReset: (state): void => {
+      state.isUpdatingWeb = false;
+      state.updateWebError = null;
+      state.updateWebResponse = null;
     },
     resetDomainAction: (state): void => {
       state.domainAction = {
@@ -83,7 +83,7 @@ export const web = createSlice({
         action: undefined,
       };
     },
-    domainAction: (state, action: PayloadAction<WebDomainAction>): void => {
+    setDomainAction: (state, action: PayloadAction<WebDomainAction>): void => {
       state.domainAction = action.payload;
     },
   },
@@ -96,30 +96,12 @@ export const {
   getDomainsSuccess,
   getDomainsError,
   resetDomainAction,
-  domainAction,
-  updateStart,
-  updateSuccess,
-  updateError,
-  updateReset,
+  setDomainAction,
+  updateWebStart,
+  updateWebSuccess,
+  updateWebError,
+  updateWebReset,
 } = web.actions;
-
-export const selectIsGettingDomains = (state: RootState): boolean =>
-  state.web.isGettingDomains;
-
-export const selectDomains = (state: RootState): Array<WebDomain> =>
-  state.web.domains;
-
-export const selectDomainAction = (state: RootState): WebDomainAction | null =>
-  state.web.domainAction;
-
-export const selectIsUpdating = (state: RootState): boolean =>
-  state.web.isUpdating;
-
-export const selectUpdateError = (state: RootState): string | null =>
-  state.web.updateError;
-
-export const selectUpdateResponse = (state: RootState): string | null =>
-  state.web.updateResponse;
 
 function sortByFqdn(
   a: WebDomainWithDomainInfo,
@@ -197,11 +179,11 @@ export const updateWeb = (): ThunkAction<
   unknown,
   Action<string>
 > => async (dispatch): Promise<void> => {
-  dispatch(updateStart());
+  dispatch(updateWebStart());
   try {
     const result = await webApi.updateWeb();
-    dispatch(updateSuccess(result || 'Nothing changed.'));
+    dispatch(updateWebSuccess(result || 'Nothing changed.'));
   } catch (err) {
-    dispatch(updateError(await getRequestFailMessage(err)));
+    dispatch(updateWebError(await getRequestFailMessage(err)));
   }
 };

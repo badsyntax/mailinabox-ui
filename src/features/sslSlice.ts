@@ -17,7 +17,7 @@ export interface SSLAction {
 }
 
 export interface SSLState {
-  isGettingCertificates: boolean;
+  isGettingStatus: boolean;
   isGeneratingCSR: boolean;
   isInstallingCertificate: boolean;
   sslStatus: SSLStatusResponse;
@@ -30,7 +30,7 @@ export interface SSLState {
 }
 
 const initialState: SSLState = {
-  isGettingCertificates: false,
+  isGettingStatus: false,
   isGeneratingCSR: false,
   isInstallingCertificate: false,
   sslStatus: {
@@ -51,15 +51,15 @@ export const ssl = createSlice({
   reducers: {
     getSSLStatusStart: (state): void => {
       state.getStatusError = null;
-      state.isGettingCertificates = true;
+      state.isGettingStatus = true;
     },
     getSSLStatusSuccess: (state, action): void => {
-      state.isGettingCertificates = false;
+      state.isGettingStatus = false;
       state.sslStatus = action.payload;
     },
     getSSLStatusError: (state, action): void => {
       state.getStatusError = action.payload;
-      state.isGettingCertificates = false;
+      state.isGettingStatus = false;
     },
     generateCSRStart: (state): void => {
       state.generateCSRError = null;
@@ -122,39 +122,7 @@ export const {
 
 export const { reducer: sslReducer } = ssl;
 
-export const selectIsCheckingSSLStatus = (state: RootState): boolean =>
-  state.ssl.isGettingCertificates;
-
-export const selectSSLStatusError = (state: RootState): string | null =>
-  state.ssl.getStatusError;
-
-export const selectSSLStatus = (state: RootState): SSLStatusResponse =>
-  state.ssl.sslStatus;
-
-export const selectIsGeneratingCSR = (state: RootState): boolean =>
-  state.ssl.isGeneratingCSR;
-
-export const selectCSRError = (state: RootState): string | null =>
-  state.ssl.generateCSRError;
-
-export const selectGeneratedCSRResponse = (state: RootState): string | null =>
-  state.ssl.generateCSRResponse;
-
-export const selectIsInstallingCertificate = (state: RootState): boolean =>
-  state.ssl.isInstallingCertificate;
-
-export const selectInstallCertificateError = (
-  state: RootState
-): string | null => state.ssl.installCertificateError;
-
-export const selectInstallCertificateResponse = (
-  state: RootState
-): string | null => state.ssl.installCertificateResponse;
-
-export const selectSSLAction = (state: RootState): SSLAction | null =>
-  state.ssl.sslAction;
-
-export const sslStatusCheck = (): ThunkAction<
+export const getSSLStatus = (): ThunkAction<
   void,
   RootState,
   unknown,

@@ -13,7 +13,8 @@ import { getCodeList } from 'country-list';
 import { SSLStatus } from 'mailinabox-api';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { generateCSRReset, selectSSLAction } from '../../../features/sslSlice';
+import { generateCSRReset } from '../../../features/sslSlice';
+import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { InstallCertificateComboBoxLabel } from './InstallCertificateComboBoxLabel';
 import { InstallCertificateWithCSR } from './InstallCertificateWithCSR';
@@ -58,8 +59,8 @@ export const InstallCertificate: React.FunctionComponent<
     items: Array<SSLStatus>;
   }
 > = ({ items, ...props }) => {
+  const { sslAction } = useSelector((state: RootState) => state.ssl);
   const dispatch = useDispatch();
-  const sslAction = useSelector(selectSSLAction);
   const [selectedDomain, setSelectedDomain] = useState<IComboBoxOption>({
     key: sslAction?.sslStatus?.domain || '',
     text: sslAction?.sslStatus?.domain || '',

@@ -2,7 +2,7 @@ import { DirectionalHint, IconButton } from '@fluentui/react';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  domainAction,
+  setDomainAction,
   WebDomainActionType,
   WebDomainWithDomainInfo,
 } from '../../../features/webSlice';
@@ -18,7 +18,7 @@ export const WebDomainsActionsList: React.FunctionComponent<WebDomainsActionsLis
   const doAction = useCallback(
     (action: WebDomainActionType): void => {
       dispatch(
-        domainAction({
+        setDomainAction({
           webDomain,
           action,
         })

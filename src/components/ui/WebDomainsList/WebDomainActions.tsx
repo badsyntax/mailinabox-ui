@@ -3,50 +3,49 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   resetDomainAction,
-  selectDomainAction,
-  selectIsUpdating,
-  selectUpdateError,
-  selectUpdateResponse,
-  updateReset,
   updateWeb,
+  updateWebReset,
   WebDomainActionType,
 } from '../../../features/webSlice';
+import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 
 export const WebDomainActions: React.FunctionComponent = () => {
+  const {
+    domainAction,
+    updateWebError,
+    updateWebResponse,
+    isUpdatingWeb,
+  } = useSelector((state: RootState) => state.web);
   const dispatch = useDispatch();
-  const webDomainAction = useSelector(selectDomainAction);
-  const updateError = useSelector(selectUpdateError);
-  const updateResponse = useSelector(selectUpdateResponse);
-  const isUpdating = useSelector(selectIsUpdating);
 
   const onActionDialogDismiss = useCallback((): void => {
     dispatch(resetDomainAction());
   }, [dispatch]);
 
   const onActionDialogDismissed = useCallback((): void => {
-    dispatch(updateReset());
+    dispatch(updateWebReset());
   }, [dispatch]);
 
   const update = useCallback((): void => {
-    if (webDomainAction?.webDomain) {
+    if (domainAction?.webDomain) {
       dispatch(updateWeb());
     }
-  }, [webDomainAction, dispatch]);
+  }, [dispatch, domainAction]);
 
-  const dialogWidth = updateResponse ? 420 : 580;
+  const dialogWidth = updateWebResponse ? 420 : 580;
 
   return (
     <ActionConfirmDialog
-      hidden={webDomainAction?.action !== WebDomainActionType.update}
-      isLoading={isUpdating}
+      hidden={domainAction?.action !== WebDomainActionType.update}
+      isLoading={isUpdatingWeb}
       minWidth={dialogWidth}
       maxWidth={dialogWidth}
       onDismiss={onActionDialogDismiss}
       onDismissed={onActionDialogDismissed}
       onConfirm={update}
-      error={updateError}
-      actionResponse={updateResponse}
+      error={updateWebError}
+      actionResponse={updateWebResponse}
       confirmButtonText="Update"
       dialogContentProps={{
         type: DialogType.largeHeader,
@@ -58,10 +57,10 @@ export const WebDomainActions: React.FunctionComponent = () => {
     >
       <Text>
         You can change the static directory for{' '}
-        <strong>{webDomainAction?.webDomain?.domain}</strong> to:
+        <strong>{domainAction?.webDomain?.domain}</strong> to:
       </Text>
       <Text>
-        <code>{webDomainAction?.webDomain?.customRoot}</code>
+        <code>{domainAction?.webDomain?.customRoot}</code>
       </Text>
       <Text>
         First create this directory on the server. Then click Update to scan for

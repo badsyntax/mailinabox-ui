@@ -18,11 +18,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getDomains,
-  selectGetDomainsError,
-  selectIsGettingDomains,
   selectOrderedAndGroupedStaticEnabledDomains,
   WebDomainWithDomainInfo,
 } from '../../../features/webSlice';
+import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { WebDomainActions } from './WebDomainActions';
 import { WebDomainsActionsList } from './WebDomainsActionsList';
@@ -67,12 +66,13 @@ interface WebDomainsListProps {
 export const WebDomainsList: React.FunctionComponent<WebDomainsListProps> = ({
   className,
 }) => {
+  const { isGettingDomains, getDomainsError } = useSelector(
+    (state: RootState) => state.web
+  );
   const dispatch = useDispatch();
   const [domains, groups] = useSelector(
     selectOrderedAndGroupedStaticEnabledDomains
   );
-  const isGettingDomains = useSelector(selectIsGettingDomains);
-  const getDomainsError = useSelector(selectGetDomainsError);
 
   useEffect(() => {
     if (!domains.length && !isGettingDomains && !getDomainsError) {

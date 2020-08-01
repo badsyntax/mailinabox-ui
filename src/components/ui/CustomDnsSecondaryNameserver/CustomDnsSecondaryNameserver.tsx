@@ -19,10 +19,8 @@ import {
   addSecondaryNameserverReset,
   addSecondaryNameserverResetError,
   getSecondaryNameserver,
-  selectAddSecondaryNameserverError,
-  selectAddSecondaryNameserverResponse,
-  selectIsAddingSecondaryNameserver,
 } from '../../../features/dnsSlice';
+import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { Pre } from '../Pre/Pre';
 
@@ -33,16 +31,13 @@ const columnClassName = mergeStyles({
 export const CustomDnsSecondaryNameserver: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
+  const {
+    isAddingSecondaryNameserver,
+    addSecondaryNameserverError,
+    addSecondaryNameserverResponse,
+  } = useSelector((state: RootState) => state.dns);
   const dispatch = useDispatch();
-  const isAddingSecondaryNameserver = useSelector(
-    selectIsAddingSecondaryNameserver
-  );
-  const addSecondaryNameserverError = useSelector(
-    selectAddSecondaryNameserverError
-  );
-  const addSecondaryNameserverResponse = useSelector(
-    selectAddSecondaryNameserverResponse
-  );
+
   const [hostname, setHostname] = useState<string>('');
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);

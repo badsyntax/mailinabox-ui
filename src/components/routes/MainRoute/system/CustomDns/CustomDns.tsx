@@ -18,13 +18,8 @@ import {
   getSecondaryNameserver,
   getZones,
   selectCustomRecordsSorted,
-  selectGetCustomRecordsError,
-  selectGetSecondaryNameserverError,
-  selectGetZonesError,
-  selectIsCheckingCustomRecords,
-  selectIsCheckingSecondaryNameserver,
-  selectIsCheckingZones,
 } from '../../../../../features/dnsSlice';
+import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CustomDnsAdd } from '../../../../ui/CustomDnsAdd/CustomDnsAdd';
@@ -60,20 +55,20 @@ const CustomDnsSections: React.FunctionComponent = () => {
 export const CustomDns: React.FunctionComponent & {
   path: string;
 } = () => {
+  const {
+    isGettingSecondaryNameserver,
+    isGettingZones,
+    isGettingCustomRecords,
+    getSecondaryNameserverError,
+    getZonesError,
+    getCustomRecordsError,
+  } = useSelector((state: RootState) => state.dns);
   const dispatch = useDispatch();
-  const isCheckingSecondaryNameserver = useSelector(
-    selectIsCheckingSecondaryNameserver
-  );
-  const isCheckingZones = useSelector(selectIsCheckingZones);
-  const isCheckingCustom = useSelector(selectIsCheckingCustomRecords);
 
-  const nameserverError = useSelector(selectGetSecondaryNameserverError);
-  const zonesError = useSelector(selectGetZonesError);
-  const customError = useSelector(selectGetCustomRecordsError);
-
-  const hasError = nameserverError || zonesError || customError;
+  const error =
+    getSecondaryNameserverError || getZonesError || getCustomRecordsError;
   const isChecking =
-    isCheckingSecondaryNameserver || isCheckingZones || isCheckingCustom;
+    isGettingSecondaryNameserver || isGettingZones || isGettingCustomRecords;
 
   useEffect(() => {
     dispatch(getSecondaryNameserver());
@@ -112,13 +107,13 @@ export const CustomDns: React.FunctionComponent & {
         </Text>
       </BodyPanel>
       <BodyPanel>
-        {hasError && (
+        {Boolean(error) && (
           <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {nameserverError || zonesError || customError}
+            {error}
           </MessageBar>
         )}
         {isChecking && <ProgressIndicator label="Checking DNS status..." />}
-        {!isChecking && !hasError && <CustomDnsSections />}
+        {!isChecking && !error && <CustomDnsSections />}
       </BodyPanel>
     </Body>
   );

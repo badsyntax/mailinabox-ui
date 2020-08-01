@@ -14,14 +14,11 @@ import {
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  getSSLStatus,
   resetSSLAction,
-  selectIsCheckingSSLStatus,
-  selectSSLAction,
-  selectSSLStatus,
-  selectSSLStatusError,
   SSLActionType,
-  sslStatusCheck,
 } from '../../../../../features/sslSlice';
+import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CertificatesList } from '../../../../ui/CertificatesList/CertificatesList';
@@ -39,9 +36,9 @@ enum SectionKeys {
 }
 
 const CertificateSections: React.FunctionComponent = () => {
+  const { sslStatus, sslAction } = useSelector((state: RootState) => state.ssl);
+  const { status: items } = sslStatus;
   const dispatch = useDispatch();
-  const { status: items } = useSelector(selectSSLStatus);
-  const sslAction = useSelector(selectSSLAction);
 
   const onPivotLinkClick = useCallback(
     (item?: PivotItem, ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -78,12 +75,14 @@ const CertificateSections: React.FunctionComponent = () => {
 export const Certificates: React.FunctionComponent & {
   path: string;
 } = () => {
+  const { isGettingStatus, getStatusError } = useSelector(
+    (state: RootState) => state.ssl
+  );
+
   const dispatch = useDispatch();
-  const isCheckingSSLStatus = useSelector(selectIsCheckingSSLStatus);
-  const statusError = useSelector(selectSSLStatusError);
 
   useEffect(() => {
-    dispatch(sslStatusCheck());
+    dispatch(getSSLStatus());
   }, [dispatch]);
 
   return (
@@ -122,15 +121,15 @@ export const Certificates: React.FunctionComponent & {
         </Text>
       </BodyPanel>
       <BodyPanel>
-        {statusError && (
+        {getStatusError && (
           <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {statusError}
+            {getStatusError}
           </MessageBar>
         )}
-        {isCheckingSSLStatus && (
+        {isGettingStatus && (
           <ProgressIndicator label="Checking certificate status..." />
         )}
-        {!isCheckingSSLStatus && !statusError && <CertificateSections />}
+        {!isGettingStatus && !getStatusError && <CertificateSections />}
       </BodyPanel>
     </Body>
   );

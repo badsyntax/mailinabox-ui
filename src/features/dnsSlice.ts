@@ -20,10 +20,10 @@ export interface DNSAction {
 }
 
 export interface SSLState {
-  isCheckingSecondaryNameserver: boolean;
-  isCheckingZones: boolean;
-  isCheckingCustomRecords: boolean;
-  isCheckingDump: boolean;
+  isGettingSecondaryNameserver: boolean;
+  isGettingZones: boolean;
+  isGettingCustomRecords: boolean;
+  isGettingDump: boolean;
   isAddingCustomRecord: boolean;
   isAddingSecondaryNameserver: boolean;
   isRemovingCustomRecord: boolean;
@@ -45,10 +45,10 @@ export interface SSLState {
 }
 
 const initialState: SSLState = {
-  isCheckingSecondaryNameserver: false,
-  isCheckingZones: false,
-  isCheckingCustomRecords: false,
-  isCheckingDump: false,
+  isGettingSecondaryNameserver: false,
+  isGettingZones: false,
+  isGettingCustomRecords: false,
+  isGettingDump: false,
   isAddingCustomRecord: false,
   isAddingSecondaryNameserver: false,
   isRemovingCustomRecord: false,
@@ -77,50 +77,50 @@ export const dns = createSlice({
   reducers: {
     getDumpStart: (state): void => {
       state.getDumpError = null;
-      state.isCheckingDump = true;
+      state.isGettingDump = true;
     },
     getDumpSuccess: (state, action): void => {
-      state.isCheckingDump = false;
+      state.isGettingDump = false;
       state.dump = action.payload;
     },
     getDumpError: (state, action): void => {
-      state.isCheckingDump = false;
+      state.isGettingDump = false;
       state.getDumpError = action.payload;
     },
     getSecondaryNameserverStart: (state): void => {
       state.getSecondaryNameserverError = null;
-      state.isCheckingSecondaryNameserver = true;
+      state.isGettingSecondaryNameserver = true;
     },
     getSecondaryNameserverSuccess: (state, action): void => {
-      state.isCheckingSecondaryNameserver = false;
+      state.isGettingSecondaryNameserver = false;
       state.secondaryNameserver = action.payload;
     },
     getSecondaryNameserverError: (state, action): void => {
-      state.isCheckingSecondaryNameserver = false;
+      state.isGettingSecondaryNameserver = false;
       state.getSecondaryNameserverError = action.payload;
     },
     getZonesStart: (state): void => {
       state.getZonesError = null;
-      state.isCheckingZones = true;
+      state.isGettingZones = true;
     },
     getZonesSuccess: (state, action): void => {
-      state.isCheckingZones = false;
+      state.isGettingZones = false;
       state.zones = action.payload;
     },
     getZonesError: (state, action): void => {
-      state.isCheckingZones = false;
+      state.isGettingZones = false;
       state.getZonesError = action.payload;
     },
     getCustomRecordsStart: (state): void => {
       state.getCustomRecordsError = null;
-      state.isCheckingCustomRecords = true;
+      state.isGettingCustomRecords = true;
     },
     getCustomRecordsSuccess: (state, action): void => {
-      state.isCheckingCustomRecords = false;
+      state.isGettingCustomRecords = false;
       state.customRecords = action.payload;
     },
     getCustomRecordsError: (state, action): void => {
-      state.isCheckingCustomRecords = false;
+      state.isGettingCustomRecords = false;
       state.getCustomRecordsError = action.payload;
     },
     addCustomRecordStart: (state): void => {
@@ -228,78 +228,6 @@ export const {
 } = dns.actions;
 
 export const { reducer: dnsReducer } = dns;
-
-export const selectIsCheckingSecondaryNameserver = (
-  state: RootState
-): boolean => state.dns.isCheckingSecondaryNameserver;
-
-export const selectGetSecondaryNameserverError = (
-  state: RootState
-): string | null => state.dns.getSecondaryNameserverError;
-
-export const selectSecondaryNameserver = (
-  state: RootState
-): DNSSecondaryNameserverResponse => state.dns.secondaryNameserver;
-
-export const selectIsCheckingZones = (state: RootState): boolean =>
-  state.dns.isCheckingZones;
-
-export const selectGetZonesError = (state: RootState): string | null =>
-  state.dns.getZonesError;
-
-export const selectZones = (state: RootState): Array<string> => state.dns.zones;
-
-export const selectIsCheckingCustomRecords = (state: RootState): boolean =>
-  state.dns.isCheckingCustomRecords;
-
-export const selectGetCustomRecordsError = (state: RootState): string | null =>
-  state.dns.getCustomRecordsError;
-
-export const selectCustomRecords = (state: RootState): Array<DNSCustomRecord> =>
-  state.dns.customRecords;
-
-export const selectIsCheckingDump = (state: RootState): boolean =>
-  state.dns.isCheckingDump;
-
-export const selectGetDumpError = (state: RootState): string | null =>
-  state.dns.getDumpError;
-
-export const selectDump = (state: RootState): DNSDumpResponse => state.dns.dump;
-
-export const selectIsAddingCustomRecord = (state: RootState): boolean =>
-  state.dns.isAddingCustomRecord;
-
-export const selectAddCustomRecordError = (state: RootState): string | null =>
-  state.dns.addCustomRecordError;
-
-export const selectAddCustomRecordResponse = (
-  state: RootState
-): string | null => state.dns.addCustomRecordResponse;
-
-export const selectIsAddingSecondaryNameserver = (state: RootState): boolean =>
-  state.dns.isAddingSecondaryNameserver;
-
-export const selectAddSecondaryNameserverError = (
-  state: RootState
-): string | null => state.dns.addSecondaryNameserverError;
-
-export const selectAddSecondaryNameserverResponse = (
-  state: RootState
-): string | null => state.dns.addSecondaryNameserverResponse;
-
-export const selectIsRemovingCustomRecord = (state: RootState): boolean =>
-  state.dns.isRemovingCustomRecord;
-
-export const selectRemoveCustomRecordError = (
-  state: RootState
-): string | null => state.dns.removeCustomRecordError;
-
-export const selectRemoveCustomRecordResponse = (
-  state: RootState
-): string | null => state.dns.removeCustomRecordResponse;
-
-export const selectDNSAction = (state: RootState): DNSAction | null =>
-  state.dns.dnsAction;
 
 function sort(a: DNSCustomRecord, b: DNSCustomRecord): number {
   if (a.qname === b.qname) {

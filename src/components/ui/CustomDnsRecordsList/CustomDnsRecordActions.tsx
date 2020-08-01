@@ -7,22 +7,19 @@ import {
   removeCustomRecord,
   removeCustomRecordReset,
   resetDNSAction,
-  selectDNSAction,
-  selectIsRemovingCustomRecord,
-  selectRemoveCustomRecordError,
-  selectRemoveCustomRecordResponse,
 } from '../../../features/dnsSlice';
+import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 import { Pre } from '../Pre/Pre';
 
 export const CustomDnsRecordActions: React.FunctionComponent = () => {
+  const {
+    isRemovingCustomRecord,
+    dnsAction,
+    removeCustomRecordError,
+    removeCustomRecordResponse,
+  } = useSelector((state: RootState) => state.dns);
   const dispatch = useDispatch();
-  const isRemovingCustomRecord = useSelector(selectIsRemovingCustomRecord);
-  const dnsAction = useSelector(selectDNSAction);
-  const removeCustomRecordError = useSelector(selectRemoveCustomRecordError);
-  const removeCustomRecordResponse = useSelector(
-    selectRemoveCustomRecordResponse
-  );
 
   const onActionDialogDismiss = useCallback((): void => {
     dispatch(resetDNSAction());

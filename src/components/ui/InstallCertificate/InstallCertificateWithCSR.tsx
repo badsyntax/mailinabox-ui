@@ -18,16 +18,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   generateCSR,
+  getSSLStatus,
   installCertificate,
   installCertificateReset,
-  selectCSRError,
-  selectGeneratedCSRResponse,
-  selectInstallCertificateError,
-  selectInstallCertificateResponse,
-  selectIsGeneratingCSR,
-  selectIsInstallingCertificate,
-  sslStatusCheck,
 } from '../../../features/sslSlice';
+import { RootState } from '../../../store';
 import { Pre } from '../Pre/Pre';
 
 interface SSLCertificateInstallProps {
@@ -56,15 +51,15 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
   domain,
   countryCode,
 }) => {
+  const {
+    isGeneratingCSR,
+    generateCSRError,
+    generateCSRResponse,
+    isInstallingCertificate,
+    installCertificateError,
+    installCertificateResponse,
+  } = useSelector((state: RootState) => state.ssl);
   const dispatch = useDispatch();
-  const isGeneratingCSR = useSelector(selectIsGeneratingCSR);
-  const csrError = useSelector(selectCSRError);
-  const generatedCSR = useSelector(selectGeneratedCSRResponse);
-  const isInstallingCertificate = useSelector(selectIsInstallingCertificate);
-  const installCertificateError = useSelector(selectInstallCertificateError);
-  const installCertificateResponse = useSelector(
-    selectInstallCertificateResponse
-  );
 
   const [installCertificateRequest, setInstallCertificateRequest] = useState<
     SSLCertificateInstallRequest
@@ -73,7 +68,6 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
     domain,
   });
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
-
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
   const onDialogClose = useCallback(
@@ -92,7 +86,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
         ...defaultInstallCertificateRequest,
         domain,
       });
-      dispatch(sslStatusCheck());
+      dispatch(getSSLStatus());
     }
     dispatch(installCertificateReset());
     setHasDialogOpened(false);
@@ -142,7 +136,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
     dispatch(generateCSR(domain, countryCode));
   }, [countryCode, domain, dispatch]);
 
-  const error = csrError || installCertificateError;
+  const error = generateCSRError || installCertificateError;
 
   const dialogContent = installOkRegEx.test(installCertificateResponse || '')
     ? 'Certificate has been installed. Check that you have no connection problems to the domain.'
@@ -169,7 +163,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
         </MessageBar>
       )}
       {isGeneratingCSR && <ProgressIndicator label="Generating CSR..." />}
-      {!isGeneratingCSR && generatedCSR && (
+      {!isGeneratingCSR && generateCSRResponse && (
         <Stack gap="m" as="form" onSubmit={onFormSubmit}>
           <Text>
             You will need to provide the certificate provider this Certificate
@@ -179,7 +173,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
             The CSR is safe to share. It can only be used in combination with a
             secret key stored on this machine.
           </MessageBar>
-          <Pre>{generatedCSR}</Pre>
+          <Pre>{generateCSRResponse}</Pre>
           <Text>
             The certificate provider will then provide you with a TLS/SSL
             certificate. They may also provide you with an intermediate chain.

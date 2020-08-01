@@ -16,12 +16,8 @@ import {
 import { DNSDumpDomainRecord, DNSDumpDomains } from 'mailinabox-api';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getDump,
-  selectDump,
-  selectGetDumpError,
-  selectIsCheckingDump,
-} from '../../../../../features/dnsSlice';
+import { getDump } from '../../../../../features/dnsSlice';
+import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { DnsDumpList } from '../../../../ui/DnsDumpList/DnsDumpList';
@@ -34,7 +30,7 @@ const className = mergeStyles({
 });
 
 const ExternalDnsSections: React.FunctionComponent = () => {
-  const dump = useSelector(selectDump);
+  const { dump } = useSelector((state: RootState) => state.dns);
 
   const records: Array<DNSDumpDomainRecord> = [];
   const groups: Array<IGroup> = [];
@@ -66,9 +62,10 @@ const ExternalDnsSections: React.FunctionComponent = () => {
 export const ExternalDns: React.FunctionComponent & {
   path: string;
 } = () => {
+  const { isGettingDump, getDumpError } = useSelector(
+    (state: RootState) => state.dns
+  );
   const dispatch = useDispatch();
-  const isCheckingDump = useSelector(selectIsCheckingDump);
-  const dumpError = useSelector(selectGetDumpError);
 
   useEffect(() => {
     dispatch(getDump());
@@ -130,13 +127,13 @@ export const ExternalDns: React.FunctionComponent & {
         </MessageBar>
       </BodyPanel>
       <BodyPanel>
-        {dumpError && (
+        {getDumpError && (
           <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {dumpError}
+            {getDumpError}
           </MessageBar>
         )}
-        {isCheckingDump && <ProgressIndicator label="Getting DNS dump..." />}
-        {!isCheckingDump && !dumpError && <ExternalDnsSections />}
+        {isGettingDump && <ProgressIndicator label="Getting DNS dump..." />}
+        {!isGettingDump && !getDumpError && <ExternalDnsSections />}
       </BodyPanel>
     </Body>
   );

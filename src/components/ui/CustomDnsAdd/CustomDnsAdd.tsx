@@ -22,11 +22,8 @@ import {
   addCustomRecordReset,
   addCustomRecordResetError,
   getCustomRecords,
-  selectAddCustomRecordError,
-  selectAddCustomRecordResponse,
-  selectIsAddingCustomRecord,
-  selectZones,
 } from '../../../features/dnsSlice';
+import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { Pre } from '../Pre/Pre';
 import { recordTypes } from './recordTypes';
@@ -43,11 +40,13 @@ const columnClassName = mergeStyles({
 export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
+  const {
+    isAddingCustomRecord,
+    addCustomRecordResponse,
+    addCustomRecordError,
+    zones,
+  } = useSelector((state: RootState) => state.dns);
   const dispatch = useDispatch();
-  const isAddingCustomRecord = useSelector(selectIsAddingCustomRecord);
-  const addCustomRecordResponse = useSelector(selectAddCustomRecordResponse);
-  const addCustomRecordError = useSelector(selectAddCustomRecordError);
-  const zones = useSelector(selectZones);
   const zoneOptions = zones.map((zone) => ({
     key: zone,
     text: zone,
