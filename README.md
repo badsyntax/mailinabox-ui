@@ -59,6 +59,7 @@ TODO
 - [x] Add secondary nameserver
   - [ ] Add secondary nameserver clear instructions
 - [ ] Update API schema to support omitting type (for dynadns) - add new endpoints
+- [ ] Add grouped list
 
 ### External DNS
 
