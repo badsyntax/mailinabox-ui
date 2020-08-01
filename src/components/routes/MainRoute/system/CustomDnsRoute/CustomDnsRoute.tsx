@@ -1,7 +1,5 @@
 import {
   Breadcrumb,
-  getTheme,
-  mergeStyles,
   MessageBar,
   MessageBarType,
   PivotItem,
@@ -26,12 +24,6 @@ import { CustomDnsRecordsList } from '../../../../ui/CustomDnsRecordsList/Custom
 import { CustomDnsSecondaryNameserver } from '../../../../ui/CustomDnsSecondaryNameserver/CustomDnsSecondaryNameserver';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
-
 const CustomDnsSections: React.FunctionComponent = () => {
   const customDnsRecords = useSelector(selectCustomRecordsSorted);
   const { path, url } = useRouteMatch();
@@ -47,16 +39,13 @@ const CustomDnsSections: React.FunctionComponent = () => {
       </PivotRoutes>
       <Switch>
         <Route exact path={path}>
-          <CustomDnsRecordsList
-            className={className}
-            records={customDnsRecords}
-          />
+          <CustomDnsRecordsList records={customDnsRecords} />
         </Route>
         <Route exact path={`${path}/add`}>
-          <CustomDnsAdd className={className} />
+          <CustomDnsAdd />
         </Route>
         <Route exact path={`${path}/nameserver`}>
-          <CustomDnsSecondaryNameserver className={className} />
+          <CustomDnsSecondaryNameserver />
         </Route>
       </Switch>
     </>

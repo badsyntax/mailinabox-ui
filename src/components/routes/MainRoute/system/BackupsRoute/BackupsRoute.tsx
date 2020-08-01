@@ -1,7 +1,5 @@
 import {
   Breadcrumb,
-  getTheme,
-  mergeStyles,
   MessageBarType,
   PivotItem,
   ProgressIndicator,
@@ -23,12 +21,6 @@ import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
-
 const BackupSections: React.FunctionComponent = () => {
   const { status } = useSelector((state: RootState) => state.system.backups);
   const { backups, unmatchedFileSize } = status;
@@ -47,7 +39,6 @@ const BackupSections: React.FunctionComponent = () => {
         <Route exact path={path}>
           {backups && (
             <BackupsList
-              className={className}
               backups={backups}
               unmatchedFileSize={unmatchedFileSize}
             />
@@ -60,7 +51,6 @@ const BackupSections: React.FunctionComponent = () => {
         </Route>
         <Route exact path={`${path}/config`}>
           <BackupConfigure
-            className={className}
             backups={backups}
             unmatchedFileSize={unmatchedFileSize}
           />

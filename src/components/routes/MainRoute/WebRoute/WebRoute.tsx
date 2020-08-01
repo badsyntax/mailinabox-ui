@@ -1,12 +1,4 @@
-import {
-  Breadcrumb,
-  getTheme,
-  Link,
-  mergeStyles,
-  PivotItem,
-  Stack,
-  Text,
-} from '@fluentui/react';
+import { Breadcrumb, Link, PivotItem, Stack, Text } from '@fluentui/react';
 import React, { useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { Body } from '../../../ui/Body/Body';
@@ -14,12 +6,6 @@ import { BodyPanel } from '../../../ui/BodyPanel/BodyPanel';
 import { PivotRoutes } from '../../../ui/PivotRoutes/PivotRoutes';
 import { WebDomainsList } from '../../../ui/WebDomainsList/WebDomainsList';
 import { WebInstructions } from '../../../ui/WebInstructions/WebInstructions';
-
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
 
 export const WebRoute: React.FunctionComponent & {
   path: string;
@@ -61,10 +47,7 @@ export const WebRoute: React.FunctionComponent & {
         </PivotRoutes>
         <Switch>
           <Route exact path={path}>
-            <WebDomainsList
-              className={className}
-              openedGroupsState={openedGroupsState}
-            />
+            <WebDomainsList openedGroupsState={openedGroupsState} />
           </Route>
           <Route exact path={`${path}/instructions`}>
             <WebInstructions />

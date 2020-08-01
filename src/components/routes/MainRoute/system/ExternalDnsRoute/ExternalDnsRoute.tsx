@@ -1,8 +1,6 @@
 import {
   Breadcrumb,
-  getTheme,
   Link,
-  mergeStyles,
   MessageBar,
   MessageBarType,
   PivotItem,
@@ -21,12 +19,6 @@ import { DnsDumpList } from '../../../../ui/DnsDumpList/DnsDumpList';
 import { DnsZoneFileGenerator } from '../../../../ui/DnsZoneFileGenerator/DnsZoneFileGenerator';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
-
 const ExternalDnsSections: React.FunctionComponent = () => {
   const { path, url } = useRouteMatch();
   const openedGroupsState = useState<string[]>([]);
@@ -41,10 +33,7 @@ const ExternalDnsSections: React.FunctionComponent = () => {
       </PivotRoutes>
       <Switch>
         <Route exact path={path}>
-          <DnsDumpList
-            className={className}
-            openedGroupsState={openedGroupsState}
-          />
+          <DnsDumpList openedGroupsState={openedGroupsState} />
         </Route>
         <Route exact path={`${path}/zone-file`}>
           <DnsZoneFileGenerator />

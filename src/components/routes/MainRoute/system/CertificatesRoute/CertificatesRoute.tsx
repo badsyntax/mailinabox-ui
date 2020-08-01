@@ -1,7 +1,5 @@
 import {
   Breadcrumb,
-  getTheme,
-  mergeStyles,
   MessageBar,
   MessageBarType,
   PivotItem,
@@ -29,12 +27,6 @@ import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CertificatesList } from '../../../../ui/CertificatesList/CertificatesList';
 import { InstallCertificate } from '../../../../ui/InstallCertificate/InstallCertificate';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
-
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
 
 enum SectionKeys {
   status = '',
@@ -72,10 +64,10 @@ const CertificateSections: React.FunctionComponent = () => {
       </PivotRoutes>
       <Switch>
         <Route exact path={path}>
-          <CertificatesList className={className} items={items} />
+          <CertificatesList items={items} />
         </Route>
         <Route exact path={`${path}${SectionKeys.install}`}>
-          <InstallCertificate className={className} items={items} />
+          <InstallCertificate items={items} />
         </Route>
       </Switch>
     </>

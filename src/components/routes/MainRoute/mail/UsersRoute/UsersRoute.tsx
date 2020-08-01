@@ -1,11 +1,4 @@
-import {
-  Breadcrumb,
-  getTheme,
-  mergeStyles,
-  MessageBarType,
-  PivotItem,
-  Stack,
-} from '@fluentui/react';
+import { Breadcrumb, MessageBarType, PivotItem, Stack } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
@@ -18,12 +11,6 @@ import { MailUserAdd } from '../../../../ui/MailUserAdd/MailUserAdd';
 import { MailUsersList } from '../../../../ui/MailUsersList/MailUsersList';
 import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
-
-const theme = getTheme();
-
-const className = mergeStyles({
-  marginTop: theme.spacing.m,
-});
 
 const UsersSections: React.FunctionComponent = () => {
   const { isGettingUsers, users, getUsersError } = useSelector(
@@ -48,11 +35,7 @@ const UsersSections: React.FunctionComponent = () => {
       <Switch>
         <Route exact path={path}>
           {getUsersError && (
-            <MessageBar
-              messageBarType={MessageBarType.error}
-              isMultiline
-              className={className}
-            >
+            <MessageBar messageBarType={MessageBarType.error} isMultiline>
               {getUsersError}
             </MessageBar>
           )}
@@ -63,14 +46,11 @@ const UsersSections: React.FunctionComponent = () => {
             />
           )}
           {!isGettingUsers && !getUsersError && (
-            <MailUsersList
-              className={className}
-              openedGroupsState={openedGroupsState}
-            />
+            <MailUsersList openedGroupsState={openedGroupsState} />
           )}
         </Route>
         <Route exact path={`${path}/add`}>
-          <MailUserAdd className={className} />
+          <MailUserAdd />
         </Route>
       </Switch>
     </>
