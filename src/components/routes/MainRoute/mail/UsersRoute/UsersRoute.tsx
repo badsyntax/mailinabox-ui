@@ -1,12 +1,14 @@
-import { Breadcrumb, MessageBarType, PivotItem, Stack } from '@fluentui/react';
+import { MessageBarType, PivotItem, Stack } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getUsers } from '../../../../../features/usersSlice';
 import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { LoadingOverlay } from '../../../../ui/LoadingOverlay/LoadingOverlay';
+import { LoadingOverlayContainer } from '../../../../ui/LoadingOverlay/LoadingOverlayContainer';
 import { MailUserAdd } from '../../../../ui/MailUserAdd/MailUserAdd';
 import { MailUsersList } from '../../../../ui/MailUsersList/MailUsersList';
 import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
@@ -34,20 +36,22 @@ const UsersSections: React.FunctionComponent = () => {
       </PivotRoutes>
       <Switch>
         <Route exact path={path}>
-          {getUsersError && (
-            <MessageBar messageBarType={MessageBarType.error} isMultiline>
-              {getUsersError}
-            </MessageBar>
-          )}
-          {isGettingUsers && (
-            <LoadingOverlay
-              loadingLabel="Loading aliases..."
-              hasLoaded={Boolean(users.length)}
-            />
-          )}
-          {!isGettingUsers && !getUsersError && (
-            <MailUsersList openedGroupsState={openedGroupsState} />
-          )}
+          <LoadingOverlayContainer>
+            {getUsersError && (
+              <MessageBar messageBarType={MessageBarType.error} isMultiline>
+                {getUsersError}
+              </MessageBar>
+            )}
+            {isGettingUsers && (
+              <LoadingOverlay
+                loadingLabel="Loading users..."
+                hasLoaded={Boolean(users.length)}
+              />
+            )}
+            {!getUsersError && Boolean(users.length) && (
+              <MailUsersList openedGroupsState={openedGroupsState} />
+            )}
+          </LoadingOverlayContainer>
         </Route>
         <Route exact path={`${path}/add`}>
           <MailUserAdd />
@@ -63,14 +67,7 @@ export const UsersRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          onReduceData={(): undefined => undefined}
-          styles={{
-            root: {
-              marginTop: 0,
-              width: '100%',
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'Mail',

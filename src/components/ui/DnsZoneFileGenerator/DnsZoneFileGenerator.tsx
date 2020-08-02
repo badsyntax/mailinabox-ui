@@ -17,26 +17,26 @@ const columnClassName = mergeStyles({
   flexBasis: 0,
 });
 
-const text = `$ORIGIN proxima-mail.com.
+const text = `$ORIGIN example.com.
 $TTL 1800
 
-@ IN SOA ns1.box.proxima-mail.com. hostmaster.box.proxima-mail.com. (
+@ IN SOA ns1.box.example.com. hostmaster.box.example.com. (
            2020062800
            7200
            1800
            1209600
            1800
            )
-	IN	NS	ns1.box.proxima-mail.com.
-	IN	NS	ns2.box.proxima-mail.com.
+	IN	NS	ns1.box.example.com.
+	IN	NS	ns2.box.example.com.
 	IN	A	116.203.113.82
 	IN	AAAA	2a01:4f8:1c1c:e08a::2
-	IN	MX	10 box.proxima-mail.com.
+	IN	MX	10 box.example.com.
 	IN	TXT	"v=spf1 mx -all"
 _dmarc	IN	TXT	"v=DMARC1; p=quarantine"
 mail._domainkey	IN	TXT	"v=DKIM1; k=rsa; s=email; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
-_caldavs._tcp	IN	SRV	0 0 443 box.proxima-mail.com.
-_carddavs._tcp	IN	SRV	0 0 443 box.proxima-mail.com.
+_caldavs._tcp	IN	SRV	0 0 443 box.example.com.
+_carddavs._tcp	IN	SRV	0 0 443 box.example.com.
 autoconfig	IN	A	116.203.113.82
 autoconfig	IN	AAAA	2a01:4f8:1c1c:e08a::1
 autodiscover	IN	A	116.203.113.82
@@ -46,7 +46,7 @@ box	IN	AAAA	2a01:4f8:1c1c:e08a::1
 box	IN	SSHFP	3 2 ( 4FB486A3269CB99075C486BF64591321A600213411EC948A25A32171331111C8 )
 box	IN	SSHFP	4 2 ( D4FC3CFD95D0C3CD152D31F41B544024B0FC81D6AC23FA16B2142FC3D40247F6 )
 box	IN	SSHFP	1 2 ( B0C57D5CAB76684F937745FD8D6E02FC4731C05D354DF6FFB15E6FA203C4F261 )
-box	IN	MX	10 box.proxima-mail.com.
+box	IN	MX	10 box.example.com.
 box	IN	TXT	"v=spf1 mx -all"
 _dmarc.box	IN	TXT	"v=DMARC1; p=quarantine"
 mail._domainkey.box	IN	TXT	"v=DKIM1; k=rsa; s=email; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"

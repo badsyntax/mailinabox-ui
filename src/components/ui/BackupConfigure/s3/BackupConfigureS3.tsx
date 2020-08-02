@@ -88,6 +88,10 @@ export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = 
     (regionOption) => regionOption.key === initialS3Host
   );
 
+  const [host, setHost] = useState<string>(
+    (initialRegion?.key === 'other' ? '' : initialRegion?.key) || ''
+  );
+
   const [region, setRegion] = useState<IDropdownOption | undefined>(
     initialRegion
   );
@@ -100,15 +104,13 @@ export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = 
   const [accessKey, setAccessKey] = useState<string | undefined>();
   const [secretAccessKey, setSecretAccessKey] = useState<string | undefined>();
 
-  // TODO: allow user to edit host
-  const s3Host = (region?.key === 'other' ? undefined : region?.key) as string;
-
   const onRegionChange = useCallback(
     (
       _event: React.FormEvent<HTMLDivElement>,
       option?: IDropdownOption
     ): void => {
       setRegion(option);
+      setHost(((option?.key === 'other' ? '' : option?.key) || '') as string);
     },
     []
   );
@@ -141,6 +143,13 @@ export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = 
     []
   );
 
+  const onHostChange = useCallback(
+    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
+      setHost(newValue ?? '');
+    },
+    []
+  );
+
   const onDaysRenderLabel = useMemo(
     () => onRenderTextFieldLabel(daysDescription),
     [daysDescription]
@@ -148,12 +157,12 @@ export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = 
 
   useEffect(() => {
     onConfigChange({
-      target: `s3://${s3Host}/${path}`,
+      target: `s3://${host}/${path}`,
       targetUser: accessKey || '',
       targetPass: secretAccessKey || '',
       minAge: Number(days) || 1,
     });
-  }, [accessKey, days, onConfigChange, path, s3Host, secretAccessKey]);
+  }, [accessKey, days, host, onConfigChange, path, secretAccessKey]);
 
   return (
     <>
@@ -167,7 +176,8 @@ export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = 
       <TextField
         label="S3 Host / Endpoint"
         required
-        value={s3Host}
+        value={host}
+        onChange={onHostChange}
         placeholder="Endpoint"
       />
       <TextField

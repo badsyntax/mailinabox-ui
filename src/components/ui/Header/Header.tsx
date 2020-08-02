@@ -27,9 +27,14 @@ export const Header: React.FunctionComponent = () => {
         horizontal
         verticalAlign="center"
       >
+        {/* <Stack.Item disableShrink>
+          <Text nowrap variant="large">
+            box.example.com
+          </Text>
+        </Stack.Item> */}
         <Stack.Item disableShrink>
           <Text nowrap variant="large">
-            todo.proxima-mail.com
+            Mail-in-a-Box
           </Text>
         </Stack.Item>
         <PrimaryNav />

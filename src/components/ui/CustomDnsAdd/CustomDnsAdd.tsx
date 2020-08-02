@@ -63,7 +63,12 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
       dispatch(getCustomRecords());
     }
     dispatch(addCustomRecordReset());
-  }, [addCustomRecordResponse, dispatch]);
+    setHasDialogOpened(false);
+    setType(recordTypeOptions[0]);
+    setZone(zoneOptions[0]);
+    setName('');
+    setValue('');
+  }, [addCustomRecordResponse, dispatch, zoneOptions]);
 
   const onDialogClose = useCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
@@ -155,7 +160,8 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
   }, [dispatch]);
 
   return (
-    <Stack as="section" gap="l2" horizontal {...props}>
+    <>
+      {/* TODO: dialog creates a gap when shown*/}
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={{
@@ -174,63 +180,65 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
       </Dialog>
-      <Stack gap="m" grow={1} className={columnClassName}>
-        <Text>
-          You can set additional DNS records, such as if you have a website
-          running on another server, to add DKIM records for external mail
-          providers, or for various confirmation-of-ownership tests.
-        </Text>
-      </Stack>
-      <Stack
-        gap="m"
-        grow={1}
-        className={columnClassName}
-        as="form"
-        onSubmit={onFormSubmit}
-      >
-        {addCustomRecordError && (
-          <MessageBar
-            messageBarType={MessageBarType.error}
-            isMultiline={false}
-            onDismiss={onMessageBarDismiss}
-            dismissButtonAriaLabel="Close"
-          >
-            {addCustomRecordError}
-          </MessageBar>
-        )}
-        <Dropdown
-          label="Domain"
-          required
-          options={zoneOptions}
-          selectedKey={zone.key}
-          onChange={onZoneChange}
-        />
-        <TextField
-          label="Name"
-          placeholder="subdomain"
-          value={name}
-          onChange={onNameChange}
-        />
-        <Dropdown
-          label="Type"
-          required
-          options={recordTypeOptions}
-          selectedKey={type.key}
-          onChange={onTypeChange}
-        />
-        <TextField
-          label="Value"
-          required
-          value={value}
-          onChange={onValueChange}
-        />
-        <MessageBar>{recordTypes[type.key as DNSRecordType].hint}</MessageBar>
-        <Stack horizontal>
-          <PrimaryButton type="submit" disabled={isAddingCustomRecord}>
-            Save Record
-          </PrimaryButton>
+      <Stack as="section" gap="l2" horizontal {...props}>
+        <Stack gap="m" grow={1} className={columnClassName}>
+          <Text>
+            You can set additional DNS records, such as if you have a website
+            running on another server, to add DKIM records for external mail
+            providers, or for various confirmation-of-ownership tests.
+          </Text>
+        </Stack>
+        <Stack
+          gap="m"
+          grow={1}
+          className={columnClassName}
+          as="form"
+          onSubmit={onFormSubmit}
+        >
+          {addCustomRecordError && (
+            <MessageBar
+              messageBarType={MessageBarType.error}
+              isMultiline={false}
+              onDismiss={onMessageBarDismiss}
+              dismissButtonAriaLabel="Close"
+            >
+              {addCustomRecordError}
+            </MessageBar>
+          )}
+          <Dropdown
+            label="Domain"
+            required
+            options={zoneOptions}
+            selectedKey={zone.key}
+            onChange={onZoneChange}
+          />
+          <TextField
+            label="Name"
+            placeholder="subdomain"
+            value={name}
+            onChange={onNameChange}
+          />
+          <Dropdown
+            label="Type"
+            required
+            options={recordTypeOptions}
+            selectedKey={type.key}
+            onChange={onTypeChange}
+          />
+          <TextField
+            label="Value"
+            required
+            value={value}
+            onChange={onValueChange}
+          />
+          <MessageBar>{recordTypes[type.key as DNSRecordType].hint}</MessageBar>
+          <Stack horizontal>
+            <PrimaryButton type="submit" disabled={isAddingCustomRecord}>
+              Save Record
+            </PrimaryButton>
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };

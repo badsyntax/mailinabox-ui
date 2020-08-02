@@ -28,6 +28,10 @@ const columns: IColumn[] = [
     minWidth: 260,
     isMultiline: true,
     onRender: (item: MailAlias): React.ReactElement => {
+      if (!item || !item.forwardsTo) {
+        console.log('item');
+        debugger;
+      }
       return (
         <>
           {item.forwardsTo.map((forwardToAddress) => (

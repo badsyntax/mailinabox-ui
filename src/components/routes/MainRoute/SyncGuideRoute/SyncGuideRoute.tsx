@@ -1,5 +1,4 @@
 import {
-  Breadcrumb,
   DefaultButton,
   Link,
   mergeStyles,
@@ -10,6 +9,7 @@ import {
 import { useId } from '@uifabric/react-hooks';
 import React from 'react';
 import { Body } from '../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../ui/BodyPanel/BodyPanel';
 import { SyncListBrowser } from '../../../ui/SyncListBrowser/SyncListBrowser';
 import { SyncListMobile } from '../../../ui/SyncListMobile/SyncListMobile';
@@ -26,13 +26,7 @@ export const SyncGuideRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          onReduceData={(): undefined => undefined}
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'Contacts & Calendar Synchronization',

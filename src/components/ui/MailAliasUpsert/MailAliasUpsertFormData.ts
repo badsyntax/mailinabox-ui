@@ -24,6 +24,8 @@ interface FormData {
     permittedSenders: {
       any: string;
       manual: string;
+      placeholder: string;
+      info: string;
     };
   };
 }
@@ -41,6 +43,8 @@ export const formData: FormData = {
       info: 'One address per line or separated by commas.',
     },
     permittedSenders: {
+      placeholder: 'you@yourdomain.com',
+      info: 'One address per line or separated by commas.',
       any:
         'Any mail user listed in the Forwards To box can send mail claiming to be from the alias address.',
       manual:
@@ -61,6 +65,8 @@ export const formData: FormData = {
       info: 'One address per line or separated by commas.',
     },
     permittedSenders: {
+      placeholder: 'you@yourdomain.com',
+      info: 'One address per line or separated by commas.',
       any:
         'Any mail user listed in the Forwards To box can send mail claiming to be from any address on the alias domain.',
       manual:
@@ -81,6 +87,8 @@ export const formData: FormData = {
       info: 'Enter just the part of an email address starting with the @-sign.',
     },
     permittedSenders: {
+      placeholder: 'you@yourdomain.com',
+      info: 'One address per line or separated by commas.',
       any:
         'Any mail user listed in the Forwards To box can send mail claiming to be from any address on the alias domain.',
       manual:

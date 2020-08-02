@@ -20,7 +20,7 @@ const items: Array<SyncListItem> = [
   },
   {
     option: 'Server Name',
-    value: 'box.proxima-mail.com',
+    value: 'box.example.com',
   },
   {
     option: 'Use SSL',

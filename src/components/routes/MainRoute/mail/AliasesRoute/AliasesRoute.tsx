@@ -1,6 +1,7 @@
-import { Breadcrumb, Stack } from '@fluentui/react';
+import { Stack } from '@fluentui/react';
 import React from 'react';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { MailAliases } from '../../../../ui/MailAliases/MailAliases';
 
@@ -10,12 +11,7 @@ export const AliasesRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'Mail',

@@ -46,7 +46,7 @@ const backupOptions: IDropdownOption[] = [
   },
   {
     key: BackupType.local,
-    text: 'box.proxima-mail.com (TODO)',
+    text: 'box.example.com (TODO)',
   },
   {
     key: BackupType.rsync,
@@ -228,9 +228,7 @@ export const BackupConfigure: React.FunctionComponent<
         {updateConfigError && (
           <MessageBar
             messageBarType={MessageBarType.error}
-            isMultiline={false}
             onDismiss={onMessageBarDismiss}
-            dismissButtonAriaLabel="Close"
           >
             {updateConfigError}
           </MessageBar>

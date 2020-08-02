@@ -1,5 +1,4 @@
 import {
-  Breadcrumb,
   Link,
   MessageBar,
   MessageBarType,
@@ -14,6 +13,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getDump } from '../../../../../features/dnsSlice';
 import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { DnsDumpList } from '../../../../ui/DnsDumpList/DnsDumpList';
 import { DnsZoneFileGenerator } from '../../../../ui/DnsZoneFileGenerator/DnsZoneFileGenerator';
@@ -60,12 +60,7 @@ export const ExternalDnsRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'System',

@@ -32,7 +32,7 @@ const items = [
   },
   {
     option: 'Mail server',
-    value: 'box.proxima-mail.com',
+    value: 'box.example.com',
   },
   {
     option: 'IMAP Port',

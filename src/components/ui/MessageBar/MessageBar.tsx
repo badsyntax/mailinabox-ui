@@ -22,5 +22,8 @@ export const MessageBar: React.FunctionComponent<
         className: mergeStyles(className, messageBarClassName),
       }
     : rest;
-  return <FluentMessageBar {...propsWithAnimation} />;
+
+  return (
+    <FluentMessageBar {...propsWithAnimation} dismissButtonAriaLabel="Close" />
+  );
 };

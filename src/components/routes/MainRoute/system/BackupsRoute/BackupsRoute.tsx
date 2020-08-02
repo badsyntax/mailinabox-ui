@@ -1,12 +1,16 @@
 import {
-  Breadcrumb,
+  BaseButton,
+  Dialog,
+  DialogFooter,
+  DialogType,
   MessageBarType,
   PivotItem,
+  PrimaryButton,
   ProgressIndicator,
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
@@ -17,16 +21,53 @@ import { RootState } from '../../../../../store';
 import { BackupConfigure } from '../../../../ui/BackupConfigure/BackupConfigure';
 import { BackupsList } from '../../../../ui/BackupsList/BackupsList';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { MessageBar } from '../../../../ui/MessageBar/MessageBar';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
 const BackupSections: React.FunctionComponent = () => {
   const { status } = useSelector((state: RootState) => state.system.backups);
-  const { backups, unmatchedFileSize } = status;
   const { path, url } = useRouteMatch();
+  const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
+  const { backups, unmatchedFileSize, error } = status;
+
+  const onDialogClose = useCallback(
+    (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
+      setIsDialogHidden(true);
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (error) {
+      setIsDialogHidden(false);
+    }
+  }, [error]);
+
   return (
     <>
+      {/*
+      TODO: when the dialog is shown it creates a whitespace gap due to the stacking and due
+      to the dialog rendering a layer element
+      */}
+      <Dialog
+        hidden={isDialogHidden}
+        dialogContentProps={{
+          type: DialogType.largeHeader,
+          title: 'Backup error',
+        }}
+        modalProps={{
+          isBlocking: true,
+        }}
+        minWidth={480}
+        maxWidth={480}
+      >
+        {error}
+        <DialogFooter>
+          <PrimaryButton text="OK" onClick={onDialogClose} />
+        </DialogFooter>
+      </Dialog>
       <PivotRoutes>
         <PivotItem itemKey={url} headerText="Backup Status" />
         <PivotItem
@@ -34,18 +75,22 @@ const BackupSections: React.FunctionComponent = () => {
           headerText="Backup Configuration"
         />
       </PivotRoutes>
-
       <Switch>
         <Route exact path={path}>
-          {backups && (
+          {backups && backups.length > 0 && (
             <BackupsList
               backups={backups}
               unmatchedFileSize={unmatchedFileSize}
             />
           )}
           {!backups && (
-            <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+            <MessageBar messageBarType={MessageBarType.warning}>
               Backups are turned off.
+            </MessageBar>
+          )}
+          {backups && !backups.length && (
+            <MessageBar messageBarType={MessageBarType.warning}>
+              No backups have been made yet.
             </MessageBar>
           )}
         </Route>
@@ -56,30 +101,6 @@ const BackupSections: React.FunctionComponent = () => {
           />
         </Route>
       </Switch>
-
-      {/* <Pivot linkSize={PivotLinkSize.large}>
-        <PivotItem headerText="Backup Status">
-          {backups && (
-            <BackupsList
-              className={className}
-              backups={backups}
-              unmatchedFileSize={unmatchedFileSize}
-            />
-          )}
-          {!backups && (
-            <MessageBar messageBarType={MessageBarType.warning} isMultiline>
-              Backups are turned off.
-            </MessageBar>
-          )}
-        </PivotItem>
-        <PivotItem headerText="Backup Configuration">
-          <BackupConfigure
-            className={className}
-            backups={backups}
-            unmatchedFileSize={unmatchedFileSize}
-          />
-        </PivotItem>
-      </Pivot> */}
     </>
   );
 };
@@ -107,13 +128,7 @@ export const BackupsRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          onReduceData={(): undefined => undefined}
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'System',

@@ -7,11 +7,14 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import { useBoolean } from '@uifabric/react-hooks';
-import { MailUser } from 'mailinabox-api';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeUser, updateUserReset } from '../../../features/usersSlice';
+import {
+  getUsers,
+  removeUser,
+  updateUserReset,
+  UserAction,
+} from '../../../features/usersSlice';
 import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 
@@ -26,13 +29,13 @@ interface MailUserArchiveDialogProps {
   isUpdatingUser: boolean;
   updateUserError: string | null;
   updateUserResponse: string | null;
-  user?: MailUser;
+  userAction: UserAction | null;
 }
 
 export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialogProps> = ({
   hidden,
   onDismiss,
-  user,
+  userAction,
   isUpdatingUser,
   updateUserError,
   updateUserResponse,
@@ -41,64 +44,60 @@ export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialo
 
   const dispatch = useDispatch();
   const [
-    archiveErrorDialogHidden,
-    { setFalse: showArchiveErrorDialog, setTrue: hideArchiveErrorDialog },
-  ] = useBoolean(true);
+    archiveSelfErrorDialogHidden,
+    setArchiveSelfErrorDialogHidden,
+  ] = useState<boolean>(true);
 
   const onModalDismissed = useCallback((): void => {
+    if (updateUserResponse) {
+      dispatch(getUsers());
+    }
     dispatch(updateUserReset());
-    onDismiss();
-  }, [dispatch, onDismiss]);
+  }, [dispatch, updateUserResponse]);
 
-  const onConfirmClick = useCallback((): void => {
-    hideArchiveErrorDialog();
-  }, [hideArchiveErrorDialog]);
+  const onArchiveConfirm = useCallback((): void => {
+    if (userAction?.user) {
+      dispatch(removeUser(userAction.user));
+    }
+  }, [dispatch, userAction]);
 
   const modalProps = {
     isBlocking: true,
     onDismissed: onModalDismissed,
   };
 
-  const updateSelfError = !hidden && username === user?.email;
+  const updateSelfError = !hidden && username === userAction?.user?.email;
 
   useEffect(() => {
-    if (updateSelfError) {
-      showArchiveErrorDialog();
-    } else {
-      hideArchiveErrorDialog();
-    }
-  }, [hideArchiveErrorDialog, showArchiveErrorDialog, updateSelfError]);
+    setArchiveSelfErrorDialogHidden(!updateSelfError);
+  }, [setArchiveSelfErrorDialogHidden, updateSelfError]);
   return (
     <>
       <Dialog
-        hidden={archiveErrorDialogHidden}
+        hidden={archiveSelfErrorDialogHidden}
         dialogContentProps={dialogContentProps}
         modalProps={modalProps}
       >
         <Text>You cannot archive your own account.</Text>
         <DialogFooter>
-          <PrimaryButton text="OK" onClick={onConfirmClick} />
+          <PrimaryButton text="OK" onClick={onDismiss} />
         </DialogFooter>
       </Dialog>
-
       <ActionConfirmDialog
         dialogContentProps={dialogContentProps}
         modalProps={modalProps}
         onDismiss={onDismiss}
         isLoading={isUpdatingUser}
         error={updateUserError}
-        hidden={hidden || !archiveErrorDialogHidden}
+        hidden={hidden || !archiveSelfErrorDialogHidden}
         confirmButtonText="Archive"
         actionResponse={updateUserResponse}
-        onConfirm={(): void => {
-          if (user) {
-            dispatch(removeUser(user));
-          }
-        }}
+        onConfirm={onArchiveConfirm}
       >
         <Stack gap="m">
           <Text>
-            Are you sure you want to archive <strong>{user?.email}</strong>?
+            Are you sure you want to archive{' '}
+            <strong>{userAction?.user?.email}</strong>?
           </Text>
           <Text>
             The user's mailboxes will not be deleted (you can do that later),

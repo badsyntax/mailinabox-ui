@@ -7,13 +7,15 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
+const initialState: AuthState = {
+  username: storageAuth.getUsername(),
+  password: storageAuth.getPassword(),
+  isAuthenticated: storageAuth.getIsAuthenticated(),
+};
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    username: storageAuth.getUsername(),
-    password: storageAuth.getPassword(),
-    isAuthenticated: storageAuth.getIsAuthenticated(),
-  } as AuthState,
+  initialState,
   reducers: {
     updateAuth: (state, action): void => {
       const { username, password, isAuthenticated } = action.payload;
@@ -25,10 +27,5 @@ const authSlice = createSlice({
 });
 
 export const { updateAuth } = authSlice.actions;
-
-// export const selectIsAuthenticated = (state: RootState): boolean =>
-//   state.auth.isAuthenticated;
-
-// export const selectUsername = (state: RootState): string => state.auth.username;
 
 export const { reducer: authReducer } = authSlice;

@@ -28,7 +28,7 @@ const columns: IColumn[] = [
 const items = [
   {
     option: 'Server',
-    value: 'box.proxima-mail.com',
+    value: 'box.example.com',
   },
   {
     option: 'Options',

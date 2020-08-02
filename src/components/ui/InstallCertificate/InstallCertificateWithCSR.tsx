@@ -143,7 +143,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
     : installCertificateResponse;
 
   return (
-    <>
+    <Stack>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={dialogContentProps}
@@ -203,6 +203,6 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
           </Stack>
         </Stack>
       )}
-    </>
+    </Stack>
   );
 };

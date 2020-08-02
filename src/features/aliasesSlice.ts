@@ -3,7 +3,6 @@ import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import {
   MailAlias,
   MailAliasByDomain,
-  MailAliasesResponse,
   MailAliasesResponseFormat,
   UpsertMailAliasRequest,
 } from 'mailinabox-api';
@@ -22,7 +21,7 @@ export interface AliasAction {
 
 export interface AliasesState {
   isGettingAliases: boolean;
-  aliases: MailAliasesResponse;
+  aliases: Array<MailAliasByDomain>;
   getAliasesError: string | null;
   isUpsertingAlias: boolean;
   isRemovingAlias: boolean;

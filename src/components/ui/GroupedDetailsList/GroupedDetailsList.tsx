@@ -133,6 +133,10 @@ export const GroupedDetailsList: React.FunctionComponent<
       layoutMode={DetailsListLayoutMode.justified}
       selectionMode={SelectionMode.none}
       constrainMode={ConstrainMode.horizontalConstrained}
+      isHeaderVisible
+      onShouldVirtualize={(): boolean =>
+        groupsWithCollapsedState.length > 20 || props.items.length > 50
+      }
       onRenderDetailsHeader={onRenderDetailsHeader}
       onRenderRow={onRenderRow}
       groupProps={{

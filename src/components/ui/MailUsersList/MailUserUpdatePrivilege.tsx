@@ -6,15 +6,14 @@ import {
   PrimaryButton,
   Text,
 } from '@fluentui/react';
-import { useBoolean } from '@uifabric/react-hooks';
-import { MailUser } from 'mailinabox-api';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addUserAdminPrivilege,
+  getUsers,
   removeUserAdminPrivilege,
-  resetUserAction,
   updateUserReset,
+  UserAction,
   UserActionType,
 } from '../../../features/usersSlice';
 import { RootState } from '../../../store';
@@ -27,7 +26,7 @@ const modifyPrivilegesDialogContentProps: IDialogContentProps = {
 
 interface MailUserUpdatePrivilegeProps {
   onDialogDismiss: () => void;
-  user?: MailUser | null;
+  userAction: UserAction | null;
   isUpdatingUser: boolean;
   updateUserError: string | null;
   updateUserResponse: string | null;
@@ -35,27 +34,18 @@ interface MailUserUpdatePrivilegeProps {
 
 export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePrivilegeProps> = ({
   onDialogDismiss,
-  user,
+  userAction,
   isUpdatingUser,
   updateUserError,
   updateUserResponse,
 }) => {
-  const { userAction } = useSelector((state: RootState) => state.users);
-  const { username } = useSelector((state: RootState) => state.auth);
-
   const dispatch = useDispatch();
+
+  const { username } = useSelector((state: RootState) => state.auth);
   const [
-    removeErrorDialogHidden,
-    { setFalse: showRemoveErrorDialog, setTrue: hideRemoveErrorDialog },
-  ] = useBoolean(true);
-
-  const onConfirmClick = useCallback((): void => {
-    onDialogDismiss();
-  }, [onDialogDismiss]);
-
-  const onModalDismissed = useCallback((): void => {
-    dispatch(updateUserReset());
-  }, [dispatch]);
+    removeSelfErrorDialogHidden,
+    setRemoveSelfErrorDialogHidden,
+  ] = useState<boolean>(true);
 
   const removeAdminDialogHidden =
     userAction?.type !== UserActionType.removeAdminPrivilege;
@@ -63,93 +53,80 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
   const addAdminDialogHidden =
     userAction?.type !== UserActionType.addAdminPrivilege;
 
-  const updateSelfError = !removeAdminDialogHidden && username === user?.email;
+  const updateSelfError =
+    !removeAdminDialogHidden && username === userAction?.user?.email;
+
+  const onModalDismissed = useCallback((): void => {
+    if (updateUserResponse) {
+      dispatch(getUsers());
+    }
+    dispatch(updateUserReset());
+  }, [dispatch, updateUserResponse]);
+
+  const onRemoveAdminConfirm = useCallback((): void => {
+    if (userAction?.user) {
+      dispatch(removeUserAdminPrivilege(userAction.user));
+    }
+  }, [dispatch, userAction]);
+
+  const onAddAdminConfirm = useCallback((): void => {
+    if (userAction?.user) {
+      dispatch(addUserAdminPrivilege(userAction.user));
+    }
+  }, [dispatch, userAction]);
+
+  useEffect(() => {
+    setRemoveSelfErrorDialogHidden(!updateSelfError);
+  }, [updateSelfError]);
 
   const modalProps = {
     isBlocking: true,
     onDismissed: onModalDismissed,
   };
-
-  const onRemoveAdminConfirm = useCallback((): void => {
-    if (user) {
-      dispatch(removeUserAdminPrivilege(user));
-    }
-  }, [dispatch, user]);
-
-  const onAddAdminConfirm = useCallback((): void => {
-    if (user) {
-      dispatch(addUserAdminPrivilege(user));
-    }
-  }, [dispatch, user]);
-
-  useEffect(() => {
-    if (updateSelfError) {
-      showRemoveErrorDialog();
-    } else {
-      hideRemoveErrorDialog();
-    }
-  }, [updateSelfError, showRemoveErrorDialog, hideRemoveErrorDialog, dispatch]);
-
-  useEffect(() => {
-    if (
-      updateUserResponse &&
-      (!removeAdminDialogHidden || !addAdminDialogHidden)
-    ) {
-      dispatch(resetUserAction());
-    }
-  }, [
-    addAdminDialogHidden,
-    dispatch,
-    removeAdminDialogHidden,
-    updateUserResponse,
-  ]);
   return (
     <>
       <Dialog
-        hidden={removeErrorDialogHidden}
+        hidden={removeSelfErrorDialogHidden}
         dialogContentProps={modifyPrivilegesDialogContentProps}
         modalProps={modalProps}
       >
         <Text>You cannot remove the admin privilege from yourself.</Text>
         <DialogFooter>
-          <PrimaryButton text="OK" onClick={onConfirmClick} />
+          <PrimaryButton text="OK" onClick={onDialogDismiss} />
         </DialogFooter>
       </Dialog>
-
       {!updateSelfError && (
         <>
           <ActionConfirmDialog
             dialogContentProps={modifyPrivilegesDialogContentProps}
             modalProps={modalProps}
             onDismiss={onDialogDismiss}
-            isLoading={
-              removeAdminDialogHidden || isUpdatingUser || !!updateUserResponse
-            }
+            isLoading={isUpdatingUser}
             error={updateUserError}
             hidden={removeAdminDialogHidden}
             onConfirm={onRemoveAdminConfirm}
             confirmButtonText="Remove"
+            actionResponse={updateUserResponse}
           >
             <Text>
               Are you sure you want to remove the admin privilege for{' '}
-              <strong>{user?.email}?</strong>
+              <strong>{userAction?.user?.email}?</strong>
             </Text>
           </ActionConfirmDialog>
           <ActionConfirmDialog
             dialogContentProps={modifyPrivilegesDialogContentProps}
             modalProps={modalProps}
             onDismiss={onDialogDismiss}
-            isLoading={
-              addAdminDialogHidden || isUpdatingUser || !!updateUserResponse
-            }
+            isLoading={isUpdatingUser}
             error={updateUserError}
             hidden={addAdminDialogHidden}
             onConfirm={onAddAdminConfirm}
             confirmButtonText="Add"
+            actionResponse={updateUserResponse}
           >
             <Text>
               Are you sure you want to add the admin privilege for{' '}
-              <strong>{user?.email}?</strong>
+              <strong>{userAction?.user?.email}?</strong>
             </Text>
           </ActionConfirmDialog>
         </>

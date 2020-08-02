@@ -23,12 +23,12 @@ export const WebInstructions: React.FunctionComponent = () => {
         </li>
         <li>
           Log in to this machine with the file transfer program. The server is{' '}
-          <strong>box.proxima-mail.com</strong>, the protocol is SSH or SFTP,
-          and use the <strong>SSH login credentials</strong> that you used when
-          you originally created this machine at your cloud host provider. This
-          is <strong>not</strong> what you use to log in either for email or
-          this control panel. Your SSH credentials probably involves a private
-          key file.
+          <strong>box.example.com</strong>, the protocol is SSH or SFTP, and use
+          the <strong>SSH login credentials</strong> that you used when you
+          originally created this machine at your cloud host provider. This is{' '}
+          <strong>not</strong> what you use to log in either for email or this
+          control panel. Your SSH credentials probably involves a private key
+          file.
         </li>
         <li>
           Upload your <code>.html</code> or other files to the directory{' '}

@@ -1,6 +1,5 @@
 import {
   AnimationStyles,
-  Breadcrumb,
   mergeStyles,
   MessageBar,
   MessageBarType,
@@ -17,6 +16,7 @@ import {
 } from '../../../../../features/system/statusSlice';
 import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { SystemChecksDetailsList } from '../../../../ui/SystemChecksDetailsList/SystemChecksDetailsList';
 import { SystemStatusActions } from '../../../../ui/SystemStatusActions/SystemStatusActions';
@@ -46,12 +46,7 @@ export const StatusChecksRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'System',

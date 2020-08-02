@@ -1,5 +1,4 @@
 import {
-  Breadcrumb,
   MessageBar,
   MessageBarType,
   PivotItem,
@@ -23,6 +22,7 @@ import {
 } from '../../../../../features/sslSlice';
 import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CertificatesList } from '../../../../ui/CertificatesList/CertificatesList';
 import { InstallCertificate } from '../../../../ui/InstallCertificate/InstallCertificate';
@@ -92,13 +92,7 @@ export const CertificatesRoute: React.FunctionComponent & {
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          onReduceData={(): undefined => undefined}
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'System',
@@ -119,9 +113,9 @@ export const CertificatesRoute: React.FunctionComponent & {
           secure between you and the owner of that address.
         </Text>
         <Text>
-          You need a TLS certificate for this box’s hostname
-          (box.proxima-mail.com) (TODO) and every other domain name and
-          subdomain that this box is hosting a website for (see the list below).
+          You need a TLS certificate for this box’s hostname (box.example.com)
+          (TODO) and every other domain name and subdomain that this box is
+          hosting a website for (see the list below).
         </Text>
       </BodyPanel>
       <BodyPanel>

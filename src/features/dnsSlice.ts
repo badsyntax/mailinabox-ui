@@ -10,6 +10,7 @@ import {
   DNSSecondaryNameserverResponse,
   RemoveDnsCustomRecordRequest,
 } from 'mailinabox-api';
+import psl from 'psl';
 import { dnsApi, getRequestFailMessage } from '../api';
 import { RootState } from '../store';
 
@@ -259,6 +260,41 @@ export const selectCustomRecordsSorted = (
     .map(reverseFqdn);
 };
 
+export const selectCustomRecordsWithGroups = (
+  state: RootState
+): [Array<DNSCustomRecord>, Array<IGroup>] => {
+  const records = selectCustomRecordsSorted(state);
+  let groups: Array<IGroup> = [];
+
+  records.forEach((record: DNSCustomRecord, i: number) => {
+    const parsed = psl.parse(record.qname);
+    if (parsed.error || !parsed.domain) {
+      return;
+    }
+    const { domain } = parsed;
+    if (groups[groups.length - 1]?.name !== domain) {
+      groups.push({
+        key: 'customDnsGroup' + domain,
+        name: domain,
+        startIndex: i,
+        isCollapsed: false,
+        level: 0,
+        count: 0,
+      });
+    }
+  });
+
+  groups = groups.map((group, index) => {
+    return {
+      ...group,
+      count:
+        (groups[index + 1]?.startIndex || records.length) - group.startIndex,
+    };
+  });
+
+  return [records, groups];
+};
+
 export const selectDumpWithGroups = (
   state: RootState
 ): [Array<DNSDumpDomainRecord>, Array<IGroup>] => {
@@ -269,7 +305,7 @@ export const selectDumpWithGroups = (
   dump.forEach((dnsDomains: DNSDumpDomains) => {
     const [domainName, dnsRecords] = dnsDomains;
     groups.push({
-      key: 'group' + groups.length,
+      key: 'dnsDumpGroup' + domainName,
       name: domainName as string,
       startIndex: records.length,
       isCollapsed: false,

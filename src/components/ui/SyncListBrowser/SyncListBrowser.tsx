@@ -20,11 +20,11 @@ interface SyncBrowserItem {
 const items: Array<SyncBrowserItem> = [
   {
     option: 'Contacts',
-    value: 'https://box.proxima-mail.com/cloud/contacts',
+    value: 'https://box.example.com/cloud/contacts',
   },
   {
     option: 'Calendar',
-    value: 'https://box.proxima-mail.com/cloud/calendar',
+    value: 'https://box.example.com/cloud/calendar',
   },
 ];
 

@@ -1,16 +1,15 @@
 import {
-  ConstrainMode,
-  DetailsList,
-  DetailsListLayoutMode,
   IColumn,
   IStackProps,
   mergeStyles,
-  SelectionMode,
   Stack,
   Text,
 } from '@fluentui/react';
 import { DNSCustomRecord } from 'mailinabox-api';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useSelector } from 'react-redux';
+import { selectCustomRecordsWithGroups } from '../../../features/dnsSlice';
+import { GroupedDetailsList } from '../GroupedDetailsList/GroupedDetailsList';
 import { CustomDnsRecordActions } from './CustomDnsRecordActions';
 import { CustomDnsRecordsActionsList } from './CustomDnsRecordsActionsList';
 
@@ -37,7 +36,6 @@ const columns: IColumn[] = [
   {
     key: 'column3',
     name: 'Value',
-    isMultiline: false,
     minWidth: 180,
     onRender: (item: DNSCustomRecord): React.ReactNode => {
       return <Text>{item.value}</Text>;
@@ -57,22 +55,23 @@ const columns: IColumn[] = [
   },
 ];
 
+interface CustomDnsRecordsListProps {
+  openedGroupsState: [string[], Dispatch<SetStateAction<string[]>>];
+}
+
 export const CustomDnsRecordsList: React.FunctionComponent<
-  IStackProps & {
-    records: Array<DNSCustomRecord>;
-  }
-> = ({ records = [], ...props }) => {
+  IStackProps & CustomDnsRecordsListProps
+> = ({ openedGroupsState, ...props }) => {
+  const [records, groups] = useSelector(selectCustomRecordsWithGroups);
+
   return (
     <Stack as="section" {...props}>
       <CustomDnsRecordActions />
-      <DetailsList
+      <GroupedDetailsList
         items={records}
         columns={columns}
-        layoutMode={DetailsListLayoutMode.justified}
-        isHeaderVisible
-        onShouldVirtualize={(): boolean => false}
-        selectionMode={SelectionMode.none}
-        constrainMode={ConstrainMode.horizontalConstrained}
+        groups={groups}
+        openedGroupsState={openedGroupsState}
       />
     </Stack>
   );

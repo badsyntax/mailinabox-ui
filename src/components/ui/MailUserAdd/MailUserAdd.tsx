@@ -180,7 +180,7 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
     };
   }, [dispatch]);
   return (
-    <>
+    <Stack>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={dialogContentProps}
@@ -263,6 +263,6 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
           </Stack>
         </Stack>
       </Stack>
-    </>
+    </Stack>
   );
 };

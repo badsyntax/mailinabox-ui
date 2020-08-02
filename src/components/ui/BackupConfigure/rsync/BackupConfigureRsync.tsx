@@ -108,7 +108,7 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
         value={path}
         label="Path"
         required
-        placeholder="/backups/box.proxima-mail.com"
+        placeholder="/backups/box.example.com"
         onChange={onPathChange}
       />
       <TextField

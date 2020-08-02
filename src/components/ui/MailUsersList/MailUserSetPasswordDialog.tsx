@@ -10,10 +10,14 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
-import { MailUser } from 'mailinabox-api';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserPassword, updateUserReset } from '../../../features/usersSlice';
+import {
+  getUsers,
+  setUserPassword,
+  updateUserReset,
+  UserAction,
+} from '../../../features/usersSlice';
 import { RootState } from '../../../store';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
 import { MessageBar } from '../MessageBar/MessageBar';
@@ -25,7 +29,7 @@ interface MailUserSetPasswordDialogProps {
   isUpdatingUser: boolean;
   updateUserError: string | null;
   updateUserResponse: string | null;
-  user?: MailUser;
+  userAction: UserAction | null;
 }
 
 const changePasswordDialogContentProps: IDialogContentProps = {
@@ -36,7 +40,7 @@ const changePasswordDialogContentProps: IDialogContentProps = {
 export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPasswordDialogProps> = ({
   hidden,
   onDismiss,
-  user,
+  userAction,
   isUpdatingUser,
   updateUserError,
   updateUserResponse,
@@ -47,24 +51,29 @@ export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPassw
   const [password, setPassword] = useState<string>('');
   const onModalDismissed = useCallback((): void => {
     setPassword('');
+    if (updateUserResponse) {
+      dispatch(getUsers());
+    }
     dispatch(updateUserReset());
-  }, [dispatch]);
+  }, [dispatch, updateUserResponse]);
+
   const onPasswordChange = useCallback(
-    (ev: React.FormEvent<HTMLElement>, newValue?: string): void => {
+    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
       setPassword(newValue ?? '');
     },
     []
   );
+
   const onFormSubmit = useCallback(
-    (ev: React.FormEvent<HTMLElement>): void => {
-      ev.preventDefault();
-      if (user) {
-        dispatch(setUserPassword(user, password));
+    (event: React.FormEvent<HTMLElement>): void => {
+      event.preventDefault();
+      if (userAction?.user) {
+        dispatch(setUserPassword(userAction.user, password));
       }
     },
-    [dispatch, password, user]
+    [dispatch, password, userAction]
   );
-  const updateSelf = username === user?.email;
+  const updateSelf = username === userAction?.user?.email;
   return (
     <Dialog
       hidden={hidden}
@@ -93,7 +102,7 @@ export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPassw
               </MessageBar>
             )}
             <Text block>
-              Set a new password for <strong>{user?.email}</strong>
+              Set a new password for <strong>{userAction?.user?.email}</strong>
             </Text>
             <TextField
               label="New Password"

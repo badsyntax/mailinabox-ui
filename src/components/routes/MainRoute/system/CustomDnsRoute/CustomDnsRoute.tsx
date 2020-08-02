@@ -1,5 +1,4 @@
 import {
-  Breadcrumb,
   MessageBar,
   MessageBarType,
   PivotItem,
@@ -7,26 +6,55 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
   getCustomRecords,
   getSecondaryNameserver,
   getZones,
-  selectCustomRecordsSorted,
 } from '../../../../../features/dnsSlice';
 import { RootState } from '../../../../../store';
 import { Body } from '../../../../ui/Body/Body';
+import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
 import { CustomDnsAdd } from '../../../../ui/CustomDnsAdd/CustomDnsAdd';
 import { CustomDnsRecordsList } from '../../../../ui/CustomDnsRecordsList/CustomDnsRecordsList';
 import { CustomDnsSecondaryNameserver } from '../../../../ui/CustomDnsSecondaryNameserver/CustomDnsSecondaryNameserver';
+import { LoadingOverlay } from '../../../../ui/LoadingOverlay/LoadingOverlay';
+import { LoadingOverlayContainer } from '../../../../ui/LoadingOverlay/LoadingOverlayContainer';
 import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 
 const CustomDnsSections: React.FunctionComponent = () => {
-  const customDnsRecords = useSelector(selectCustomRecordsSorted);
+  const {
+    isGettingSecondaryNameserver,
+    isGettingZones,
+    isGettingCustomRecords,
+    getSecondaryNameserverError,
+    getZonesError,
+    getCustomRecordsError,
+    zones,
+    customRecords,
+  } = useSelector((state: RootState) => state.dns);
+  const dispatch = useDispatch();
   const { path, url } = useRouteMatch();
+  const openedGroupsState = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!zones.length) {
+      dispatch(getZones());
+    }
+  }, [dispatch, zones]);
+
+  useEffect(() => {
+    if (!customRecords.length) {
+      dispatch(getCustomRecords());
+    }
+  }, [customRecords, dispatch]);
+
+  useEffect(() => {
+    dispatch(getSecondaryNameserver());
+  }, [dispatch]);
   return (
     <>
       <PivotRoutes>
@@ -39,13 +67,44 @@ const CustomDnsSections: React.FunctionComponent = () => {
       </PivotRoutes>
       <Switch>
         <Route exact path={path}>
-          <CustomDnsRecordsList records={customDnsRecords} />
+          <LoadingOverlayContainer>
+            {isGettingCustomRecords && (
+              <LoadingOverlay
+                loadingLabel="Checking DNS status..."
+                hasLoaded={Boolean(customRecords.length)}
+              />
+            )}
+            {Boolean(getCustomRecordsError) && (
+              <MessageBar messageBarType={MessageBarType.error}>
+                {getCustomRecordsError}
+              </MessageBar>
+            )}
+            {!getCustomRecordsError && Boolean(customRecords.length) && (
+              <CustomDnsRecordsList openedGroupsState={openedGroupsState} />
+            )}
+          </LoadingOverlayContainer>
         </Route>
         <Route exact path={`${path}/add`}>
-          <CustomDnsAdd />
+          {isGettingZones && <ProgressIndicator label="Checking Zones..." />}
+          {Boolean(getZonesError) && (
+            <MessageBar messageBarType={MessageBarType.error}>
+              {getZonesError}
+            </MessageBar>
+          )}
+          {!getZonesError && Boolean(zones.length) && <CustomDnsAdd />}
         </Route>
         <Route exact path={`${path}/nameserver`}>
-          <CustomDnsSecondaryNameserver />
+          {isGettingSecondaryNameserver && (
+            <ProgressIndicator label="Checking Secondary Nameserver..." />
+          )}
+          {Boolean(getSecondaryNameserverError) && (
+            <MessageBar messageBarType={MessageBarType.error}>
+              {getSecondaryNameserverError}
+            </MessageBar>
+          )}
+          {!getSecondaryNameserverError && !isGettingSecondaryNameserver && (
+            <CustomDnsSecondaryNameserver />
+          )}
         </Route>
       </Switch>
     </>
@@ -55,36 +114,10 @@ const CustomDnsSections: React.FunctionComponent = () => {
 export const CustomDnsRoute: React.FunctionComponent & {
   path: string;
 } = () => {
-  const {
-    isGettingSecondaryNameserver,
-    isGettingZones,
-    isGettingCustomRecords,
-    getSecondaryNameserverError,
-    getZonesError,
-    getCustomRecordsError,
-  } = useSelector((state: RootState) => state.dns);
-  const dispatch = useDispatch();
-
-  const error =
-    getSecondaryNameserverError || getZonesError || getCustomRecordsError;
-  const isChecking =
-    isGettingSecondaryNameserver || isGettingZones || isGettingCustomRecords;
-
-  useEffect(() => {
-    dispatch(getSecondaryNameserver());
-    dispatch(getZones());
-    dispatch(getCustomRecords());
-  }, [dispatch]);
-
   return (
     <Body>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Breadcrumb
-          styles={{
-            root: {
-              marginTop: 0,
-            },
-          }}
+        <BodyBreadcrumb
           items={[
             {
               text: 'System',
@@ -107,13 +140,7 @@ export const CustomDnsRoute: React.FunctionComponent & {
         </Text>
       </BodyPanel>
       <BodyPanel>
-        {Boolean(error) && (
-          <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {error}
-          </MessageBar>
-        )}
-        {isChecking && <ProgressIndicator label="Checking DNS status..." />}
-        {!isChecking && !error && <CustomDnsSections />}
+        <CustomDnsSections />
       </BodyPanel>
     </Body>
   );

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers, UserActionType } from '../../../features/usersSlice';
+import { resetUserAction, UserActionType } from '../../../features/usersSlice';
 import { RootState } from '../../../store';
 import { MailUserArchiveDialog } from './MailUserArchiveDialog';
 import { MailUserSetPasswordDialog } from './MailUserSetPasswordDialog';
@@ -16,36 +16,36 @@ export const MailUserActions: React.FunctionComponent = () => {
 
   const dispatch = useDispatch();
 
-  const resetUserAction = useCallback((): void => {
+  const onDialogDismiss = useCallback((): void => {
     dispatch(resetUserAction());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (updateUserResponse) {
-      dispatch(getUsers());
-    }
-  }, [dispatch, updateUserResponse]);
+  // useEffect(() => {
+  //   if (updateUserResponse) {
+  //     dispatch(getUsers());
+  //   }
+  // }, [dispatch, updateUserResponse]);
   return (
     <>
       <MailUserUpdatePrivilege
-        onDialogDismiss={resetUserAction}
-        user={userAction?.user}
+        onDialogDismiss={onDialogDismiss}
+        userAction={userAction}
         isUpdatingUser={isUpdatingUser}
         updateUserError={updateUserError}
         updateUserResponse={updateUserResponse}
       />
       <MailUserSetPasswordDialog
         hidden={userAction?.type !== UserActionType.setPassword}
-        onDismiss={resetUserAction}
-        user={userAction?.user}
+        onDismiss={onDialogDismiss}
+        userAction={userAction}
         isUpdatingUser={isUpdatingUser}
         updateUserError={updateUserError}
         updateUserResponse={updateUserResponse}
       />
       <MailUserArchiveDialog
         hidden={userAction?.type !== UserActionType.archive}
-        onDismiss={resetUserAction}
-        user={userAction?.user}
+        onDismiss={onDialogDismiss}
+        userAction={userAction}
         isUpdatingUser={isUpdatingUser}
         updateUserError={updateUserError}
         updateUserResponse={updateUserResponse}

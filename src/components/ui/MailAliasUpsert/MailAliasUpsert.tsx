@@ -250,10 +250,15 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
           multiline
           rows={3}
           required
-          name={'permittedSenders'}
-          placeholder="one user per line or separated by commas"
+          name="permittedSenders"
+          placeholder={formData[aliasType].permittedSenders.placeholder}
           onChange={onFieldChange}
           value={alias.permittedSenders ?? ''}
+          styles={{
+            description: { ...theme.fonts.small },
+            ...textfieldWithLabelInfoStyles,
+          }}
+          description={formData[aliasType].permittedSenders.info}
         />
       )}
       {children}
