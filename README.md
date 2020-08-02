@@ -29,3 +29,7 @@ TODO
 ## Features & TODO
 
 See [FEATURES.md](./FEATURES.md)
+
+## License
+
+See [LICENSE.md](./LICENSE.md)
