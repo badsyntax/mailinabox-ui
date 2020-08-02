@@ -6,8 +6,9 @@
 - [ ] Reboot
 - [ ] Disable new versions
 - [x] Prevent virtual rendering?
-- [ ] Add filter for domain
+- [ ] Add filter for domain (or group domains?)
 - [x] Add summary
+- [ ] Refresh status when enabling/disabling version check
 
 ## TLS Certificates
 
@@ -30,8 +31,9 @@
 - [x] Remove custom DNS record
 - [x] Add secondary nameserver
   - [ ] Add secondary nameserver clear instructions
-- [ ] Update API schema to support omitting type (for dynadns) - add new endpoints
-- [ ] Add grouped list
+- [ ] Update API schema to support omitting type (for dynadns) (add new endpoints)
+- [x] Add grouped list
+- [x] Reloading the dns/custom/add route results in error
 
 ## External DNS
 
@@ -95,6 +97,7 @@
 ## Forms
 
 - [ ] Simplify field data handling - use object instead of separate vars
+- [ ] Add spinners to buttons
 
 ## Auth
 
