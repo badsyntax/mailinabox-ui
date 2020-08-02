@@ -42,13 +42,16 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:prettier": "prettier --check \"**/*.{ts,js,json,svg,md,yml}\"",
+    "lint:eslint": "eslint . --ext .js,.ts",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "parserOptions": {
       "project": "./tsconfig.json"
     },
+    "ignorePatterns": "build",
     "extends": [
       "react-app",
       "plugin:@typescript-eslint/recommended",
