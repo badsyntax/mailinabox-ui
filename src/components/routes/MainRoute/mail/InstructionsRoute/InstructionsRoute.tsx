@@ -8,6 +8,7 @@ import {
 } from '@fluentui/react';
 import { useId } from '@uifabric/react-hooks';
 import React from 'react';
+import config from '../../../../../config/index.json';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
@@ -58,8 +59,8 @@ export const InstructionsRoute: React.FunctionComponent & {
               webmail site is:
             </Text>
             <Text block>
-              <Link href="https://box.example.com/mail">
-                https://box.example.com/mail
+              <Link href={`https://${config.hostname}/mail`}>
+                https://{config.hostname}/mail
               </Link>
             </Text>
             <Text block>Your username is your whole email address.</Text>
@@ -73,7 +74,7 @@ export const InstructionsRoute: React.FunctionComponent & {
             </Text>
             <Text block>
               iOS and OS X only: Open{' '}
-              <Link href="https://box.example.com/mailinabox.mobileconfig">
+              <Link href={`https://${config.hostname}/mailinabox.mobileconfig`}>
                 this configuration link
               </Link>{' '}
               on your iOS device or on your Mac desktop to easily set up mail

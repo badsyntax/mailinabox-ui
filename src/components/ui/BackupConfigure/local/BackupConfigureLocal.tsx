@@ -7,12 +7,12 @@ import {
 import { BackupConfigureProps, BackupType } from '../types';
 
 export const BackupConfigureLocal: React.FunctionComponent<BackupConfigureProps> = ({
-  config,
+  backupConfig,
   daysDescription,
   onConfigChange,
 }) => {
   const [days, setDays] = useState<string | undefined>(
-    String(config.minAgeInDays)
+    String(backupConfig.minAgeInDays)
   );
   const onDaysChange = useCallback(
     (

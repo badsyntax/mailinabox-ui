@@ -7,6 +7,7 @@ import {
   Text,
 } from '@fluentui/react';
 import React from 'react';
+import config from '../../../config/index.json';
 
 interface SyncListItem {
   option: string;
@@ -20,7 +21,7 @@ const items: Array<SyncListItem> = [
   },
   {
     option: 'Server Name',
-    value: 'box.example.com',
+    value: config.hostname,
   },
   {
     option: 'Use SSL',

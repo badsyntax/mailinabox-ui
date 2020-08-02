@@ -15,6 +15,7 @@ import {
   useLocation,
   useRouteMatch,
 } from 'react-router-dom';
+import config from '../../../../../config/index.json';
 import {
   getSSLStatus,
   resetSSLAction,
@@ -113,7 +114,7 @@ export const CertificatesRoute: React.FunctionComponent & {
           secure between you and the owner of that address.
         </Text>
         <Text>
-          You need a TLS certificate for this box’s hostname (box.example.com)
+          You need a TLS certificate for this box’s hostname ({config.hostname})
           (TODO) and every other domain name and subdomain that this box is
           hosting a website for (see the list below).
         </Text>

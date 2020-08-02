@@ -1,6 +1,7 @@
 import { Link, PivotItem, Stack, Text } from '@fluentui/react';
 import React, { useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import config from '../../../../config/index.json';
 import { Body } from '../../../ui/Body/Body';
 import { BodyBreadcrumb } from '../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../ui/BodyPanel/BodyPanel';
@@ -29,8 +30,10 @@ export const WebRoute: React.FunctionComponent & {
       <BodyPanel>
         <Text>
           This machine is serving a simple, static website at{' '}
-          <Link href="#">https://box.example.com</Link> and at all domain names
-          that you set up an email user or alias for.
+          <Link
+            href={`https://${config.hostname}`}
+          >{`https://${config.hostname}`}</Link>{' '}
+          and at all domain names that you set up an email user or alias for.
         </Text>
       </BodyPanel>
       <BodyPanel>

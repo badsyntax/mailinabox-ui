@@ -4,7 +4,7 @@ import {
 } from 'mailinabox-api';
 
 export interface BackupConfigureProps {
-  config: SystemBackupConfigResponse;
+  backupConfig: SystemBackupConfigResponse;
   isCurrentType: boolean;
   daysDescription: string;
   onConfigChange: (config: SystemBackupConfigUpdateRequest) => void;

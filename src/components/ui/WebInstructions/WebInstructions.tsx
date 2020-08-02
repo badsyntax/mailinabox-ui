@@ -1,5 +1,6 @@
 import { Link, Stack, Text } from '@fluentui/react';
 import React from 'react';
+import config from '../../../config/index.json';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 export const WebInstructions: React.FunctionComponent = () => {
@@ -23,8 +24,8 @@ export const WebInstructions: React.FunctionComponent = () => {
         </li>
         <li>
           Log in to this machine with the file transfer program. The server is{' '}
-          <strong>box.example.com</strong>, the protocol is SSH or SFTP, and use
-          the <strong>SSH login credentials</strong> that you used when you
+          <strong>{config.hostname}</strong>, the protocol is SSH or SFTP, and
+          use the <strong>SSH login credentials</strong> that you used when you
           originally created this machine at your cloud host provider. This is{' '}
           <strong>not</strong> what you use to log in either for email or this
           control panel. Your SSH credentials probably involves a private key

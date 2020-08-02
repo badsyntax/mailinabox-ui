@@ -6,6 +6,7 @@ import {
   SelectionMode,
 } from '@fluentui/react';
 import React from 'react';
+import config from '../../../config/index.json';
 
 const columns: IColumn[] = [
   {
@@ -28,7 +29,7 @@ const columns: IColumn[] = [
 const items = [
   {
     option: 'Server',
-    value: 'box.example.com',
+    value: config.hostname,
   },
   {
     option: 'Options',

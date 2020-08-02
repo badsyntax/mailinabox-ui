@@ -9,6 +9,7 @@ import {
   Text,
 } from '@fluentui/react';
 import React from 'react';
+import config from '../../../config/index.json';
 
 const theme = getTheme();
 
@@ -20,11 +21,11 @@ interface SyncBrowserItem {
 const items: Array<SyncBrowserItem> = [
   {
     option: 'Contacts',
-    value: 'https://box.example.com/cloud/contacts',
+    value: `https://${config.hostname}/cloud/contacts`,
   },
   {
     option: 'Calendar',
-    value: 'https://box.example.com/cloud/calendar',
+    value: `https://${config.hostname}/cloud/calendar`,
   },
 ];
 

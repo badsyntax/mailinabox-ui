@@ -75,13 +75,13 @@ const s3RegionOptions = [
 ];
 
 export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = ({
-  config,
+  backupConfig,
   isCurrentType,
   daysDescription,
   onConfigChange,
 }) => {
   const initialS3HostPath = isCurrentType
-    ? config.target.substring(5).split('/')
+    ? backupConfig.target.substring(5).split('/')
     : [];
   const initialS3Host = isCurrentType ? initialS3HostPath.shift() : '';
   const initialRegion = s3RegionOptions.find(
@@ -96,7 +96,7 @@ export const BackupConfigureS3: React.FunctionComponent<BackupConfigureProps> = 
     initialRegion
   );
   const [days, setDays] = useState<string | undefined>(
-    String(config.minAgeInDays)
+    String(backupConfig.minAgeInDays)
   );
   const [path, setPath] = useState<string | undefined>(
     initialS3HostPath.join('/')

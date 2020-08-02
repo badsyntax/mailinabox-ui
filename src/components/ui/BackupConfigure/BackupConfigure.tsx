@@ -19,6 +19,7 @@ import {
 } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import config from '../../../config/index.json';
 import {
   getStatus,
   updateConfig,
@@ -46,7 +47,7 @@ const backupOptions: IDropdownOption[] = [
   },
   {
     key: BackupType.local,
-    text: 'box.example.com (TODO)',
+    text: config.hostname,
   },
   {
     key: BackupType.rsync,
@@ -235,7 +236,7 @@ export const BackupConfigure: React.FunctionComponent<
         )}
         {backupOption?.key === BackupType.local && (
           <BackupConfigureLocal
-            config={backupConfig}
+            backupConfig={backupConfig}
             isCurrentType={backupType === BackupType.local}
             daysDescription={daysDescription}
             onConfigChange={onBackupConfigChange}
@@ -243,7 +244,7 @@ export const BackupConfigure: React.FunctionComponent<
         )}
         {backupOption?.key === BackupType.rsync && (
           <BackupConfigureRsync
-            config={backupConfig}
+            backupConfig={backupConfig}
             isCurrentType={backupType === BackupType.rsync}
             daysDescription={daysDescription}
             onConfigChange={onBackupConfigChange}
@@ -251,7 +252,7 @@ export const BackupConfigure: React.FunctionComponent<
         )}
         {backupOption?.key === BackupType.s3 && (
           <BackupConfigureS3
-            config={backupConfig}
+            backupConfig={backupConfig}
             isCurrentType={backupType === BackupType.s3}
             daysDescription={daysDescription}
             onConfigChange={onBackupConfigChange}

@@ -15,10 +15,11 @@ An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 
 ### Instructions
 
-- Clone the repo
-- Change directory to root of project
-- Run `npm install`
-- Run `npm start`
+1. Clone the repo
+2. Copy `src/config/index.example.json` to `src/config/index.json` and update the `hostname` field within `index.json` to point to your box
+3. From the root of the project:
+   1. Run `npm install`
+   2. Run `npm start`
 
 All API requests sent from the browser are proxied to your box instance via a backend Node.js server to bypass CORS restrictions.
 
@@ -30,6 +31,6 @@ TODO
 
 See [FEATURES.md](./FEATURES.md)
 
-## License
+## License
 
 See [LICENSE.md](./LICENSE.md)

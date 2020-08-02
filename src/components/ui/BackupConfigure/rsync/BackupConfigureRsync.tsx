@@ -1,5 +1,6 @@
 import { TextField } from '@fluentui/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import config from '../../../../config/index.json';
 import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,
@@ -7,13 +8,13 @@ import {
 import { BackupConfigureProps } from '../types';
 
 export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps> = ({
-  config,
+  backupConfig,
   isCurrentType,
   daysDescription,
   onConfigChange,
 }) => {
   const targetPath = isCurrentType
-    ? config.target.substring(8).split('//')
+    ? backupConfig.target.substring(8).split('//')
     : [];
   const targetHostParts = isCurrentType
     ? targetPath.shift()?.split('@') || []
@@ -23,7 +24,7 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
   const initialPath = isCurrentType ? `/${targetPath[0]}` : '';
 
   const [days, setDays] = useState<string | undefined>(
-    String(config.minAgeInDays)
+    String(backupConfig.minAgeInDays)
   );
   const [hostname, setHostname] = useState<string | undefined>(initialHostName);
   const [path, setPath] = useState<string | undefined>(initialPath);
@@ -108,7 +109,7 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
         value={path}
         label="Path"
         required
-        placeholder="/backups/box.example.com"
+        placeholder={`/backups/${config.hostname}`}
         onChange={onPathChange}
       />
       <TextField
@@ -118,7 +119,7 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
         onChange={onUsernameChange}
       />
       <TextField
-        value={config.sshPubKey}
+        value={backupConfig.sshPubKey}
         label="Public SSH Key"
         required
         readOnly
