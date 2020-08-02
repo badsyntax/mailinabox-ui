@@ -102,7 +102,7 @@
 ## Auth
 
 - [x] Log in
- - [x] Remember me (stored in local/session storage)
+- [x] Remember me (stored in local/session storage)
 - [x] Log out
 - [ ] Middleware for redirections with 405
 
