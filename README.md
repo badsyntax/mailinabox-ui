@@ -9,6 +9,10 @@ An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 - [Fluent UI](https://github.com/microsoft/fluentui) design system
 - [Mail-in-a-Box API client](https://github.com/badsyntax/mailinabox-api)
 
+## Screenshots
+
+👉 [View Screenshots](https://github.com/badsyntax/mailinabox-ui/wiki/Screenshots)
+
 ## Running locally
 
 ### Requirements
