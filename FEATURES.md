@@ -83,10 +83,10 @@
 ## State
 
 - [x] Redux store
-- [ ] Reduce the amount of selectors - extract from state directly (see redux-toolkit advanced docs)
+- [x] Reduce the amount of selectors - extract from state directly (see redux-toolkit advanced docs)
 - [x] Top-level URL state
-- [ ] Sub-level URL state (eg `/mail/users/add`)
-- [ ] Don't always refresh data lists on mount, instead refresh them after actions, and store open groups in state
+- [x] Sub-level URL state (eg `/mail/users/add`)
+- [x] Don't always refresh data lists on mount, instead refresh them after actions, and store open groups in state
 - [ ] Normalise store (eg when performing actions, don't replicate entities): https://redux.js.org/introduction/learning-resources#normalization
 
 ## Main layout
@@ -114,19 +114,20 @@
 ## Routes
 
 - [ ] Fix 404
-- [ ] External DNS route jumps when changing nested routes
+- [ ] External DNS route scrolls to top of page when changing nested routes
 
 ## Accessibility
 
-- [ ] Mobile support (not possible with fluentui)
+- [ ] Mobile support
 - [ ] ARIA labels
 - [ ] Audit
 
 ## Production
 
-- [ ] Customise the root box url
+- [x] Customise the root box url
 
 ## Project Setup
 
-- [ ] README updated
-- [ ] LICENSE added
+- [x] README updated
+- [x] LICENSE added
+- [ ] Screenshots added to wiki
