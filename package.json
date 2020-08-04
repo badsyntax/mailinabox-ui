@@ -19,7 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^3.7.1",
     "@typescript-eslint/parser": "^3.7.1",
     "@uifabric/charting": "^2.7.6",
-    "@uifabric/react-hooks": "^7.6.2",
+    "@uifabric/react-hooks": "^7.7.0",
     "country-list": "^2.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
