@@ -6,7 +6,7 @@ import {
   MailAliasesResponseFormat,
   UpsertMailAliasRequest,
 } from 'mailinabox-api';
-import { aliasesApi, handleRequestError } from '../api';
+import { handleRequestError, mailApi } from '../api';
 import { AppThunk, RootState } from '../store';
 
 export enum AliasActionType {
@@ -155,7 +155,7 @@ export const getAliases = (showProgress = true): AppThunk => async (
     dispatch(getAliasesStart());
   }
   try {
-    const result = await aliasesApi.getMailAliases({
+    const result = await mailApi.getMailAliases({
       format: MailAliasesResponseFormat.Json,
     });
     dispatch(getAliasesSuccess(result));
@@ -169,7 +169,7 @@ export const upsertAlias = (alias: UpsertMailAliasRequest): AppThunk => async (
 ): Promise<void> => {
   dispatch(upsertAliasStart());
   try {
-    const result = await aliasesApi.upsertMailAlias(alias);
+    const result = await mailApi.upsertMailAlias(alias);
     dispatch(upsertAliasSuccess(result));
   } catch (err) {
     await handleRequestError(err, dispatch, upsertAliasError);
@@ -181,7 +181,7 @@ export const removeAlias = (address: string): AppThunk => async (
 ): Promise<void> => {
   dispatch(removeAliasStart());
   try {
-    const result = await aliasesApi.removeMailAlias({
+    const result = await mailApi.removeMailAlias({
       address,
     });
     dispatch(removeAliasSuccess(result));

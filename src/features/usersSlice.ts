@@ -7,7 +7,7 @@ import {
   MailUsersResponse,
   MailUsersResponseFormat,
 } from 'mailinabox-api';
-import { handleRequestError, usersApi } from '../api';
+import { handleRequestError, mailApi } from '../api';
 import { AppThunk, RootState } from '../store';
 
 export enum UserActionType {
@@ -158,7 +158,7 @@ export const selectUsersWithGroups = (
 export const getUsers = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getUsersStart());
   try {
-    const result = await usersApi.getMailUsers({
+    const result = await mailApi.getMailUsers({
       format: MailUsersResponseFormat.Json,
     });
     dispatch(getUsersSuccess(result));
@@ -172,7 +172,7 @@ export const addUserAdminPrivilege = (user: MailUser): AppThunk => async (
 ): Promise<void> => {
   dispatch(updateUserStart());
   try {
-    const result = await usersApi.addMailUserPrivilege({
+    const result = await mailApi.addMailUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
@@ -187,7 +187,7 @@ export const removeUserAdminPrivilege = (user: MailUser): AppThunk => async (
 ): Promise<void> => {
   dispatch(updateUserStart());
   try {
-    const result = await usersApi.removeMailUserPrivilege({
+    const result = await mailApi.removeMailUserPrivilege({
       email: user.email,
       privilege: MailUserPrivilege.Admin,
     });
@@ -203,7 +203,7 @@ export const setUserPassword = (
 ): AppThunk => async (dispatch): Promise<void> => {
   dispatch(updateUserStart());
   try {
-    const result = await usersApi.setMailUserPassword({
+    const result = await mailApi.setMailUserPassword({
       email: user.email,
       password: password,
     });
@@ -218,7 +218,7 @@ export const removeUser = (user: MailUser): AppThunk => async (
 ): Promise<void> => {
   dispatch(updateUserStart());
   try {
-    const result = await usersApi.removeMailUser({
+    const result = await mailApi.removeMailUser({
       email: user.email,
     });
     dispatch(updateUserSuccess(result));
@@ -234,7 +234,7 @@ export const addUser = (
 ): AppThunk => async (dispatch): Promise<void> => {
   dispatch(addUserStart());
   try {
-    const result = await usersApi.addMailUser({
+    const result = await mailApi.addMailUser({
       email,
       password,
       privileges: privilege,

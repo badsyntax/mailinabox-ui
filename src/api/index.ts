@@ -1,13 +1,12 @@
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import {
-  AliasesApi,
   Configuration,
   ConfigurationParameters,
-  DnsApi,
-  SslApi,
+  DNSApi,
+  MailApi,
+  SSLApi,
   SystemApi,
   UserApi,
-  UsersApi,
   WebApi,
 } from 'mailinabox-api';
 import { storageAuth } from '../auth';
@@ -23,12 +22,11 @@ const apiConfigParams: ConfigurationParameters = {
 
 const apiConfig = new Configuration(apiConfigParams);
 
-export const aliasesApi = new AliasesApi(apiConfig);
 export const userApi = new UserApi(apiConfig);
 export const systemApi = new SystemApi(apiConfig);
-export const sslApi = new SslApi(apiConfig);
-export const dnsApi = new DnsApi(apiConfig);
-export const usersApi = new UsersApi(apiConfig);
+export const sslApi = new SSLApi(apiConfig);
+export const dnsApi = new DNSApi(apiConfig);
+export const mailApi = new MailApi(apiConfig);
 export const webApi = new WebApi(apiConfig);
 
 export function updateApiConfig(config: ConfigurationParameters): void {
