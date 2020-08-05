@@ -1,5 +1,5 @@
 import { IGroup } from '@fluentui/react';
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import {
   MailUser,
   MailUserByDomain,
@@ -7,8 +7,8 @@ import {
   MailUsersResponse,
   MailUsersResponseFormat,
 } from 'mailinabox-api';
-import { getRequestFailMessage, usersApi } from '../api';
-import { RootState } from '../store';
+import { handleRequestError, usersApi } from '../api';
+import { AppThunk, RootState } from '../store';
 
 export enum UserActionType {
   addAdminPrivilege,
@@ -155,12 +155,7 @@ export const selectUsersWithGroups = (
   return [users, groups];
 };
 
-export const getUsers = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getUsers = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getUsersStart());
   try {
     const result = await usersApi.getMailUsers({
@@ -168,13 +163,11 @@ export const getUsers = (): ThunkAction<
     });
     dispatch(getUsersSuccess(result));
   } catch (err) {
-    dispatch(getUsersError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getUsersError);
   }
 };
 
-export const addUserAdminPrivilege = (
-  user: MailUser
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
+export const addUserAdminPrivilege = (user: MailUser): AppThunk => async (
   dispatch
 ): Promise<void> => {
   dispatch(updateUserStart());
@@ -185,13 +178,11 @@ export const addUserAdminPrivilege = (
     });
     dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(updateUserError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, updateUserError);
   }
 };
 
-export const removeUserAdminPrivilege = (
-  user: MailUser
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
+export const removeUserAdminPrivilege = (user: MailUser): AppThunk => async (
   dispatch
 ): Promise<void> => {
   dispatch(updateUserStart());
@@ -202,16 +193,14 @@ export const removeUserAdminPrivilege = (
     });
     dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(updateUserError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, updateUserError);
   }
 };
 
 export const setUserPassword = (
   user: MailUser,
   password: string
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(updateUserStart());
   try {
     const result = await usersApi.setMailUserPassword({
@@ -220,13 +209,11 @@ export const setUserPassword = (
     });
     dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(updateUserError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, updateUserError);
   }
 };
 
-export const removeUser = (
-  user: MailUser
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
+export const removeUser = (user: MailUser): AppThunk => async (
   dispatch
 ): Promise<void> => {
   dispatch(updateUserStart());
@@ -236,7 +223,7 @@ export const removeUser = (
     });
     dispatch(updateUserSuccess(result));
   } catch (err) {
-    dispatch(updateUserError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, updateUserError);
   }
 };
 
@@ -244,9 +231,7 @@ export const addUser = (
   email: string,
   password: string,
   privilege: MailUserPrivilege
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(addUserStart());
   try {
     const result = await usersApi.addMailUser({
@@ -256,6 +241,6 @@ export const addUser = (
     });
     dispatch(addUserSuccess(result));
   } catch (err) {
-    dispatch(addUserError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, addUserError);
   }
 };

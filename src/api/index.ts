@@ -1,3 +1,4 @@
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import {
   AliasesApi,
   Configuration,
@@ -10,13 +11,14 @@ import {
   WebApi,
 } from 'mailinabox-api';
 import { storageAuth } from '../auth';
-
-// TODO: add middleware for handling token expiry
+import { updateAuth } from '../features/authSlice';
+import { AppDispatch } from '../store';
 
 const apiConfigParams: ConfigurationParameters = {
   basePath: '/admin',
   username: storageAuth.getUsername(),
   password: storageAuth.getPassword(),
+  middleware: [],
 };
 
 const apiConfig = new Configuration(apiConfigParams);
@@ -55,4 +57,26 @@ export async function getRequestFailMessage(
     responseText ||
     `Request error: ${statusText}${status ? ' (' + status + ')' : ''}`
   );
+}
+
+export async function handleRequestError(
+  response: Response | Error,
+  dispatch: AppDispatch,
+  onErrorAction: ActionCreatorWithPayload<unknown>
+): Promise<void> {
+  if (!(response instanceof Error)) {
+    const { status } = response;
+    if (status === 403) {
+      dispatch(
+        updateAuth({
+          username: '',
+          password: '',
+          isAuthenticated: false,
+          error: 'Your token is no longer valid.',
+        })
+      );
+    }
+  } else {
+    dispatch(onErrorAction(await getRequestFailMessage(response)));
+  }
 }

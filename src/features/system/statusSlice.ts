@@ -1,13 +1,8 @@
 import { IGroup } from '@fluentui/react';
-import {
-  Action,
-  createSelector,
-  createSlice,
-  ThunkAction,
-} from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { StatusEntry, StatusEntryType } from 'mailinabox-api';
-import { getRequestFailMessage, systemApi } from '../../api';
-import { RootState } from '../../store';
+import { handleRequestError, systemApi } from '../../api';
+import { AppThunk, RootState } from '../../store';
 
 export interface SystemStatusState {
   isGettingStatus: boolean;
@@ -48,29 +43,17 @@ export const {
 
 export const { reducer: systemStatusReducer } = systemStatus;
 
-export const systemStatusCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const systemStatusCheck = (): AppThunk => async (
+  dispatch
+): Promise<void> => {
   dispatch(getStatusStart());
   try {
     const result = await systemApi.getSystemStatus();
     dispatch(getStatusSuccess(result));
   } catch (err) {
-    dispatch(getStatusError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getStatusError);
   }
 };
-
-// export const selectIsCheckingStatus = (state: RootState): boolean =>
-//   state.system.status.isGettingStatus;
-
-// export const selectStatusError = (state: RootState): string | null =>
-//   state.system.status.getStatusError;
-
-// export const selectStatus = (state: RootState): Array<StatusEntry> =>
-//   state.system.status.status;
 
 type StatusGroup = IGroup;
 

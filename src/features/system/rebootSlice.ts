@@ -1,6 +1,6 @@
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
-import { getRequestFailMessage, systemApi } from '../../api';
-import { RootState } from '../../store';
+import { createSlice } from '@reduxjs/toolkit';
+import { handleRequestError, systemApi } from '../../api';
+import { AppThunk } from '../../store';
 
 export interface SystemRebootState {
   isGettingRebootStatus: boolean;
@@ -41,17 +41,14 @@ export const {
 
 export const { reducer: systemRebootReducer } = systemReboot;
 
-export const systemRebootCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const systemRebootCheck = (): AppThunk => async (
+  dispatch
+): Promise<void> => {
   dispatch(getRebootStatusStart());
   try {
     const result = await systemApi.getSystemRebootStatus();
     dispatch(getRebootStatusSuccess(result));
   } catch (err) {
-    dispatch(getRebootStatusError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getRebootStatusError);
   }
 };

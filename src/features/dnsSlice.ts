@@ -1,5 +1,5 @@
 import { IGroup } from '@fluentui/react';
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import {
   AddDnsCustomRecordRequest,
   AddDnsSecondaryNameserverRequest,
@@ -11,8 +11,8 @@ import {
   RemoveDnsCustomRecordRequest,
 } from 'mailinabox-api';
 import psl from 'psl';
-import { dnsApi, getRequestFailMessage } from '../api';
-import { RootState } from '../store';
+import { dnsApi, handleRequestError } from '../api';
+import { AppThunk, RootState } from '../store';
 
 export enum DNSActionType {
   remove,
@@ -318,99 +318,77 @@ export const selectDumpWithGroups = (
   return [records, groups];
 };
 
-export const getSecondaryNameserver = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getSecondaryNameserver = (): AppThunk => async (
+  dispatch
+): Promise<void> => {
   dispatch(getSecondaryNameserverStart());
   try {
     const result = await dnsApi.getDnsSecondaryNameserver();
     dispatch(getSecondaryNameserverSuccess(result));
   } catch (err) {
-    dispatch(getSecondaryNameserverError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getSecondaryNameserverError);
   }
 };
 
-export const getZones = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getZones = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getZonesStart());
   try {
     const result = await dnsApi.getDnsZones();
     dispatch(getZonesSuccess(result));
   } catch (err) {
-    dispatch(getZonesError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getZonesError);
   }
 };
 
-export const getCustomRecords = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getCustomRecords = (): AppThunk => async (
+  dispatch
+): Promise<void> => {
   dispatch(getCustomRecordsStart());
   try {
     const result = await dnsApi.getDnsCustomRecords();
     dispatch(getCustomRecordsSuccess(result));
   } catch (err) {
-    dispatch(getCustomRecordsError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getCustomRecordsError);
   }
 };
 
-export const getDump = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getDump = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getDumpStart());
   try {
     const result = await dnsApi.getDnsDump();
     dispatch(getDumpSuccess(result));
   } catch (err) {
-    dispatch(getDumpError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getDumpError);
   }
 };
 
 export const addCustomRecord = (
   customRecordRequest: AddDnsCustomRecordRequest
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(addCustomRecordStart());
   try {
     const result = await dnsApi.addDnsCustomRecord(customRecordRequest);
     dispatch(addCustomRecordSuccess(result));
   } catch (err) {
-    dispatch(addCustomRecordError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, addCustomRecordError);
   }
 };
 
 export const removeCustomRecord = (
   customRecordRequest: RemoveDnsCustomRecordRequest
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(removeCustomRecordStart());
   try {
     const result = await dnsApi.removeDnsCustomRecord(customRecordRequest);
     dispatch(removeCustomRecordSuccess(result));
   } catch (err) {
-    dispatch(removeCustomRecordError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, removeCustomRecordError);
   }
 };
 
 export const addSecondaryNameserver = (
   secondaryNameserverRequest: AddDnsSecondaryNameserverRequest
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(addSecondaryNameserverStart());
   try {
     const result = await dnsApi.addDnsSecondaryNameserver(
@@ -418,6 +396,6 @@ export const addSecondaryNameserver = (
     );
     dispatch(addSecondaryNameserverSuccess(result));
   } catch (err) {
-    dispatch(addSecondaryNameserverError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, addSecondaryNameserverError);
   }
 };

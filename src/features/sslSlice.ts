@@ -4,8 +4,8 @@ import {
   SSLStatus,
   SSLStatusResponse,
 } from 'mailinabox-api';
-import { getRequestFailMessage, sslApi } from '../api';
-import { RootState } from '../store';
+import { handleRequestError, sslApi } from '../api';
+import { AppThunk, RootState } from '../store';
 
 export enum SSLActionType {
   install,
@@ -133,16 +133,14 @@ export const getSSLStatus = (): ThunkAction<
     const result = await sslApi.getSSLStatus();
     dispatch(getSSLStatusSuccess(result));
   } catch (err) {
-    dispatch(getSSLStatusError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getSSLStatusError);
   }
 };
 
 export const generateCSR = (
   domain: string,
   countrycode: string
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(generateCSRStart());
   try {
     const result = await sslApi.generateSSLCSR({
@@ -151,20 +149,18 @@ export const generateCSR = (
     });
     dispatch(generateCSRSuccess(result));
   } catch (err) {
-    dispatch(generateCSRError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, generateCSRError);
   }
 };
 
 export const installCertificate = (
   request: SSLCertificateInstallRequest
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(installCertificateStart());
   try {
     const result = await sslApi.installSSLCertificate(request);
     dispatch(installCertificateSuccess(result));
   } catch (err) {
-    dispatch(installCertificateError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, installCertificateError);
   }
 };

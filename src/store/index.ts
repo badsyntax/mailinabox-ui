@@ -1,38 +1,18 @@
 import {
-  combineReducers,
+  Action,
   configureStore,
   getDefaultMiddleware,
+  ThunkAction,
 } from '@reduxjs/toolkit';
-import { aliasesReducer } from '../features/aliasesSlice';
-import { authReducer } from '../features/authSlice';
-import { dnsReducer } from '../features/dnsSlice';
-import { loginReducer } from '../features/loginSlice';
-import { sslReducer } from '../features/sslSlice';
-import { systemBackupsReducer } from '../features/system/backupsSlice';
-import { systemPrivacyReducer } from '../features/system/privacySlice';
-import { systemRebootReducer } from '../features/system/rebootSlice';
-import { systemStatusReducer } from '../features/system/statusSlice';
-import { usersReducer } from '../features/usersSlice';
-import { webReducer } from '../features/webSlice';
-import { authMiddleware } from '../middleware/authMiddleware';
+import { authMiddleware } from '../middleware/auth';
+import { rootReducer, RootState } from './rootReducer';
 
 export const store = configureStore({
-  reducer: {
-    login: loginReducer,
-    auth: authReducer,
-    system: combineReducers({
-      status: systemStatusReducer,
-      reboot: systemRebootReducer,
-      privacy: systemPrivacyReducer,
-      backups: systemBackupsReducer,
-    }),
-    dns: dnsReducer,
-    ssl: sslReducer,
-    users: usersReducer,
-    aliases: aliasesReducer,
-    web: webReducer,
-  },
+  reducer: rootReducer,
   middleware: getDefaultMiddleware().concat(authMiddleware),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
+
+export type { RootState } from './rootReducer';
+export type AppDispatch = typeof store.dispatch;

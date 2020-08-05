@@ -1,7 +1,16 @@
 import { Stack } from '@fluentui/react';
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
+import { RootState } from '../../../store';
 import { Header } from '../../ui/Header/Header';
+import { LoginRoute } from '../LoginRoute/LoginRoute';
 import { LogoutRoute } from '../LogoutRoute/LogoutRoute';
 import { AliasesRoute } from './mail/AliasesRoute/AliasesRoute';
 import { InstructionsRoute } from './mail/InstructionsRoute/InstructionsRoute';
@@ -15,6 +24,16 @@ import { StatusChecksRoute } from './system/StatusChecksRoute/StatusChecksRoute'
 import { WebRoute } from './WebRoute/WebRoute';
 
 export const MainRoute: React.FunctionComponent & { path: string } = () => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const location = useLocation();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!isAuthenticated && location.pathname !== LoginRoute.path) {
+      history.push(LoginRoute.path);
+    }
+  }, [history, isAuthenticated, location.pathname]);
+
   return (
     <Stack gap="l1" horizontalAlign="center">
       <Header />

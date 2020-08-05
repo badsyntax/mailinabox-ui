@@ -1,14 +1,9 @@
 import { IGroup } from '@fluentui/react';
-import {
-  Action,
-  createSlice,
-  PayloadAction,
-  ThunkAction,
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WebDomain } from 'mailinabox-api';
 import psl from 'psl';
-import { getRequestFailMessage, webApi } from '../api';
-import { RootState } from '../store';
+import { handleRequestError, webApi } from '../api';
+import { AppThunk, RootState } from '../store';
 
 export type WebDomainWithDomainInfo = WebDomain & {
   domainWithoutSubDomain: string;
@@ -158,32 +153,22 @@ export const selectOrderedAndGroupedStaticEnabledDomains = (
 export const selectGetDomainsError = (state: RootState): string | null =>
   state.web.getDomainsError;
 
-export const getDomains = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getDomains = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getDomainsStart());
   try {
     const result = await webApi.getWebDomains();
     dispatch(getDomainsSuccess(result));
   } catch (err) {
-    dispatch(getDomainsError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getDomainsError);
   }
 };
 
-export const updateWeb = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const updateWeb = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(updateWebStart());
   try {
     const result = await webApi.updateWeb();
     dispatch(updateWebSuccess(result || 'Nothing changed.'));
   } catch (err) {
-    dispatch(updateWebError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, updateWebError);
   }
 };

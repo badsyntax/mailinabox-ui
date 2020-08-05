@@ -26,7 +26,7 @@ import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,
 } from '../TextFieldWithInfo/TextFieldWithInfo';
-import { AliasType, formData, SenderType } from './MailAliasUpsertFormData';
+import { AliasType, formData, SenderType } from './formData';
 
 const theme = getTheme();
 

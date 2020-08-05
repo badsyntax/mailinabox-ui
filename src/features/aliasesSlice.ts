@@ -1,13 +1,13 @@
 import { IGroup } from '@fluentui/react';
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import {
   MailAlias,
   MailAliasByDomain,
   MailAliasesResponseFormat,
   UpsertMailAliasRequest,
 } from 'mailinabox-api';
-import { aliasesApi, getRequestFailMessage } from '../api';
-import { RootState } from '../store';
+import { aliasesApi, handleRequestError } from '../api';
+import { AppThunk, RootState } from '../store';
 
 export enum AliasActionType {
   remove,
@@ -148,9 +148,7 @@ export const selectAliasesWithGroups = (
   return [aliases, groups];
 };
 
-export const getAliases = (
-  showProgress = true
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
+export const getAliases = (showProgress = true): AppThunk => async (
   dispatch
 ): Promise<void> => {
   if (showProgress) {
@@ -162,13 +160,11 @@ export const getAliases = (
     });
     dispatch(getAliasesSuccess(result));
   } catch (err) {
-    dispatch(getAliasesError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getAliasesError);
   }
 };
 
-export const upsertAlias = (
-  alias: UpsertMailAliasRequest
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
+export const upsertAlias = (alias: UpsertMailAliasRequest): AppThunk => async (
   dispatch
 ): Promise<void> => {
   dispatch(upsertAliasStart());
@@ -176,13 +172,11 @@ export const upsertAlias = (
     const result = await aliasesApi.upsertMailAlias(alias);
     dispatch(upsertAliasSuccess(result));
   } catch (err) {
-    dispatch(upsertAliasError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, upsertAliasError);
   }
 };
 
-export const removeAlias = (
-  address: string
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
+export const removeAlias = (address: string): AppThunk => async (
   dispatch
 ): Promise<void> => {
   dispatch(removeAliasStart());
@@ -192,6 +186,6 @@ export const removeAlias = (
     });
     dispatch(removeAliasSuccess(result));
   } catch (err) {
-    dispatch(removeAliasError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, removeAliasError);
   }
 };

@@ -5,12 +5,14 @@ export interface AuthState {
   username: string;
   password: string;
   isAuthenticated: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
   username: storageAuth.getUsername(),
   password: storageAuth.getPassword(),
   isAuthenticated: storageAuth.getIsAuthenticated(),
+  error: '',
 };
 
 const authSlice = createSlice({
@@ -18,10 +20,16 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     updateAuth: (state, action): void => {
-      const { username, password, isAuthenticated } = action.payload;
+      const {
+        username,
+        password,
+        isAuthenticated,
+        error = null,
+      } = action.payload;
       state.username = username;
       state.password = password;
       state.isAuthenticated = !!isAuthenticated;
+      state.error = error;
     },
   },
 });

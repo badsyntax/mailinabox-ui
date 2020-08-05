@@ -4,8 +4,8 @@ import {
   SystemBackupConfigUpdateRequest,
   SystemBackupStatusResponse,
 } from 'mailinabox-api';
-import { getRequestFailMessage, systemApi } from '../../api';
-import { RootState } from '../../store';
+import { handleRequestError, systemApi } from '../../api';
+import { AppThunk, RootState } from '../../store';
 
 export interface SystemBackupsState {
   isGettingStatus: boolean;
@@ -107,33 +107,23 @@ export const {
 
 export const { reducer: systemBackupsReducer } = systemBackups;
 
-export const getStatus = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getStatus = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getStatusStart());
   try {
     const result = await systemApi.getSystemBackupStatus();
     dispatch(getStatusSuccess(result));
   } catch (err) {
-    dispatch(getStatusError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getStatusError);
   }
 };
 
-export const getConfig = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
+export const getConfig = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(getConfigStart());
   try {
     const result = await systemApi.getSystemBackupConfig();
     dispatch(getConfigSuccess(result));
   } catch (err) {
-    dispatch(getConfigError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, getConfigError);
   }
 };
 
@@ -147,6 +137,6 @@ export const updateConfig = (
     const result = await systemApi.updateSystemBackupConfig(config);
     dispatch(updateConfigSuccess(result));
   } catch (err) {
-    dispatch(updateConfigError(await getRequestFailMessage(err)));
+    await handleRequestError(err, dispatch, updateConfigError);
   }
 };

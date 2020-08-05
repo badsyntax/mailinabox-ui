@@ -10,21 +10,36 @@ import {
   Stack,
   TextField,
 } from '@fluentui/react';
+import { MeAuthStatus, MeResponse } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { userApi } from '../../../api';
+import { useRequest } from '../../../api/useRequest';
 import { updateAuth } from '../../../features/authSlice';
-// import { authUpdate, selectIsAuthenticated } from '../../../features/authSlice';
-import { loginCheck, loginResetError } from '../../../features/loginSlice';
 import { RootState } from '../../../store';
 import { MainRoute } from '../../routes/MainRoute/MainRoute';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 export const LoginForm: React.FunctionComponent = () => {
-  const { isLoggingIn, loginError } = useSelector(
-    (state: RootState) => state.login
+  const [
+    checkLogin,
+    { isLoading, response, error: requestError, setError, setResponse },
+  ] = useRequest<MeResponse>(
+    () => userApi.getMe(),
+    (response: MeResponse) => {
+      if (response.status !== MeAuthStatus.Ok) {
+        setError(response.reason || 'Unknown authentication error');
+      } else if (!response.apiKey) {
+        setError('You are not an administrator on this system.');
+      } else {
+        setResponse(response);
+      }
+    }
   );
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, error: authError } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -33,57 +48,88 @@ export const LoginForm: React.FunctionComponent = () => {
   const [password, setPassword] = useState<string>('');
 
   const onRememberChange = useCallback(
-    (ev?: React.FormEvent<HTMLElement>, checked?: boolean): void => {
+    (_event?: React.FormEvent<HTMLElement>, checked?: boolean): void => {
       setRemember(!!checked);
     },
     []
   );
   const onEmailChange = useCallback(
-    (ev: React.FormEvent<HTMLElement>, newValue?: string): void => {
+    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
       setEmail(newValue ?? '');
     },
     []
   );
   const onPasswordChange = useCallback(
-    (ev: React.FormEvent<HTMLElement>, newValue?: string): void => {
+    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
       setPassword(newValue ?? '');
     },
     []
   );
   const onMessageBarDismiss = useCallback(
     (
-      ev?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
+      _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
-      dispatch(loginResetError());
+      setError(null);
+      dispatch(
+        updateAuth({
+          username: email,
+          password,
+          error: null,
+        })
+      );
     },
-    [dispatch]
+    [dispatch, email, password, setError]
   );
   const onFormSubmit = useCallback(
-    (ev: React.FormEvent<HTMLElement>): void => {
-      ev.preventDefault();
-      dispatch(loginResetError());
-      dispatch(loginCheck(remember));
+    (event: React.FormEvent<HTMLElement>): void => {
+      event.preventDefault();
+      setError(null);
+      checkLogin();
     },
-    [dispatch, remember]
+    [checkLogin, setError]
   );
 
   useEffect(() => {
     if (isAuthenticated) {
       history.push(MainRoute.path);
     } else {
-      dispatch(updateAuth({ username: email, password }));
+      dispatch(
+        updateAuth({
+          username: email,
+          password,
+          isAuthenticated: false,
+          error: authError,
+        })
+      );
     }
-  });
+  }, [authError, dispatch, email, history, isAuthenticated, password]);
+
+  useEffect(() => {
+    if (response) {
+      dispatch(
+        updateAuth({
+          username: response.email,
+          password: response.apiKey,
+          isAuthenticated: true,
+          authError: null,
+          remember,
+        })
+      );
+    }
+  }, [dispatch, remember, response]);
+
+  const error = requestError || authError;
+
   return (
     <Stack as="form" gap="m" onSubmit={onFormSubmit}>
-      {loginError && (
+      {error && (
         <MessageBar
           messageBarType={MessageBarType.error}
           isMultiline={false}
           onDismiss={onMessageBarDismiss}
           dismissButtonAriaLabel="Close"
         >
-          {loginError}
+          {error}
         </MessageBar>
       )}
       <Stack gap="m">
@@ -109,8 +155,8 @@ export const LoginForm: React.FunctionComponent = () => {
         />
       </Stack>
       <Stack horizontalAlign="end" verticalAlign="center" horizontal gap="s1">
-        {isLoggingIn && <Spinner size={SpinnerSize.medium} />}
-        <PrimaryButton type="submit" text="Sign in" disabled={isLoggingIn} />
+        {isLoading && <Spinner size={SpinnerSize.medium} />}
+        <PrimaryButton type="submit" text="Sign in" disabled={isLoading} />
       </Stack>
     </Stack>
   );
