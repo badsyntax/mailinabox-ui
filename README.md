@@ -19,7 +19,7 @@ An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 
 👉 [View Demo](https://badsyntax.github.io/mailinabox-ui/)
 
-Use any email and any password to log in. 
+Use any email and any password to log in.
 
 The demo uses a mock API, you can perform any action.
 
