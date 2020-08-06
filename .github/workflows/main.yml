@@ -1,6 +1,8 @@
 name: Build
 on:
   push:
+  release:
+    types: [published]
 jobs:
   check:
     name: Check
@@ -16,3 +18,9 @@ jobs:
       - name: Build
         run: |
           npm run build
+      - name: Upload build
+        uses: actions/upload-artifact@v2
+        # if: github.event_name == 'release' && github.event.action == 'published'
+        with:
+          name: build
+          path: build
