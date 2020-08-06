@@ -22,6 +22,7 @@ jobs:
     needs: [check]
     name: Publish
     runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -30,3 +31,16 @@ jobs:
       - name: Build
         run: |
           npm run build
+          mv build .build
+      - name: Publish
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          git checkout gh-pages
+          git rm -rf *
+          mv .build/* .
+          rm -rf .build
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add build
+          git commit -m "Add build for version $tag"
+          git push
