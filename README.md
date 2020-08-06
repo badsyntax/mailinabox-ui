@@ -24,7 +24,7 @@ An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 ### Instructions
 
 1. Clone the repo
-2. Copy `src/config/index.example.json` to `src/config/index.json` and update the `hostname` field within `index.json` to point to your box
+2. Copy `src/config/config.example.json` to `src/config/config.json` and update the `hostname` field within `index.json` to point to your box
 3. From the root of the project:
    1. Run `npm install`
    2. Run `npm start`
