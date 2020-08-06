@@ -17,4 +17,4 @@
 npm-debug.log*
 
 # config files
-/src/config/index.json
+/src/config/config.json

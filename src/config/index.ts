@@ -1,6 +1,4 @@
+import configJson from './config.json';
 import { Config } from './types';
 
-export const config: Config = {
-  hostname: 'box.proxima-mail.com',
-  mockApi: true,
-};
+export const config: Config = configJson;
