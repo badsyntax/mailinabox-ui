@@ -1,6 +1,6 @@
 # Mail-in-a-Box User Interface
 
-![Build](https://github.com/badsyntax/mailinabox-ui/workflows/Build/badge.svg)
+![Build and Publish](https://github.com/badsyntax/mailinabox-ui/workflows/Build%20and%20Publish/badge.svg)
 
 An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 

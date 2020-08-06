@@ -47,6 +47,7 @@ jobs:
         run: |
           mv build .build
           tag=${GITHUB_REF#refs/tags/}
+          git fetch
           git checkout gh-pages
           rm -rf *
           mv .build/* .
