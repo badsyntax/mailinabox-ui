@@ -114,40 +114,28 @@
       "custom_root": "/home/user-data/www/example5.com",
       "domain": "example5.com",
       "root": "/home/user-data/www/default",
-      "ssl_certificate": [
-        "danger",
-        "No certificate installed."
-      ],
+      "ssl_certificate": ["danger", "No certificate installed."],
       "static_enabled": true
     },
     {
       "custom_root": "/home/user-data/www/autoconfig.example5.com",
       "domain": "autoconfig.example5.com",
       "root": "/home/user-data/www/default",
-      "ssl_certificate": [
-        "danger",
-        "No certificate installed."
-      ],
+      "ssl_certificate": ["danger", "No certificate installed."],
       "static_enabled": true
     },
     {
       "custom_root": "/home/user-data/www/autodiscover.example5.com",
       "domain": "autodiscover.example5.com",
       "root": "/home/user-data/www/default",
-      "ssl_certificate": [
-        "danger",
-        "No certificate installed."
-      ],
+      "ssl_certificate": ["danger", "No certificate installed."],
       "static_enabled": true
     },
     {
       "custom_root": "/home/user-data/www/www.example5.com",
       "domain": "www.example5.com",
       "root": "/home/user-data/www/default",
-      "ssl_certificate": [
-        "danger",
-        "No certificate installed."
-      ],
+      "ssl_certificate": ["danger", "No certificate installed."],
       "static_enabled": false
     },
     {
@@ -221,5 +209,4 @@
       "static_enabled": false
     }
   ]
-
 }
