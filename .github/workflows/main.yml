@@ -19,7 +19,7 @@ jobs:
         run: |
           cat << CONFIG > src/config/config.json
           {
-            "hostname": "box.proxima-mail.com",
+            "hostname": "box.example.com",
             "mockApi": true
           }
           CONFIG
@@ -38,7 +38,7 @@ jobs:
         run: |
           cat << CONFIG > src/config/config.json
           {
-            "hostname": "box.proxima-mail.com",
+            "hostname": "box.example.com",
             "mockApi": true
           }
           CONFIG
