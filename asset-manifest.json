@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.js": "/mailinabox-ui/static/js/main.65205ae9.chunk.js",
+    "main.js.map": "/mailinabox-ui/static/js/main.65205ae9.chunk.js.map",
+    "runtime-main.js": "/mailinabox-ui/static/js/runtime-main.09c9c9b6.js",
+    "runtime-main.js.map": "/mailinabox-ui/static/js/runtime-main.09c9c9b6.js.map",
+    "static/js/2.bb662f18.chunk.js": "/mailinabox-ui/static/js/2.bb662f18.chunk.js",
+    "static/js/2.bb662f18.chunk.js.map": "/mailinabox-ui/static/js/2.bb662f18.chunk.js.map",
+    "static/js/3.ae687038.chunk.js": "/mailinabox-ui/static/js/3.ae687038.chunk.js",
+    "static/js/3.ae687038.chunk.js.map": "/mailinabox-ui/static/js/3.ae687038.chunk.js.map",
+    "static/js/4.5c3c8351.chunk.js": "/mailinabox-ui/static/js/4.5c3c8351.chunk.js",
+    "static/js/4.5c3c8351.chunk.js.map": "/mailinabox-ui/static/js/4.5c3c8351.chunk.js.map",
+    "index.html": "/mailinabox-ui/index.html",
+    "precache-manifest.247e48b7b699a1ae86778c9b0e6f0e06.js": "/mailinabox-ui/precache-manifest.247e48b7b699a1ae86778c9b0e6f0e06.js",
+    "service-worker.js": "/mailinabox-ui/service-worker.js",
+    "static/js/2.bb662f18.chunk.js.LICENSE.txt": "/mailinabox-ui/static/js/2.bb662f18.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.09c9c9b6.js",
+    "static/js/2.bb662f18.chunk.js",
+    "static/js/main.65205ae9.chunk.js"
+  ]
+}
