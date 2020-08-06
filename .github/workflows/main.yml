@@ -1,4 +1,4 @@
-name: Build
+name: Build and Publish
 on:
   push:
   release:
@@ -17,6 +17,12 @@ jobs:
           npm run lint
       - name: Build
         run: |
+          cat << CONFIG > src/config/config.json
+          {
+            "hostname": "box.proxima-mail.com",
+            "mockApi": true
+          }
+          CONFIG
           npm run build
   publish:
     needs: [check]
@@ -30,17 +36,23 @@ jobs:
           npm install
       - name: Build
         run: |
+          cat << CONFIG > src/config/config.json
+          {
+            "hostname": "box.proxima-mail.com",
+            "mockApi": true
+          }
+          CONFIG
           npm run build
-          mv build .build
       - name: Publish
         run: |
+          mv build .build
           tag=${GITHUB_REF#refs/tags/}
           git checkout gh-pages
-          git rm -rf *
+          rm -rf *
           mv .build/* .
           rm -rf .build
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add build
+          git add .
           git commit -m "Add build for version $tag"
           git push
