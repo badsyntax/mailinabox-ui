@@ -1,7 +1,7 @@
 import { Link, PivotItem, Stack, Text } from '@fluentui/react';
 import React, { useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import config from '../../../../config/index.json';
+import { config } from '../../../../config';
 import { Body } from '../../../ui/Body/Body';
 import { BodyBreadcrumb } from '../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../ui/BodyPanel/BodyPanel';

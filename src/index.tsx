@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { App } from './components/ui/App/App';
+import { config } from './config';
 import { store } from './store';
 
 initializeIcons(/* optional base url */);
@@ -28,11 +29,24 @@ mergeStyles({
   },
 });
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('app')
-);
+function renderApp(): void {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('app')
+  );
+}
+
+if (config.mockApi) {
+  import('./api/mockApi').then(
+    () => renderApp(),
+    () => {
+      console.error('There was an error loading the mock api');
+    }
+  );
+} else {
+  renderApp();
+}

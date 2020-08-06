@@ -11,12 +11,12 @@ export const SystemStatusActions: React.FunctionComponent = () => {
   return (
     <>
       {!rebootStatus && (
-        <MessageBar messageBarType={MessageBarType.success} isMultiline>
+        <MessageBar messageBarType={MessageBarType.success}>
           No reboot is necessary.
         </MessageBar>
       )}
       {rebootStatus && (
-        <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+        <MessageBar messageBarType={MessageBarType.warning}>
           A reboot is required.
         </MessageBar>
       )}

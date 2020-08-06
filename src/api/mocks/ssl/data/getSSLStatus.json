@@ -1,0 +1,142 @@
+{
+  "response": {
+    "can_provision": [],
+    "status": [
+      {
+        "domain": "box.example.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 82 days on 10/28/20."
+      },
+      {
+        "domain": "autoconfig.box.example.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autodiscover.box.example.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autoconfig.example2.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autoconfig.example3.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 46 days on 09/22/20."
+      },
+      {
+        "domain": "autoconfig.example.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autoconfig.example4.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 53 days on 09/29/20."
+      },
+      {
+        "domain": "autodiscover.example2.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autodiscover.example3.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 46 days on 09/22/20."
+      },
+      {
+        "domain": "autodiscover.example.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autodiscover.example4.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 53 days on 09/29/20."
+      },
+      {
+        "domain": "example5.com",
+        "status": "danger",
+        "text": "No certificate installed. The domain name does not resolve to this machine: 11.12.13.14 (A), 2222:4f1:1c1c:b666::1 (AAAA)."
+      },
+      {
+        "domain": "autoconfig.example5.com",
+        "status": "danger",
+        "text": "No certificate installed. The domain name does not resolve to this machine: [Not Set] (A), [Not Set] (AAAA)."
+      },
+      {
+        "domain": "autodiscover.example5.com",
+        "status": "danger",
+        "text": "No certificate installed. The domain name does not resolve to this machine: [Not Set] (A), [Not Set] (AAAA)."
+      },
+      {
+        "domain": "www.example5.com",
+        "status": "danger",
+        "text": "No certificate installed. The domain name does not resolve to this machine: 11.12.13.14 (A), 2222:4f1:1c1c:b666::1 (AAAA)."
+      },
+      {
+        "domain": "example6.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 26 days on 09/02/20."
+      },
+      {
+        "domain": "autoconfig.example6.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "autodiscover.example6.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      },
+      {
+        "domain": "www.example2.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 54 days on 09/30/20."
+      },
+      {
+        "domain": "www.example3.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 46 days on 09/22/20."
+      },
+      {
+        "domain": "www.example.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 82 days on 10/28/20."
+      },
+      {
+        "domain": "www.example4.com",
+        "status": "success",
+        "text": "Signed & valid. The certificate expires in 53 days on 09/29/20."
+      },
+      {
+        "domain": "example4.com",
+        "status": "not-applicable",
+        "text": "The domain's website is hosted elsewhere."
+      },
+      {
+        "domain": "www.example6.com",
+        "status": "not-applicable",
+        "text": "The domain's website is hosted elsewhere."
+      },
+      {
+        "domain": "example2.com",
+        "status": "not-applicable",
+        "text": "The domain's website is hosted elsewhere."
+      },
+      {
+        "domain": "example.com",
+        "status": "not-applicable",
+        "text": "The domain's website is hosted elsewhere."
+      },
+      {
+        "domain": "example3.com",
+        "status": "not-applicable",
+        "text": "The domain's website is hosted elsewhere."
+      }
+    ]
+  }
+}

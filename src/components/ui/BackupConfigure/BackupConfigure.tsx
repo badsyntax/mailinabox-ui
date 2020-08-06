@@ -19,7 +19,7 @@ import {
 } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import config from '../../../config/index.json';
+import { config } from '../../../config';
 import {
   getStatus,
   updateConfig,

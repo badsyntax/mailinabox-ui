@@ -1,6 +1,6 @@
 import { TextField } from '@fluentui/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import config from '../../../../config/index.json';
+import { config } from '../../../../config';
 import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,

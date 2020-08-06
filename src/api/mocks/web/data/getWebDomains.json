@@ -1,0 +1,212 @@
+{
+  "response": [
+    {
+      "custom_root": "/home/user-data/www/box.example.com",
+      "domain": "box.example.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 82 days on 10/28/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.box.example.com",
+      "domain": "autoconfig.box.example.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.box.example.com",
+      "domain": "autodiscover.box.example.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.example2.com",
+      "domain": "autoconfig.example2.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.example3.com",
+      "domain": "autoconfig.example3.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 46 days on 09/22/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.example.com",
+      "domain": "autoconfig.example.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.example4.com",
+      "domain": "autoconfig.example4.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 53 days on 09/29/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.example2.com",
+      "domain": "autodiscover.example2.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.example3.com",
+      "domain": "autodiscover.example3.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 46 days on 09/22/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.example.com",
+      "domain": "autodiscover.example.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.example4.com",
+      "domain": "autodiscover.example4.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 53 days on 09/29/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/example5.com",
+      "domain": "example5.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": ["danger", "No certificate installed."],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.example5.com",
+      "domain": "autoconfig.example5.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": ["danger", "No certificate installed."],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.example5.com",
+      "domain": "autodiscover.example5.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": ["danger", "No certificate installed."],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/www.example5.com",
+      "domain": "www.example5.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": ["danger", "No certificate installed."],
+      "static_enabled": false
+    },
+    {
+      "custom_root": "/home/user-data/www/example6.com",
+      "domain": "example6.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 26 days on 09/02/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autoconfig.example6.com",
+      "domain": "autoconfig.example6.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/autodiscover.example6.com",
+      "domain": "autodiscover.example6.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 72 days on 10/18/20."
+      ],
+      "static_enabled": true
+    },
+    {
+      "custom_root": "/home/user-data/www/www.example2.com",
+      "domain": "www.example2.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 54 days on 09/30/20."
+      ],
+      "static_enabled": false
+    },
+    {
+      "custom_root": "/home/user-data/www/www.example3.com",
+      "domain": "www.example3.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 46 days on 09/22/20."
+      ],
+      "static_enabled": false
+    },
+    {
+      "custom_root": "/home/user-data/www/www.example.com",
+      "domain": "www.example.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 82 days on 10/28/20."
+      ],
+      "static_enabled": false
+    },
+    {
+      "custom_root": "/home/user-data/www/www.example4.com",
+      "domain": "www.example4.com",
+      "root": "/home/user-data/www/default",
+      "ssl_certificate": [
+        "success",
+        "Signed & valid. The certificate expires in 53 days on 09/29/20."
+      ],
+      "static_enabled": false
+    }
+  ]
+}

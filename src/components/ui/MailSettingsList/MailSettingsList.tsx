@@ -6,7 +6,7 @@ import {
   SelectionMode,
 } from '@fluentui/react';
 import React from 'react';
-import config from '../../../config/index.json';
+import { config } from '../../../config';
 const columns: IColumn[] = [
   {
     key: 'column1',

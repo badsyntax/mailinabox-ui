@@ -1,19 +1,58 @@
-name: Build
+name: Build and Publish
 on:
   push:
+  release:
+    types: [published]
 jobs:
-  validate:
-    name: Validate
+  check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12.18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.18.x
       - name: Install dependencies
         run: |
           npm install
       - name: Lint
         run: |
           npm run lint
+      - name: Build
+        run: |
+          cat << CONFIG > src/config/config.json
+          {
+            "hostname": "box.example.com",
+            "mockApi": true
+          }
+          CONFIG
+          npm run build
+  publish:
+    needs: [check]
+    name: Publish
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build
+        run: |
+          cat << CONFIG > src/config/config.json
+          {
+            "hostname": "box.example.com",
+            "mockApi": true
+          }
+          CONFIG
+          PUBLIC_URL=/mailinabox-ui/ npm run build
+      - name: Publish
+        run: |
+          mv build .build
+          tag=${GITHUB_REF#refs/tags/}
+          git checkout gh-pages
+          rm -rf *
+          mv .build/* .
+          rm -rf .build
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Add build for version $tag"
+          git push

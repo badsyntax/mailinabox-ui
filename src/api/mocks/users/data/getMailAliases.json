@@ -1,0 +1,221 @@
+{
+  "response": [
+    {
+      "aliases": [
+        {
+          "address": "abuse@box.example.com",
+          "address_display": "abuse@box.example.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "admin@box.example.com",
+          "address_display": "admin@box.example.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "administrator@box.example.com",
+          "address_display": "administrator@box.example.com",
+          "forwards_to": ["admin@example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "hostmaster@box.example.com",
+          "address_display": "hostmaster@box.example.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@box.example.com",
+          "address_display": "postmaster@box.example.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "box.example.com"
+    },
+    {
+      "aliases": [
+        {
+          "address": "abuse@example.com",
+          "address_display": "abuse@example.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@example.com",
+          "address_display": "postmaster@example.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "example.com"
+    },
+    {
+      "aliases": [
+        {
+          "address": "abuse@example2.com",
+          "address_display": "abuse@example2.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "admin@example2.com",
+          "address_display": "admin@example2.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@example2.com",
+          "address_display": "postmaster@example2.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "example2.com"
+    },
+    {
+      "aliases": [
+        {
+          "address": "abuse@example3.com",
+          "address_display": "abuse@example3.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "admin@example3.com",
+          "address_display": "admin@example3.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@example3.com",
+          "address_display": "postmaster@example3.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "example3.com"
+    },
+    {
+      "aliases": [
+        {
+          "address": "@example4.com",
+          "address_display": "@example4.com",
+          "forwards_to": ["mailer@example5.com"],
+          "permitted_senders": null,
+          "required": false
+        },
+        {
+          "address": "abuse@example4.com",
+          "address_display": "abuse@example4.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "admin@example4.com",
+          "address_display": "admin@example4.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@example4.com",
+          "address_display": "postmaster@example4.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "example4.com"
+    },
+    {
+      "aliases": [
+        {
+          "address": "@example5.com",
+          "address_display": "@example5.com",
+          "forwards_to": ["mailer@example5.com"],
+          "permitted_senders": null,
+          "required": false
+        },
+        {
+          "address": "mailer@example5.com",
+          "address_display": "mailer@example5.com",
+          "forwards_to": ["admin@example.com"],
+          "permitted_senders": null,
+          "required": false
+        },
+        {
+          "address": "www-data@example5.com",
+          "address_display": "www-data@example5.com",
+          "forwards_to": ["mailer@example5.com"],
+          "permitted_senders": null,
+          "required": false
+        },
+        {
+          "address": "abuse@example5.com",
+          "address_display": "abuse@example5.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "admin@example5.com",
+          "address_display": "admin@example5.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@example5.com",
+          "address_display": "postmaster@example5.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "example5.com"
+    },
+    {
+      "aliases": [
+        {
+          "address": "abuse@example6.com",
+          "address_display": "abuse@example6.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "admin@example6.com",
+          "address_display": "admin@example6.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        },
+        {
+          "address": "postmaster@example6.com",
+          "address_display": "postmaster@example6.com",
+          "forwards_to": ["administrator@box.example.com"],
+          "permitted_senders": null,
+          "required": true
+        }
+      ],
+      "domain": "example6.com"
+    }
+  ]
+}

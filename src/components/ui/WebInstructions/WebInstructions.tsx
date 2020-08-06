@@ -1,6 +1,6 @@
 import { Link, Stack, Text } from '@fluentui/react';
 import React from 'react';
-import config from '../../../config/index.json';
+import { config } from '../../../config';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 export const WebInstructions: React.FunctionComponent = () => {
