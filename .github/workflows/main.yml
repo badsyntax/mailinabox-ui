@@ -42,7 +42,7 @@ jobs:
             "mockApi": true
           }
           CONFIG
-          PUBLIC_URL=https://badsyntax.github.io/mailinabox-ui/ npm run build
+          PUBLIC_URL=/mailinabox-ui/ npm run build
       - name: Publish
         run: |
           mv build .build
