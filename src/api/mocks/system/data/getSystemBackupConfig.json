@@ -1,0 +1,11 @@
+{
+  "response": {
+    "enc_pw_file": "/home/user-data/backup/secret_key.txt",
+    "file_target_directory": "/home/user-data/backup/encrypted",
+    "min_age_in_days": 3,
+    "ssh_pub_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb root@box.example.com\\n",
+    "target": "s3://s3.eu-central-1.amazonaws.com/box-example-com",
+    "target_user": "string",
+    "target_pass": "string"
+  }
+}

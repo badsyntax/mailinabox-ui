@@ -1,0 +1,80 @@
+{
+  "response": [
+    {
+      "domain": "example.com",
+      "users": [
+        {
+          "email": "admin@example.com",
+          "privileges": ["admin"],
+          "status": "active"
+        },
+        {
+          "email": "root@example.com",
+          "privileges": [],
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "domain": "example2.com",
+      "users": [
+        {
+          "email": "richard@example2.com",
+          "privileges": ["admin"],
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "domain": "example3.com",
+      "users": [
+        {
+          "email": "info@example3.com",
+          "privileges": [],
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "domain": "example4.com",
+      "users": [
+        {
+          "email": "info@example4.com",
+          "privileges": [],
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "domain": "example5.com",
+      "users": [
+        {
+          "email": "mailer@example5.com",
+          "privileges": ["admin"],
+          "status": "active"
+        },
+        {
+          "email": "richard@example5.com",
+          "privileges": ["admin"],
+          "status": "active"
+        },
+        {
+          "email": "www-data@example5.com",
+          "mailbox": "/home/user-data/mail/mailboxes/example5.com/www-data",
+          "privileges": [],
+          "status": "inactive"
+        }
+      ]
+    },
+    {
+      "domain": "example6.com",
+      "users": [
+        {
+          "email": "info@example6.com",
+          "privileges": ["admin"],
+          "status": "active"
+        }
+      ]
+    }
+  ]
+}

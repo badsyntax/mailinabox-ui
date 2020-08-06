@@ -1,6 +1,6 @@
 import { Image, Stack, Text } from '@fluentui/react';
 import React from 'react';
-import logo from './logo.png';
+import logo from '../../../images/logo.png';
 
 export const LoginHeader: React.FunctionComponent = () => {
   return (

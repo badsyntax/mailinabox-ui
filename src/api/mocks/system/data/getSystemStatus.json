@@ -1,0 +1,933 @@
+{
+  "response": [
+    {
+      "extra": [],
+      "text": "System",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "All system services are running.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "The SSH server on this machine permits password-based login. A more secure\n\t\t\tway to log in is using a public key. Add your SSH public key to $HOME/.ssh/authorized_keys, check\n\t\t\tthat you can log in without a password, set the option 'PasswordAuthentication no' in\n\t\t\t/etc/ssh/sshd_config, and then restart the openssh via 'sudo service ssh restart'.",
+      "type": "error"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": "libnss-systemd (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "libsystemd0 (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "libpam-systemd (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "systemd (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "udev (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "libudev1 (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "kmod (24-1ubuntu3.5)"
+        },
+        {
+          "monospace": false,
+          "text": "libkmod2 (24-1ubuntu3.5)"
+        },
+        {
+          "monospace": false,
+          "text": "systemd-sysv (237-3ubuntu10.42)"
+        },
+        {
+          "monospace": false,
+          "text": "ntp (1:4.2.8p10+dfsg-5ubuntu7.2)"
+        },
+        {
+          "monospace": false,
+          "text": "iproute2 (4.15.0-2ubuntu1.2)"
+        }
+      ],
+      "text": "There are 11 software packages that can be updated.",
+      "type": "error"
+    },
+    {
+      "extra": [],
+      "text": "A new version of Mail-in-a-Box is available. You are running version v0.46. The latest version is v0.47. For upgrade instructions, see https://mailinabox.email. ",
+      "type": "error"
+    },
+    {
+      "extra": [],
+      "text": "System administrator address exists as a mail alias. [administrator@box.example.com \u21a6 admin@example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "The disk has 11.20 GB space remaining.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "System memory is 64% free.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Network",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Firewall is active.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Outbound mail (SMTP port 25) is not blocked.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "IP address is not blacklisted by zen.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "box.example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Nameserver glue records are correct at registrar. [ns1/ns2.box.example.com \u21a6 10.11.12.13]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to box's IP address. [box.example.com \u21a6 10.11.12.13 / 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Reverse DNS is set correctly at ISP. [10.11.12.13 / 8a01:8f8:8c1c:808a::1 \u21a6 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "The DANE TLSA record for incoming mail is correct (_25._tcp.box.example.com).",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Hostmaster contact address exists as a mail alias. [hostmaster@box.example.com \u21a6 administrator@box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [box.example.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Postmaster contact address exists as a mail alias. [postmaster@box.example.com \u21a6 administrator@box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 82 days on 10/28/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.box.example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autoconfig.box.example.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.box.example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autodiscover.box.example.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Nameservers are set correctly at registrar. [ns1.box.example.com; ns2.box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [example.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Postmaster contact address exists as a mail alias. [postmaster@example.com \u21a6 administrator@box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Web has been disabled for this domain because you have set a custom DNS record.",
+      "type": "warning"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Key Tag: 5703"
+        },
+        {
+          "monospace": false,
+          "text": "Key Flags: KSK"
+        },
+        {
+          "monospace": false,
+          "text": "Algorithm: 7 / RSASHA1-NSEC3-SHA1"
+        },
+        {
+          "monospace": false,
+          "text": "Digest Type: 2 / SHA-256"
+        },
+        {
+          "monospace": false,
+          "text": "Digest: 88abc849f4a95fc90ac37d3cad5a0cfb0cb2e77fac80f268e1b23fdf7899c83"
+        },
+        {
+          "monospace": false,
+          "text": "Public Key: "
+        },
+        {
+          "monospace": true,
+          "text": "88888Z2R/E6NTiVhHEf6gAVsk/c4eFfAd5rAfvSCMYLTlkfNBJlyKPj8z0uMkANxSRlI/8888HLSRh3UPSrJPFXBpy38PDXkW/Mu/hofCh7gI0szI7dkZ64QCaFMkKzsHHdcoXLXlca6tFZTr6Il2VioyD7X8pLD4wr0OrI+IYrcqxNtsNGT6EB7kLtYfM/JLi/RpqirY2CEAR0kcho5whxixmY4mx/6INj86BIp8ZMeR9mtZeZfwCRktaeKeJ3Rzzin8SPv+ZwU7M0Sxn8pvISddrWqKvYNaKBJKnkyHIKnACF6PZ8wGd6s5k7Gu9c2XSyO1d8+5rBAy1eMml0rfje2ne/8="
+        },
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Bulk/Record Format:"
+        },
+        {
+          "monospace": false,
+          "text": "example.com.\t3600\tIN\tDS\t5703 7 2 88abc849f4a95fc90ac37d3cad5a0cfb0cb2e77fac80f268e1b23fdf7899c83"
+        },
+        {
+          "monospace": false,
+          "text": ""
+        }
+      ],
+      "text": "This domain's DNSSEC DS record is not set. The DS record is optional. The DS record activates DNSSEC.\n\t\t\t\tTo set a DS record, you must follow the instructions provided by your domain name registrar and provide to them this information:",
+      "type": "warning"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autoconfig.example.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autodiscover.example.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "www.example.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [www.example.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 82 days on 10/28/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "example2.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Nameservers are set correctly at registrar. [ns1.box.example.com; ns2.box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [example2.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Postmaster contact address exists as a mail alias. [postmaster@example2.com \u21a6 administrator@box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Web has been disabled for this domain because you have set a custom DNS record.",
+      "type": "warning"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Key Tag: 5703"
+        },
+        {
+          "monospace": false,
+          "text": "Key Flags: KSK"
+        },
+        {
+          "monospace": false,
+          "text": "Algorithm: 7 / RSASHA1-NSEC3-SHA1"
+        },
+        {
+          "monospace": false,
+          "text": "Digest Type: 2 / SHA-256"
+        },
+        {
+          "monospace": false,
+          "text": "Digest: 8888d50ff41e5c5ecc884ce939101a35b0148a2efac375f04369f9aeee3d"
+        },
+        {
+          "monospace": false,
+          "text": "Public Key: "
+        },
+        {
+          "monospace": true,
+          "text": "88888Z2R/E6NTiVhHEf6gAVsk/c4eFfAd5rAfvSCMYLTlkfNBJlyKPj8z0uMkANxSRlI/8888HLSRh3UPSrJPFXBpy38PDXkW/Mu/hofCh7gI0szI7dkZ64QCaFMkKzsHHdcoXLXlca6tFZTr6Il2VioyD7X8pLD4wr0OrI+IYrcqxNtsNGT6EB7kLtYfM/JLi/RpqirY2CEAR0kcho5whxixmY4mx/6INj86BIp8ZMeR9mtZeZfwCRktaeKeJ3Rzzin8SPv+ZwU7M0Sxn8pvISddrWqKvYNaKBJKnkyHIKnACF6PZ8wGd6s5k7Gu9c2XSyO1d8+5rBAy1eMml0rfje2ne/8="
+        },
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Bulk/Record Format:"
+        },
+        {
+          "monospace": false,
+          "text": "example2.com.\t3600\tIN\tDS\t5703 7 2 8888d50ff41e5c5ecc884ce939101a35b0148a2efac375f04369f9aeee3d"
+        },
+        {
+          "monospace": false,
+          "text": ""
+        }
+      ],
+      "text": "This domain's DNSSEC DS record is not set. The DS record is optional. The DS record activates DNSSEC.\n\t\t\t\tTo set a DS record, you must follow the instructions provided by your domain name registrar and provide to them this information:",
+      "type": "warning"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.example2.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autoconfig.example2.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.example2.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autodiscover.example2.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "www.example2.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [www.example2.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 54 days on 09/30/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "example3.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Nameservers are set correctly at registrar. [ns1.box.example.com; ns2.box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [example3.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Postmaster contact address exists as a mail alias. [postmaster@example3.com \u21a6 administrator@box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Web has been disabled for this domain because you have set a custom DNS record.",
+      "type": "warning"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Key Tag: 5703"
+        },
+        {
+          "monospace": false,
+          "text": "Key Flags: KSK"
+        },
+        {
+          "monospace": false,
+          "text": "Algorithm: 7 / RSASHA1-NSEC3-SHA1"
+        },
+        {
+          "monospace": false,
+          "text": "Digest Type: 2 / SHA-256"
+        },
+        {
+          "monospace": false,
+          "text": "Digest: 888871077937a9d02c0e6916c317e28e9f9753698bc227ce58a53599243b442e"
+        },
+        {
+          "monospace": false,
+          "text": "Public Key: "
+        },
+        {
+          "monospace": true,
+          "text": "88888Z2R/E6NTiVhHEf6gAVsk/c4eFfAd5rAfvSCMYLTlkfNBJlyKPj8z0uMkANxSRlI/8888HLSRh3UPSrJPFXBpy38PDXkW/Mu/hofCh7gI0szI7dkZ64QCaFMkKzsHHdcoXLXlca6tFZTr6Il2VioyD7X8pLD4wr0OrI+IYrcqxNtsNGT6EB7kLtYfM/JLi/RpqirY2CEAR0kcho5whxixmY4mx/6INj86BIp8ZMeR9mtZeZfwCRktaeKeJ3Rzzin8SPv+ZwU7M0Sxn8pvISddrWqKvYNaKBJKnkyHIKnACF6PZ8wGd6s5k7Gu9c2XSyO1d8+5rBAy1eMml0rfje2ne/8="
+        },
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Bulk/Record Format:"
+        },
+        {
+          "monospace": false,
+          "text": "example3.com.\t3600\tIN\tDS\t5703 7 2 888871077937a9d02c0e6916c317e28e9f9753698bc227ce58a53599243b442e"
+        },
+        {
+          "monospace": false,
+          "text": ""
+        }
+      ],
+      "text": "This domain's DNSSEC DS record is not set. The DS record is optional. The DS record activates DNSSEC.\n\t\t\t\tTo set a DS record, you must follow the instructions provided by your domain name registrar and provide to them this information:",
+      "type": "warning"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.example3.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autoconfig.example3.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 46 days on 09/22/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.example3.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autodiscover.example3.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 46 days on 09/22/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "www.example3.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [www.example3.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 46 days on 09/22/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "example4.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "The nameservers set on this domain are incorrect. They are currently ns17.domaincontrol.com; ns18.domaincontrol.com. Use your domain name registrar's\n\t\t\tcontrol panel to set the nameservers to ns1.box.example.com; ns2.box.example.com.",
+      "type": "error"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [example4.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "This domain should resolve to your box's IP address (A 10.11.12.13) if you would like the box to serve\n\t\t\t\t\twebmail or a website on this domain. The domain currently resolves to 116.203.79.11 in public DNS. It may take several hours for\n\t\t\t\t\tpublic DNS to update after a change. This problem may result from other issues listed here.",
+      "type": "error"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Key Tag: 5703"
+        },
+        {
+          "monospace": false,
+          "text": "Key Flags: KSK"
+        },
+        {
+          "monospace": false,
+          "text": "Algorithm: 7 / RSASHA1-NSEC3-SHA1"
+        },
+        {
+          "monospace": false,
+          "text": "Digest Type: 2 / SHA-256"
+        },
+        {
+          "monospace": false,
+          "text": "Digest: 88886b2266e2e2119c6c71586e915a33853129f7caa62639c0c32e7840470c7b"
+        },
+        {
+          "monospace": false,
+          "text": "Public Key: "
+        },
+        {
+          "monospace": true,
+          "text": "88888Z2R/E6NTiVhHEf6gAVsk/c4eFfAd5rAfvSCMYLTlkfNBJlyKPj8z0uMkANxSRlI/8888HLSRh3UPSrJPFXBpy38PDXkW/Mu/hofCh7gI0szI7dkZ64QCaFMkKzsHHdcoXLXlca6tFZTr6Il2VioyD7X8pLD4wr0OrI+IYrcqxNtsNGT6EB7kLtYfM/JLi/RpqirY2CEAR0kcho5whxixmY4mx/6INj86BIp8ZMeR9mtZeZfwCRktaeKeJ3Rzzin8SPv+ZwU7M0Sxn8pvISddrWqKvYNaKBJKnkyHIKnACF6PZ8wGd6s5k7Gu9c2XSyO1d8+5rBAy1eMml0rfje2ne/8="
+        },
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Bulk/Record Format:"
+        },
+        {
+          "monospace": false,
+          "text": "example4.com.\t3600\tIN\tDS\t5703 7 2 88886b2266e2e2119c6c71586e915a33853129f7caa62639c0c32e7840470c7b"
+        },
+        {
+          "monospace": false,
+          "text": ""
+        }
+      ],
+      "text": "This domain's DNSSEC DS record is not set. The DS record is optional. The DS record activates DNSSEC.\n\t\t\t\tTo set a DS record, you must follow the instructions provided by your domain name registrar and provide to them this information:",
+      "type": "warning"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.example4.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "This domain should resolve to your box's IP address (A 10.11.12.13) if you would like the box to serve\n\t\t\t\t\twebmail or a website on this domain. The domain currently resolves to [Not Set] in public DNS. It may take several hours for\n\t\t\t\t\tpublic DNS to update after a change. This problem may result from other issues listed here.",
+      "type": "error"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.example4.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "This domain should resolve to your box's IP address (A 10.11.12.13) if you would like the box to serve\n\t\t\t\t\twebmail or a website on this domain. The domain currently resolves to [Not Set] in public DNS. It may take several hours for\n\t\t\t\t\tpublic DNS to update after a change. This problem may result from other issues listed here.",
+      "type": "error"
+    },
+    {
+      "extra": [],
+      "text": "www.example4.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "This domain should resolve to your box's IP address (A 10.11.12.13) if you would like the box to serve\n\t\t\t\t\twebmail or a website on this domain. The domain currently resolves to 116.203.79.11 in public DNS. It may take several hours for\n\t\t\t\t\tpublic DNS to update after a change. This problem may result from other issues listed here.",
+      "type": "error"
+    },
+    {
+      "extra": [],
+      "text": "example5.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Nameservers are set correctly at registrar. [ns1.box.example.com; ns2.box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [example5.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [example5.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 26 days on 09/02/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "A redirect from 'www.example5.com' has been disabled for this domain because you have set a custom DNS record on the www subdomain.",
+      "type": "warning"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Key Tag: 5703"
+        },
+        {
+          "monospace": false,
+          "text": "Key Flags: KSK"
+        },
+        {
+          "monospace": false,
+          "text": "Algorithm: 7 / RSASHA1-NSEC3-SHA1"
+        },
+        {
+          "monospace": false,
+          "text": "Digest Type: 2 / SHA-256"
+        },
+        {
+          "monospace": false,
+          "text": "Digest: 8888f96fe79297d2065a137b0bf00e63159d57678074083031e58afd9d98fdcf"
+        },
+        {
+          "monospace": false,
+          "text": "Public Key: "
+        },
+        {
+          "monospace": true,
+          "text": "88888Z2R/E6NTiVhHEf6gAVsk/c4eFfAd5rAfvSCMYLTlkfNBJlyKPj8z0uMkANxSRlI/8888HLSRh3UPSrJPFXBpy38PDXkW/Mu/hofCh7gI0szI7dkZ64QCaFMkKzsHHdcoXLXlca6tFZTr6Il2VioyD7X8pLD4wr0OrI+IYrcqxNtsNGT6EB7kLtYfM/JLi/RpqirY2CEAR0kcho5whxixmY4mx/6INj86BIp8ZMeR9mtZeZfwCRktaeKeJ3Rzzin8SPv+ZwU7M0Sxn8pvISddrWqKvYNaKBJKnkyHIKnACF6PZ8wGd6s5k7Gu9c2XSyO1d8+5rBAy1eMml0rfje2ne/8="
+        },
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Bulk/Record Format:"
+        },
+        {
+          "monospace": false,
+          "text": "example5.com.\t3600\tIN\tDS\t5703 7 2 8888f96fe79297d2065a137b0bf00e63159d57678074083031e58afd9d98fdcf"
+        },
+        {
+          "monospace": false,
+          "text": ""
+        }
+      ],
+      "text": "This domain's DNSSEC DS record is not set. The DS record is optional. The DS record activates DNSSEC.\n\t\t\t\tTo set a DS record, you must follow the instructions provided by your domain name registrar and provide to them this information:",
+      "type": "warning"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.example5.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autoconfig.example5.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.example5.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autodiscover.example5.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 72 days on 10/18/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "example6.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Nameservers are set correctly at registrar. [ns1.box.example.com; ns2.box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain's email is directed to this domain. [example6.com \u21a6 10 box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Postmaster contact address exists as a mail alias. [postmaster@example6.com \u21a6 administrator@box.example.com]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Domain is not blacklisted by dbl.spamhaus.org.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "Web has been disabled for this domain because you have set a custom DNS record.",
+      "type": "warning"
+    },
+    {
+      "extra": [
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Key Tag: 5703"
+        },
+        {
+          "monospace": false,
+          "text": "Key Flags: KSK"
+        },
+        {
+          "monospace": false,
+          "text": "Algorithm: 7 / RSASHA1-NSEC3-SHA1"
+        },
+        {
+          "monospace": false,
+          "text": "Digest Type: 2 / SHA-256"
+        },
+        {
+          "monospace": false,
+          "text": "Digest: 8888803d3e5960c65aa6ed3fa7f22518050d6549cd458b2299f3d36bb095b4f1"
+        },
+        {
+          "monospace": false,
+          "text": "Public Key: "
+        },
+        {
+          "monospace": true,
+          "text": "88888Z2R/E6NTiVhHEf6gAVsk/c4eFfAd5rAfvSCMYLTlkfNBJlyKPj8z0uMkANxSRlI/8888HLSRh3UPSrJPFXBpy38PDXkW/Mu/hofCh7gI0szI7dkZ64QCaFMkKzsHHdcoXLXlca6tFZTr6Il2VioyD7X8pLD4wr0OrI+IYrcqxNtsNGT6EB7kLtYfM/JLi/RpqirY2CEAR0kcho5whxixmY4mx/6INj86BIp8ZMeR9mtZeZfwCRktaeKeJ3Rzzin8SPv+ZwU7M0Sxn8pvISddrWqKvYNaKBJKnkyHIKnACF6PZ8wGd6s5k7Gu9c2XSyO1d8+5rBAy1eMml0rfje2ne/8="
+        },
+        {
+          "monospace": false,
+          "text": ""
+        },
+        {
+          "monospace": false,
+          "text": "Bulk/Record Format:"
+        },
+        {
+          "monospace": false,
+          "text": "example6.com.\t3600\tIN\tDS\t5703 7 2 8888803d3e5960c65aa6ed3fa7f22518050d6549cd458b2299f3d36bb095b4f1"
+        },
+        {
+          "monospace": false,
+          "text": ""
+        }
+      ],
+      "text": "This domain's DNSSEC DS record is not set. The DS record is optional. The DS record activates DNSSEC.\n\t\t\t\tTo set a DS record, you must follow the instructions provided by your domain name registrar and provide to them this information:",
+      "type": "warning"
+    },
+    {
+      "extra": [],
+      "text": "autoconfig.example6.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autoconfig.example6.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 53 days on 09/29/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "autodiscover.example6.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [autodiscover.example6.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 53 days on 09/29/20.",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "www.example6.com",
+      "type": "heading"
+    },
+    {
+      "extra": [],
+      "text": "Domain resolves to this box's IP address. [www.example6.com \u21a6 10.11.12.13; 8a01:8f8:8c1c:808a::1]",
+      "type": "ok"
+    },
+    {
+      "extra": [],
+      "text": "TLS (SSL) certificate is signed & valid. The certificate expires in 53 days on 09/29/20.",
+      "type": "ok"
+    }
+  ]
+}

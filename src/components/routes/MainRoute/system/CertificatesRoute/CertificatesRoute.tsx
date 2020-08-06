@@ -15,7 +15,7 @@ import {
   useLocation,
   useRouteMatch,
 } from 'react-router-dom';
-import config from '../../../../../config/index.json';
+import { config } from '../../../../../config';
 import {
   getSSLStatus,
   resetSSLAction,

@@ -1,0 +1,13 @@
+{
+  "response": {
+    "requests": [
+      {
+        "log": [
+          "The domain name does not resolve to this machine: [Not Set] (A), [Not Set] (AAAA)."
+        ],
+        "result": "installed",
+        "domains": ["example.com"]
+      }
+    ]
+  }
+}

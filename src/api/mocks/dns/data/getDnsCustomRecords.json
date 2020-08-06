@@ -1,0 +1,75 @@
+{
+  "response": [
+    {
+      "qname": "example.com",
+      "rtype": "A",
+      "value": "11.12.13.14"
+    },
+    {
+      "qname": "example.com",
+      "rtype": "AAAA",
+      "value": "2a09:4fa:1c1c:e08a::2"
+    },
+    {
+      "qname": "example2.com",
+      "rtype": "A",
+      "value": "12.13.14.15"
+    },
+    {
+      "qname": "blog.example2.com",
+      "rtype": "A",
+      "value": "13.14.15.16"
+    },
+    {
+      "qname": "www.example3.com",
+      "rtype": "A",
+      "value": "13.14.15.16"
+    },
+    {
+      "qname": "www.example3.com",
+      "rtype": "AAAA",
+      "value": "2a11:8f8:1c1c:b688::1"
+    },
+    {
+      "qname": "blog.example3.com",
+      "rtype": "A",
+      "value": "13.14.15.16"
+    },
+    {
+      "qname": "blog.example3.com",
+      "rtype": "AAAA",
+      "value": "2a11:8f8:1c1c:b688::1"
+    },
+    {
+      "qname": "example4.com",
+      "rtype": "A",
+      "value": "13.14.15.16"
+    },
+    {
+      "qname": "example4.com",
+      "rtype": "AAAA",
+      "value": "2a11:8f8:1c1c:b688::1"
+    },
+    {
+      "qname": "shop.example4.com",
+      "rtype": "AAAA",
+      "value": "2a11:8f8:1c1c:b688::1"
+    },
+    {
+      "qname": "shop.example4.com",
+      "rtype": "A",
+      "value": "13.14.15.16"
+    },
+    {
+      "qname": "example5.com",
+      "rtype": "A",
+      "value": "13.14.15.16"
+    },
+    {
+      "qname": "example5.com",
+      "rtype": "AAAA",
+      "value": "2a11:8f8:1c1c:b688::1"
+    }
+  ]
+
+}

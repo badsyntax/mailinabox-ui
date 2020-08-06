@@ -1,0 +1,880 @@
+{
+  "response": [
+    [
+      "example.com",
+      [
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @example.com mail.",
+          "qname": "example.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Required. Sets the IP address of the box.",
+          "qname": "box.example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Required. Sets the IPv6 address of the box.",
+          "qname": "box.example.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @box.example.com mail.",
+          "qname": "box.example.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @example.com mail.",
+          "qname": "example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @example.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @example.com mail.",
+          "qname": "mail._domainkey.example.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_caldavs._tcp.example.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_carddavs._tcp.example.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @box.example.com mail.",
+          "qname": "box.example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @box.example.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.box.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @box.example.com mail.",
+          "qname": "mail._domainkey.box.example.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @autoconfig.box.example.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "autoconfig.box.example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @autoconfig.box.example.com.",
+          "qname": "_dmarc.autoconfig.box.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @autodiscover.box.example.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "autodiscover.box.example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @autodiscover.box.example.com.",
+          "qname": "_dmarc.autodiscover.box.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @ns1.box.example.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "ns1.box.example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @ns1.box.example.com.",
+          "qname": "_dmarc.ns1.box.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @ns2.box.example.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "ns2.box.example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @ns2.box.example.com.",
+          "qname": "_dmarc.ns2.box.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @www.example.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "www.example.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @www.example.com.",
+          "qname": "_dmarc.www.example.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example.com",
+          "rtype": "AAAA",
+          "value": "2a01:4f8:1c1c:e08a::2"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Optional. Provides an out-of-band method for verifying an SSH key before connecting. Use 'VerifyHostKeyDNS yes' (or 'VerifyHostKeyDNS ask') when connecting with ssh.",
+          "qname": "box.example.com",
+          "rtype": "SSHFP",
+          "value": "3 2 ( 4FB486A3269CB99075C486BF64591321A600213411EC948A25A32171331111C8 )"
+        },
+        {
+          "explanation": "Optional. Provides an out-of-band method for verifying an SSH key before connecting. Use 'VerifyHostKeyDNS yes' (or 'VerifyHostKeyDNS ask') when connecting with ssh.",
+          "qname": "box.example.com",
+          "rtype": "SSHFP",
+          "value": "4 2 ( 8888D95D0C3CD152D31F41B544024B0FC81D6AC23FA16B2142FC3D40247F6 )"
+        },
+        {
+          "explanation": "Optional. Provides an out-of-band method for verifying an SSH key before connecting. Use 'VerifyHostKeyDNS yes' (or 'VerifyHostKeyDNS ask') when connecting with ssh.",
+          "qname": "box.example.com",
+          "rtype": "SSHFP",
+          "value": "1 2 ( 888857D5CAB76684F937745FD8D6E02FC4731C05D354DF6FFB15E6FA203C4F261 )"
+        },
+        {
+          "explanation": "Recommended when DNSSEC is enabled. Advertises to mail servers connecting to the box that mandatory encryption should be used.",
+          "qname": "_25._tcp.box.example.com",
+          "rtype": "TLSA",
+          "value": "3 1 1 8882b2f8150bf467449a0e41f2d03db1dccfaddb076342404176b446ff5b30bb"
+        },
+        {
+          "explanation": "Optional. When DNSSEC is enabled, provides out-of-band HTTPS certificate validation for a few web clients that support it.",
+          "qname": "_443._tcp.box.example.com",
+          "rtype": "TLSA",
+          "value": "3 1 1 8882b2f8150bf467449a0e41f2d03db1dccfaddb076342404176b446ff5b30bb"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.box.example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.box.example.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.box.example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.box.example.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Optional. Sets the IP address that www.example.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that www.example.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        }
+      ]
+    ],
+    [
+      "example2.com",
+      [
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @example2.com mail.",
+          "qname": "example2.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @example2.com mail.",
+          "qname": "example2.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @example2.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.example2.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @example2.com mail.",
+          "qname": "mail._domainkey.example2.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_caldavs._tcp.example2.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_carddavs._tcp.example2.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @blog.example2.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "blog.example2.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @blog.example2.com.",
+          "qname": "_dmarc.blog.example2.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @www.example2.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "www.example2.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @www.example2.com.",
+          "qname": "_dmarc.www.example2.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example2.com",
+          "rtype": "A",
+          "value": "185.199.110.153"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example2.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example2.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example2.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example2.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "blog.example2.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "Optional. Sets the IP address that www.example2.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example2.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that www.example2.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example2.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        }
+      ]
+    ],
+    [
+      "example3.com",
+      [
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @example3.com mail.",
+          "qname": "example3.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @example3.com mail.",
+          "qname": "example3.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @example3.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.example3.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @example3.com mail.",
+          "qname": "mail._domainkey.example3.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_caldavs._tcp.example3.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_carddavs._tcp.example3.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @shop.example3.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "shop.example3.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @shop.example3.com.",
+          "qname": "_dmarc.shop.example3.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @www.example3.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "www.example3.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @www.example3.com.",
+          "qname": "_dmarc.www.example3.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example3.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example3.com",
+          "rtype": "AAAA",
+          "value": "2a01:4f8:1c1c:b688::1"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example3.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example3.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example3.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example3.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "shop.example3.com",
+          "rtype": "AAAA",
+          "value": "2a01:4f8:1c1c:b688::1"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "shop.example3.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "Optional. Sets the IP address that www.example3.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example3.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that www.example3.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example3.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        }
+      ]
+    ],
+    [
+      "example4.com",
+      [
+        {
+          "explanation": "Required. May have a different value. Sets the IP address that example4.com resolves to for web hosting and other services besides mail. The A record must be present but its value does not affect mail delivery.",
+          "qname": "example4.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @example4.com mail.",
+          "qname": "example4.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @example4.com mail.",
+          "qname": "example4.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @example4.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.example4.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @example4.com mail.",
+          "qname": "mail._domainkey.example4.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_caldavs._tcp.example4.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_carddavs._tcp.example4.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @www.example4.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "www.example4.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @www.example4.com.",
+          "qname": "_dmarc.www.example4.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that example4.com resolves to, e.g. for web hosting. (It is not necessary for receiving mail on this domain.)",
+          "qname": "example4.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example4.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example4.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example4.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example4.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Optional. Sets the IP address that www.example4.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example4.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that www.example4.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example4.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        }
+      ]
+    ],
+    [
+      "example5.com",
+      [
+        {
+          "explanation": "Required. May have a different value. Sets the IP address that example5.com resolves to for web hosting and other services besides mail. The A record must be present but its value does not affect mail delivery.",
+          "qname": "example5.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @example5.com mail.",
+          "qname": "example5.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @example5.com mail.",
+          "qname": "example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @example5.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @example5.com mail.",
+          "qname": "mail._domainkey.example5.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_caldavs._tcp.example5.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_carddavs._tcp.example5.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @aaaa.example5.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "aaaa.example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @aaaa.example5.com.",
+          "qname": "_dmarc.aaaa.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @dsfdsfds.example5.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "dsfdsfds.example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @dsfdsfds.example5.com.",
+          "qname": "_dmarc.dsfdsfds.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @fdsfdsfdsf.example5.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "fdsfdsfdsf.example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @fdsfdsfdsf.example5.com.",
+          "qname": "_dmarc.fdsfdsfdsf.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @hlc-medical.example5.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "hlc-medical.example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @hlc-medical.example5.com.",
+          "qname": "_dmarc.hlc-medical.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @sdcfdsfdsfds.example5.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "sdcfdsfdsfds.example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @sdcfdsfdsfds.example5.com.",
+          "qname": "_dmarc.sdcfdsfdsfds.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @www.example5.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "www.example5.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @www.example5.com.",
+          "qname": "_dmarc.www.example5.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that example5.com resolves to, e.g. for web hosting. (It is not necessary for receiving mail on this domain.)",
+          "qname": "example5.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "aaaa.example5.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example5.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example5.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example5.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example5.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "dsfdsfds.example5.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "fdsfdsfdsf.example5.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "hlc-medical.example5.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "hlc-medical.example5.com",
+          "rtype": "AAAA",
+          "value": "2a01:4f8:1c1c:b688::1"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "sdcfdsfdsfds.example5.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "www.example5.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "www.example5.com",
+          "rtype": "AAAA",
+          "value": "2a01:4f8:1c1c:b688::1"
+        }
+      ]
+    ],
+    [
+      "example6.com",
+      [
+        {
+          "explanation": "Required. Specifies the hostname (and priority) of the machine that handles @example6.com mail.",
+          "qname": "example6.com",
+          "rtype": "MX",
+          "value": "10 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies that only the box is permitted to send @example6.com mail.",
+          "qname": "example6.com",
+          "rtype": "TXT",
+          "value": "v=spf1 mx -all"
+        },
+        {
+          "explanation": "Recommended. Specifies that mail that does not originate from the box but claims to be from @example6.com or which does not have a valid DKIM signature is suspect and should be quarantined by the recipient's mail system.",
+          "qname": "_dmarc.example6.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=quarantine"
+        },
+        {
+          "explanation": "Recommended. Provides a way for recipients to verify that this machine sent @example6.com mail.",
+          "qname": "mail._domainkey.example6.com",
+          "rtype": "TXT",
+          "value": "v=DKIM1; k=rsa; s=email; p=4GNADCBiQKBgQDMw2+7dZ3Iqukz2cuSBmtD3cizDYXEqGF3iJgPS82sHI+MxY6AikD0VidG3d/NU8MQo338KwQVloGG5yboREczs7eL+J6n+oJT8Mz01NNpUONcpuM/FlhgpmEUuBBvN/gA5xDVZ6CttCSnM2SaF/Lsba+o9YxSzUflx8JyQOUGvwIDAQAB"
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_caldavs._tcp.example6.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Specifies the hostname of the server that handles CardDAV/CalDAV services for email addresses on this domain.",
+          "qname": "_carddavs._tcp.example6.com",
+          "rtype": "SRV",
+          "value": "0 0 443 box.example.com."
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that no servers are valid sources for mail from @www.example6.com. If you do send email from this domain name you should either override this record such that the SPF rule does allow the originating server, or, take the recommended approach and have the box handle mail for this domain (simply add any receiving alias at this domain name to make this machine treat the domain name as one of its mail domains).",
+          "qname": "www.example6.com",
+          "rtype": "TXT",
+          "value": "v=spf1 -all"
+        },
+        {
+          "explanation": "Recommended. Prevents use of this domain name for outbound mail by specifying that the SPF rule should be honoured for mail from @www.example6.com.",
+          "qname": "_dmarc.www.example6.com",
+          "rtype": "TXT",
+          "value": "v=DMARC1; p=reject"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example6.com",
+          "rtype": "A",
+          "value": "116.203.79.11"
+        },
+        {
+          "explanation": "(Set by user.)",
+          "qname": "example6.com",
+          "rtype": "AAAA",
+          "value": "2a01:4f8:1c1c:b688::1"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example6.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Thunderbird Autoconfig.",
+          "qname": "autoconfig.example6.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example6.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Provides email configuration autodiscovery support for Z-Push ActiveSync Autodiscover.",
+          "qname": "autodiscover.example6.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        },
+        {
+          "explanation": "Optional. Sets the IP address that www.example6.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example6.com",
+          "rtype": "A",
+          "value": "10.11.12.13"
+        },
+        {
+          "explanation": "Optional. Sets the IPv6 address that www.example6.com resolves to so that the box can provide a redirect to the parent domain.",
+          "qname": "www.example6.com",
+          "rtype": "AAAA",
+          "value": "8a01:8f8:1c1c:e88a::8"
+        }
+      ]
+    ]
+  ]
+}

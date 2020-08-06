@@ -8,7 +8,7 @@ import {
 } from '@fluentui/react';
 import { useId } from '@uifabric/react-hooks';
 import React from 'react';
-import config from '../../../../../config/index.json';
+import { config } from '../../../../../config';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
