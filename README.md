@@ -15,6 +15,12 @@ An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 
 👉 [View Screenshots](https://github.com/badsyntax/mailinabox-ui/wiki/Screenshots)
 
+## Demo
+
+👉 [View Demo](https://badsyntax.github.io/mailinabox-ui/)
+
+The demo uses a mock API, you can peform any action.
+
 ## Running Locally
 
 ### Requirements
