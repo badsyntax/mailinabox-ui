@@ -2,12 +2,15 @@ import {
   MessageBar,
   MessageBarType,
   PivotItem,
+  PivotLinkSize,
   ProgressIndicator,
+  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
   getCustomRecords,
@@ -39,6 +42,12 @@ const CustomDnsSections: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const { path, url } = useRouteMatch();
   const openedGroupsState = useState<string[]>([]);
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+  const pivotProps = {
+    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
+  };
 
   useEffect(() => {
     if (!zones.length) {
@@ -57,7 +66,7 @@ const CustomDnsSections: React.FunctionComponent = () => {
   }, [dispatch]);
   return (
     <>
-      <PivotRoutes>
+      <PivotRoutes {...pivotProps}>
         <PivotItem itemKey={url} headerText="DNS Records" />
         <PivotItem itemKey={`${url}/add`} headerText="Add Custom Record" />
         <PivotItem
@@ -131,17 +140,19 @@ export const CustomDnsRoute: React.FunctionComponent & {
           ]}
         />
       </Stack>
-      <MessageBar messageBarType={MessageBarType.warning} isMultiline>
-        This is an advanced configuration page.
-      </MessageBar>
-      <BodyPanel>
-        <Text>
-          It is possible to set custom DNS records on domains hosted here.
-        </Text>
-      </BodyPanel>
-      <BodyPanel>
-        <CustomDnsSections />
-      </BodyPanel>
+      <Stack gap="l1">
+        <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+          This is an advanced configuration page.
+        </MessageBar>
+        <BodyPanel>
+          <Text>
+            It is possible to set custom DNS records on domains hosted here.
+          </Text>
+        </BodyPanel>
+        <BodyPanel>
+          <CustomDnsSections />
+        </BodyPanel>
+      </Stack>
     </Body>
   );
 };

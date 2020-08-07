@@ -8,12 +8,14 @@ import {
   mergeStyles,
   MessageBarType,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
   Text,
   TextField,
 } from '@fluentui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import {
   addSecondaryNameserver,
   addSecondaryNameserverReset,
@@ -37,6 +39,9 @@ export const CustomDnsSecondaryNameserver: React.FunctionComponent<IStackProps> 
     addSecondaryNameserverResponse,
   } = useSelector((state: RootState) => state.dns);
   const dispatch = useDispatch();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
 
   const [hostname, setHostname] = useState<string>('');
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
@@ -103,7 +108,7 @@ export const CustomDnsSecondaryNameserver: React.FunctionComponent<IStackProps> 
   }, [dispatch]);
 
   return (
-    <Stack as="section" gap="l2" horizontal {...props}>
+    <Stack as="section" gap="l2" horizontal={isMinLargeScreen} {...props}>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={{

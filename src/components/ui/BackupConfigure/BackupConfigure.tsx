@@ -10,6 +10,7 @@ import {
   mergeStyles,
   MessageBarType,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
 } from '@fluentui/react';
 import {
@@ -19,6 +20,7 @@ import {
 } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { config } from '../../../config';
 import {
   getStatus,
@@ -87,6 +89,9 @@ export const BackupConfigure: React.FunctionComponent<
   } = useSelector((state: RootState) => state.system.backups);
 
   const dispatch = useDispatch();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
@@ -181,7 +186,7 @@ export const BackupConfigure: React.FunctionComponent<
   }, [backupConfig.minAgeInDays, backupOption]);
 
   return (
-    <Stack as="section" gap="l2" horizontal {...props}>
+    <Stack as="section" gap="l2" horizontal={isMinLargeScreen} {...props}>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={{

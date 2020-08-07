@@ -1,4 +1,5 @@
 import {
+  IPivotItemProps,
   MessageBar,
   MessageBarType,
   PivotItem,
@@ -8,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import {
@@ -51,6 +52,19 @@ const CertificateSections: React.FunctionComponent = () => {
   const pivotProps = {
     linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
   };
+  const refs = {
+    [url]: useRef<HTMLDivElement>(null),
+    [`${url}${SectionKeys.install}`]: useRef<HTMLDivElement>(null),
+  };
+
+  const onRenderItemLink = useCallback(
+    (props?: IPivotItemProps): JSX.Element | null => {
+      return props?.itemKey && refs[props.itemKey] ? (
+        <div ref={refs[props.itemKey]}>{props?.headerText}</div>
+      ) : null;
+    },
+    [refs]
+  );
 
   useEffect(() => {
     if (sslAction?.type === SSLActionType.install) {
@@ -66,11 +80,16 @@ const CertificateSections: React.FunctionComponent = () => {
 
   return (
     <>
-      <PivotRoutes {...pivotProps}>
-        <PivotItem itemKey={url} headerText="Certificate Status" />
+      <PivotRoutes {...pivotProps} refs={refs}>
+        <PivotItem
+          itemKey={url}
+          headerText="Certificate Status"
+          onRenderItemLink={onRenderItemLink}
+        />
         <PivotItem
           itemKey={`${url}${SectionKeys.install}`}
           headerText="Install Custom Certificate"
+          onRenderItemLink={onRenderItemLink}
         />
       </PivotRoutes>
       <Switch>

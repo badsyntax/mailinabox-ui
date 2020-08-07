@@ -5,13 +5,16 @@ import {
   DialogType,
   MessageBarType,
   PivotItem,
+  PivotLinkSize,
   PrimaryButton,
   ProgressIndicator,
+  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
   getConfig,
@@ -31,6 +34,13 @@ const BackupSections: React.FunctionComponent = () => {
   const { path, url } = useRouteMatch();
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const { backups, unmatchedFileSize, error } = status;
+
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+  const pivotProps = {
+    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
+  };
 
   const onDialogClose = useCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
@@ -68,7 +78,7 @@ const BackupSections: React.FunctionComponent = () => {
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
       </Dialog>
-      <PivotRoutes>
+      <PivotRoutes {...pivotProps}>
         <PivotItem itemKey={url} headerText="Backup Status" />
         <PivotItem
           itemKey={`${url}/config`}
@@ -142,22 +152,24 @@ export const BackupsRoute: React.FunctionComponent & {
           ]}
         />
       </Stack>
-      <BodyPanel>
-        <Text>
-          The box makes an incremental backup each night. By default the backup
-          is stored on the machine itself, but you can also have it stored on
-          Amazon S3.
-        </Text>
-      </BodyPanel>
-      <BodyPanel>
-        {error && (
-          <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {error}
-          </MessageBar>
-        )}
-        {isLoading && <ProgressIndicator label="Checking backup status..." />}
-        {!isLoading && !error && <BackupSections />}
-      </BodyPanel>
+      <Stack gap="l1">
+        <BodyPanel>
+          <Text>
+            The box makes an incremental backup each night. By default the
+            backup is stored on the machine itself, but you can also have it
+            stored on Amazon S3.
+          </Text>
+        </BodyPanel>
+        <BodyPanel>
+          {error && (
+            <MessageBar messageBarType={MessageBarType.error} isMultiline>
+              {error}
+            </MessageBar>
+          )}
+          {isLoading && <ProgressIndicator label="Checking backup status..." />}
+          {!isLoading && !error && <BackupSections />}
+        </BodyPanel>
+      </Stack>
     </Body>
   );
 };

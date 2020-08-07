@@ -10,6 +10,7 @@ import {
   mergeStyles,
   MessageBarType,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
   Text,
   TextField,
@@ -17,6 +18,7 @@ import {
 import { DNSRecordType } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import {
   addCustomRecord,
   addCustomRecordReset,
@@ -51,6 +53,9 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
     key: zone,
     text: zone,
   }));
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
   const [type, setType] = useState<IDropdownOption>(recordTypeOptions[0]);
   const [zone, setZone] = useState<IDropdownOption>(zoneOptions[0]);
   const [name, setName] = useState<string>('');
@@ -180,7 +185,7 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
       </Dialog>
-      <Stack as="section" gap="l2" horizontal {...props}>
+      <Stack as="section" gap="l2" horizontal={isMinLargeScreen} {...props}>
         <Stack gap="m" grow={1} className={columnClassName}>
           <Text>
             You can set additional DNS records, such as if you have a website

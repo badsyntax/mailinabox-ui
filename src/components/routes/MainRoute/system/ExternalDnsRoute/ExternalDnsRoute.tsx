@@ -3,12 +3,15 @@ import {
   MessageBar,
   MessageBarType,
   PivotItem,
+  PivotLinkSize,
   ProgressIndicator,
+  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getDump } from '../../../../../features/dnsSlice';
 import { RootState } from '../../../../../store';
@@ -22,9 +25,16 @@ import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 const ExternalDnsSections: React.FunctionComponent = () => {
   const { path, url } = useRouteMatch();
   const openedGroupsState = useState<string[]>([]);
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+
+  const pivotProps = {
+    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
+  };
   return (
     <>
-      <PivotRoutes>
+      <PivotRoutes {...pivotProps}>
         <PivotItem itemKey={url} headerText="DNS Records" />
         <PivotItem
           itemKey={`${url}/zone-file`}
@@ -50,6 +60,9 @@ export const ExternalDnsRoute: React.FunctionComponent & {
     (state: RootState) => state.dns
   );
   const dispatch = useDispatch();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
 
   useEffect(() => {
     if (!dump.length) {
@@ -74,48 +87,54 @@ export const ExternalDnsRoute: React.FunctionComponent & {
           ]}
         />
       </Stack>
-      <MessageBar messageBarType={MessageBarType.warning} isMultiline>
-        This is an advanced configuration page.
-      </MessageBar>
-      <BodyPanel>
-        <Text>
-          Although your box is configured to serve its own DNS, it is possible
-          to host your DNS elsewhere — such as in the DNS control panel provided
-          by your domain name registrar or virtual cloud provider — by copying
-          the DNS zone information shown in the table below into your external
-          DNS server’s control panel.
-        </Text>
-        <Text>
-          If you do so, you are responsible for keeping your DNS entries up to
-          date! If you previously enabled DNSSEC on your domain name by setting
-          a DS record at your registrar, you will likely have to turn it off
-          before changing nameservers.
-        </Text>
-        <MessageBar messageBarType={MessageBarType.info} isMultiline>
-          You may encounter zone file errors when attempting to create a TXT
-          record with a long string.
-          <Link href="http://tools.ietf.org/html/rfc4408#section-3.1.3">
-            RFC 4408
-          </Link>{' '}
-          states a TXT record is allowed to contain multiple strings, and this
-          technique can be used to construct records that would exceed the
-          255-byte maximum length. You may need to adopt this technique when
-          adding DomainKeys. Use a tool like
-          <Link href="http://manpages.ubuntu.com/manpages/bionic/man8/named-checkzone.8.html">
-            <code>named-checkzone</code>
-          </Link>{' '}
-          to validate your zone file.
+      <Stack gap="l1">
+        <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+          This is an advanced configuration page.
         </MessageBar>
-      </BodyPanel>
-      <BodyPanel>
-        {getDumpError && (
-          <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {getDumpError}
+        <BodyPanel>
+          <Text>
+            Although your box is configured to serve its own DNS, it is possible
+            to host your DNS elsewhere — such as in the DNS control panel
+            provided by your domain name registrar or virtual cloud provider —
+            by copying the DNS zone information shown in the table below into
+            your external DNS server’s control panel.
+          </Text>
+          <Text>
+            If you do so, you are responsible for keeping your DNS entries up to
+            date! If you previously enabled DNSSEC on your domain name by
+            setting a DS record at your registrar, you will likely have to turn
+            it off before changing nameservers.
+          </Text>
+          <MessageBar
+            messageBarType={MessageBarType.info}
+            isMultiline={isMinLargeScreen}
+            truncated={!isMinLargeScreen}
+          >
+            You may encounter zone file errors when attempting to create a TXT
+            record with a long string.
+            <Link href="http://tools.ietf.org/html/rfc4408#section-3.1.3">
+              RFC 4408
+            </Link>{' '}
+            states a TXT record is allowed to contain multiple strings, and this
+            technique can be used to construct records that would exceed the
+            255-byte maximum length. You may need to adopt this technique when
+            adding DomainKeys. Use a tool like
+            <Link href="http://manpages.ubuntu.com/manpages/bionic/man8/named-checkzone.8.html">
+              <code>named-checkzone</code>
+            </Link>{' '}
+            to validate your zone file.
           </MessageBar>
-        )}
-        {isGettingDump && <ProgressIndicator label="Getting DNS dump..." />}
-        {!isGettingDump && !getDumpError && <ExternalDnsSections />}
-      </BodyPanel>
+        </BodyPanel>
+        <BodyPanel>
+          {getDumpError && (
+            <MessageBar messageBarType={MessageBarType.error} isMultiline>
+              {getDumpError}
+            </MessageBar>
+          )}
+          {isGettingDump && <ProgressIndicator label="Getting DNS dump..." />}
+          {!isGettingDump && !getDumpError && <ExternalDnsSections />}
+        </BodyPanel>
+      </Stack>
     </Body>
   );
 };

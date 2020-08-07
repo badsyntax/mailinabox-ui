@@ -6,11 +6,13 @@ import {
   Label,
   mergeStyles,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
   Text,
   TextField,
 } from '@fluentui/react';
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { Pre } from '../Pre/Pre';
 
 const columnClassName = mergeStyles({
@@ -76,8 +78,12 @@ _dmarc.www	IN	TXT	"v=DMARC1; p=reject"`;
 export const DnsZoneFileGenerator: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+
   return (
-    <Stack as="section" gap="l2" horizontal {...props}>
+    <Stack as="section" gap="l2" horizontal={isMinLargeScreen} {...props}>
       <Stack gap="m" grow={1} className={columnClassName}>
         <Text>Use this tool to generate zone files.</Text>
         <Dropdown

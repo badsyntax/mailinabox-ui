@@ -17,7 +17,7 @@ const columns: IColumn[] = [
   {
     key: 'column1',
     name: 'Qname',
-    minWidth: 140,
+    minWidth: 260,
     maxWidth: 300,
     isMultiline: false,
     isRowHeader: true,
@@ -40,7 +40,7 @@ const columns: IColumn[] = [
     key: 'column3',
     name: 'Value',
     isMultiline: true,
-    minWidth: 180,
+    minWidth: 280,
     isPadded: true,
     fieldName: 'value',
     onRender: (item: DNSCustomRecord): React.ReactNode => {
