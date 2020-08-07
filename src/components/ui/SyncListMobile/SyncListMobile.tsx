@@ -64,6 +64,7 @@ const columns: IColumn[] = [
     minWidth: 50,
     maxWidth: 180,
     isRowHeader: true,
+    isMultiline: true,
     onRender: (item: SyncListItem): React.ReactNode => {
       return (
         <Text>

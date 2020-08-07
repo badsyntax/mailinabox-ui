@@ -2,9 +2,9 @@ import { CommandBar, ContextualMenuItemType, Stack } from '@fluentui/react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LogoutRoute } from '../../routes/LogoutRoute/LogoutRoute';
-import { AliasesRoute } from '../../routes/MainRoute/mail/AliasesRoute/AliasesRoute';
-import { InstructionsRoute } from '../../routes/MainRoute/mail/InstructionsRoute/InstructionsRoute';
-import { UsersRoute } from '../../routes/MainRoute/mail/UsersRoute/UsersRoute';
+import { MailAliasesRoute } from '../../routes/MainRoute/mail/MailAliasesRoute/MailAliasesRoute';
+import { MailInstructionsRoute } from '../../routes/MainRoute/mail/MailInstructionsRoute/MailInstructionsRoute';
+import { MailUsersRoute } from '../../routes/MainRoute/mail/MailUsersRoute/MailUsersRoute';
 import { SyncGuideRoute } from '../../routes/MainRoute/SyncGuideRoute/SyncGuideRoute';
 import { BackupsRoute } from '../../routes/MainRoute/system/BackupsRoute/BackupsRoute';
 import { CertificatesRoute } from '../../routes/MainRoute/system/CertificatesRoute/CertificatesRoute';
@@ -101,17 +101,17 @@ export const PrimaryNav: React.FunctionComponent = () => {
                 {
                   key: 'navInstructions',
                   text: 'Instructions',
-                  onClick: (): void => history.push(InstructionsRoute.path),
+                  onClick: (): void => history.push(MailInstructionsRoute.path),
                 },
                 {
                   key: 'navUsers',
                   text: 'Users',
-                  onClick: (): void => history.push(UsersRoute.path),
+                  onClick: (): void => history.push(MailUsersRoute.path),
                 },
                 {
                   key: 'navAliases',
                   text: 'Aliases',
-                  onClick: (): void => history.push(AliasesRoute.path),
+                  onClick: (): void => history.push(MailAliasesRoute.path),
                 },
               ],
             },

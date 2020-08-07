@@ -16,7 +16,7 @@ mergeStyles({
     ':global(body), :global(html), :global(#app)': {
       margin: 0,
       padding: 0,
-      height: '100vh',
+      height: '100%',
     },
     // Even though we can define cell styles as part of column definitions, the default cell styles
     // still take priority. This is a hack to override the default cell styles using a parent selector.

@@ -16,7 +16,7 @@ export const BackupInfoS3: React.FunctionComponent<BackupInfoS3Props> = ({
         Backups are stored in an Amazon Web Services S3 bucket. You must have an
         AWS account already.
       </Text>
-      <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+      <MessageBar messageBarType={MessageBarType.warning}>
         You MUST manually copy the encryption password from{' '}
         <code>{config.encPwFile}</code> to a safe and secure location. You will
         need this file to decrypt backup files. It is NOT stored in your Amazon

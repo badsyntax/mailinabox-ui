@@ -1,12 +1,16 @@
-import { Link, Stack, Text } from '@fluentui/react';
+import { Link, ScreenWidthMinLarge, Stack, Text } from '@fluentui/react';
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { config } from '../../../config';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 export const WebInstructions: React.FunctionComponent = () => {
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
   return (
     <Stack gap="m">
-      <MessageBar>
+      <MessageBar isMultiline={isMinLargeScreen} truncated={!isMinLargeScreen}>
         You can replace the default website with your own HTML pages and other
         static files. This control panel won’t help you design a website, but
         once you have <code>.html</code> files you can upload them following

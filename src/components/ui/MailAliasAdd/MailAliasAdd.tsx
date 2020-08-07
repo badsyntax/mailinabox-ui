@@ -9,11 +9,13 @@ import {
   Link,
   mergeStyles,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { getAliases, upsertAliasReset } from '../../../features/aliasesSlice';
 import { getDump } from '../../../features/dnsSlice';
 import { getSSLStatus } from '../../../features/sslSlice';
@@ -23,6 +25,7 @@ import { Pre } from '../Pre/Pre';
 
 const columnClassName = mergeStyles({
   flexBasis: 0,
+  minWidth: 0,
 });
 
 const dialogContentProps: IDialogContentProps = {
@@ -44,6 +47,15 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
 
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
+
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+
+  const nonMobileContainerProps = {
+    horizontal: isMinLargeScreen,
+    gap: isMinLargeScreen ? 'l2' : 'm',
+  };
 
   const onDialogDismissed = useCallback((): void => {
     dispatch(upsertAliasReset());
@@ -98,7 +110,7 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
       </Dialog>
-      <Stack gap="l2" horizontal {...props}>
+      <Stack {...props} {...nonMobileContainerProps}>
         <Stack gap="m" grow={1} className={columnClassName}>
           <Text>
             Aliases are email forwarders. An alias can forward email to a{' '}

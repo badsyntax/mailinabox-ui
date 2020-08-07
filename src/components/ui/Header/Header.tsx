@@ -25,6 +25,7 @@ export const Header: React.FunctionComponent = () => {
             width: '100%',
           },
         }}
+        padding="0 m 0 m"
         horizontal
         verticalAlign="center"
       >

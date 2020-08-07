@@ -34,11 +34,11 @@ export const CustomDnsRecordActions: React.FunctionComponent = () => {
 
   const onRemoveAliasConfirm = useCallback((): void => {
     if (dnsAction?.dnsRecord) {
-      const { qname: domain, rtype: type, value: body } = dnsAction.dnsRecord;
+      const { qname, rtype, value: body } = dnsAction.dnsRecord;
       dispatch(
         removeCustomRecord({
-          domain,
-          type,
+          qname,
+          rtype,
           body,
         })
       );

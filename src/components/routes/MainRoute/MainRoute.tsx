@@ -1,6 +1,7 @@
-import { Stack } from '@fluentui/react';
+import { ScreenWidthMinMedium, Stack } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import {
   Redirect,
   Route,
@@ -12,9 +13,9 @@ import { RootState } from '../../../store';
 import { Header } from '../../ui/Header/Header';
 import { LoginRoute } from '../LoginRoute/LoginRoute';
 import { LogoutRoute } from '../LogoutRoute/LogoutRoute';
-import { AliasesRoute } from './mail/AliasesRoute/AliasesRoute';
-import { InstructionsRoute } from './mail/InstructionsRoute/InstructionsRoute';
-import { UsersRoute } from './mail/UsersRoute/UsersRoute';
+import { MailAliasesRoute } from './mail/MailAliasesRoute/MailAliasesRoute';
+import { MailInstructionsRoute } from './mail/MailInstructionsRoute/MailInstructionsRoute';
+import { MailUsersRoute } from './mail/MailUsersRoute/MailUsersRoute';
 import { SyncGuideRoute } from './SyncGuideRoute/SyncGuideRoute';
 import { BackupsRoute } from './system/BackupsRoute/BackupsRoute';
 import { CertificatesRoute } from './system/CertificatesRoute/CertificatesRoute';
@@ -28,6 +29,17 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
   const location = useLocation();
   const history = useHistory();
 
+  const isMinMediumScreen = useMediaQuery({
+    minWidth: ScreenWidthMinMedium,
+  });
+
+  const nonMobileContainerProps = {
+    ...(isMinMediumScreen && {
+      gap: 'l1',
+      horizontalAlign: 'center',
+    }),
+  };
+
   useEffect(() => {
     if (!isAuthenticated && location.pathname !== LoginRoute.path) {
       history.push(LoginRoute.path);
@@ -35,7 +47,7 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
   }, [history, isAuthenticated, location.pathname]);
 
   return (
-    <Stack gap="l1" horizontalAlign="center">
+    <Stack {...nonMobileContainerProps}>
       <Header />
       <Switch>
         <Route exact path={[MainRoute.path, StatusChecksRoute.path]}>
@@ -53,14 +65,14 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
         <Route path={ExternalDnsRoute.path}>
           <ExternalDnsRoute />
         </Route>
-        <Route exact path={InstructionsRoute.path}>
-          <InstructionsRoute />
+        <Route exact path={MailInstructionsRoute.path}>
+          <MailInstructionsRoute />
         </Route>
-        <Route path={UsersRoute.path}>
-          <UsersRoute />
+        <Route path={MailUsersRoute.path}>
+          <MailUsersRoute />
         </Route>
-        <Route path={AliasesRoute.path}>
-          <AliasesRoute />
+        <Route path={MailAliasesRoute.path}>
+          <MailAliasesRoute />
         </Route>
         <Route exact path={SyncGuideRoute.path}>
           <SyncGuideRoute />
