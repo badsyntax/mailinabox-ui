@@ -3,9 +3,9 @@ import React from 'react';
 import { Body } from '../../../../ui/Body/Body';
 import { BodyBreadcrumb } from '../../../../ui/BodyBreadcrumb/BodyBreadcrumb';
 import { BodyPanel } from '../../../../ui/BodyPanel/BodyPanel';
-import { MailAliases } from '../../../../ui/MailAliases/MailAliases';
+import { MailUsersSections } from './MailUsersSections';
 
-export const AliasesRoute: React.FunctionComponent & {
+export const MailUsersRoute: React.FunctionComponent & {
   path: string;
 } = () => {
   return (
@@ -15,21 +15,21 @@ export const AliasesRoute: React.FunctionComponent & {
           items={[
             {
               text: 'Mail',
-              key: 'mail',
+              key: 'system',
             },
             {
-              text: 'Aliases',
-              key: 'aliases',
+              text: 'Users',
+              key: 'users',
               as: 'h1',
             },
           ]}
         />
       </Stack>
       <BodyPanel>
-        <MailAliases />
+        <MailUsersSections />
       </BodyPanel>
     </Body>
   );
 };
 
-AliasesRoute.path = '/mail/aliases';
+MailUsersRoute.path = '/mail/users';

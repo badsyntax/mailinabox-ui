@@ -36,8 +36,7 @@ const columns: IColumn[] = [
   {
     key: 'column1',
     name: 'Domain',
-    minWidth: 100,
-    maxWidth: 300,
+    minWidth: 300,
     isMultiline: false,
     isRowHeader: true,
     isResizable: true,

@@ -19,7 +19,7 @@ const columns: IColumn[] = [
   {
     key: 'column1',
     name: 'Email Address',
-    minWidth: 320,
+    minWidth: 220,
     isMultiline: true,
     isRowHeader: true,
     fieldName: 'email',
@@ -54,6 +54,7 @@ const columns: IColumn[] = [
     key: 'column2',
     name: 'Privilege',
     minWidth: 80,
+    maxWidth: 200,
     isMultiline: false,
     onRender: (user: MailUser): React.ReactNode => {
       return user.status === MailUserStatus.Active ? (
@@ -71,6 +72,7 @@ const columns: IColumn[] = [
     key: 'column3',
     name: 'Actions',
     minWidth: 50,
+    maxWidth: 60,
     isMultiline: false,
     onRender: (user: MailUser): React.ReactNode => {
       return user.status === MailUserStatus.Active ? (

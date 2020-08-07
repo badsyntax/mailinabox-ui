@@ -4,10 +4,12 @@ import {
   MessageBar,
   MessageBarType,
   ProgressIndicator,
+  ScreenWidthMinLarge,
   Stack,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { systemPrivacyCheck } from '../../../../../features/system/privacySlice';
 import { systemRebootCheck } from '../../../../../features/system/rebootSlice';
 import {
@@ -34,6 +36,9 @@ export const StatusChecksRoute: React.FunctionComponent & {
   );
 
   const dispatch = useDispatch();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
 
   const [items, groups] = useSelector(selectSystemStatusItemsAndGroups);
 
@@ -45,7 +50,11 @@ export const StatusChecksRoute: React.FunctionComponent & {
 
   return (
     <Body>
-      <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
+      <Stack
+        horizontal={isMinLargeScreen}
+        horizontalAlign="space-between"
+        verticalAlign="center"
+      >
         <BodyBreadcrumb
           items={[
             {
@@ -60,37 +69,39 @@ export const StatusChecksRoute: React.FunctionComponent & {
           ]}
         />
       </Stack>
-      {!isGettingStatus && !getStatusError && (
-        <Stack horizontal gap="l1">
-          <BodyPanel grow={1} styles={{ root: { flexBasis: 0 } }}>
-            <SystemStatusChart />
-          </BodyPanel>
-          <BodyPanel
-            grow={1}
-            styles={{ root: { flexBasis: 0 } }}
-            horizontalAlign="start"
-          >
-            <SystemStatusActions />
-          </BodyPanel>
-        </Stack>
-      )}
-      <BodyPanel>
-        {getStatusError && (
-          <MessageBar
-            messageBarType={MessageBarType.error}
-            isMultiline
-            className={messageBarClassName}
-          >
-            {getStatusError}
-          </MessageBar>
-        )}
-        {isGettingStatus && (
-          <ProgressIndicator label="Checking system status..." />
-        )}
+      <Stack gap="l1">
         {!isGettingStatus && !getStatusError && (
-          <SystemChecksDetailsList items={items} groups={groups} />
+          <Stack horizontal={isMinLargeScreen} gap="l1">
+            <BodyPanel grow={1} styles={{ root: { flexBasis: 0 } }}>
+              <SystemStatusChart />
+            </BodyPanel>
+            <BodyPanel
+              grow={1}
+              styles={{ root: { flexBasis: 0 } }}
+              horizontalAlign="start"
+            >
+              <SystemStatusActions />
+            </BodyPanel>
+          </Stack>
         )}
-      </BodyPanel>
+        <BodyPanel>
+          {getStatusError && (
+            <MessageBar
+              messageBarType={MessageBarType.error}
+              isMultiline
+              className={messageBarClassName}
+            >
+              {getStatusError}
+            </MessageBar>
+          )}
+          {isGettingStatus && (
+            <ProgressIndicator label="Checking system status..." />
+          )}
+          {!isGettingStatus && !getStatusError && (
+            <SystemChecksDetailsList items={items} groups={groups} />
+          )}
+        </BodyPanel>
+      </Stack>
     </Body>
   );
 };

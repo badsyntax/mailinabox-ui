@@ -118,13 +118,13 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
   const onFormSubmit = useCallback(
     (event: React.FormEvent<HTMLElement>): void => {
       event.preventDefault();
-      const domain = name
+      const qname = name
         ? `${name}.${zone.key as string}`
         : (zone.key as string);
       dispatch(
         addCustomRecord({
-          domain,
-          type: type.key as DNSRecordType,
+          qname,
+          rtype: type.key as DNSRecordType,
           body: value,
         })
       );

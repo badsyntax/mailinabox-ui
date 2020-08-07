@@ -2,12 +2,15 @@ import {
   MessageBar,
   MessageBarType,
   PivotItem,
+  PivotLinkSize,
   ProgressIndicator,
+  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import {
   Route,
   Switch,
@@ -42,6 +45,13 @@ const CertificateSections: React.FunctionComponent = () => {
   const history = useHistory();
   const { path, url } = useRouteMatch();
 
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+  const pivotProps = {
+    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
+  };
+
   useEffect(() => {
     if (sslAction?.type === SSLActionType.install) {
       history.push(`${url}${SectionKeys.install}`);
@@ -56,7 +66,7 @@ const CertificateSections: React.FunctionComponent = () => {
 
   return (
     <>
-      <PivotRoutes>
+      <PivotRoutes {...pivotProps}>
         <PivotItem itemKey={url} headerText="Certificate Status" />
         <PivotItem
           itemKey={`${url}${SectionKeys.install}`}
@@ -107,29 +117,31 @@ export const CertificatesRoute: React.FunctionComponent & {
           ]}
         />
       </Stack>
-      <BodyPanel>
-        <Text>
-          A TLS (formerly called SSL) certificate is a cryptographic file that
-          proves to anyone connecting to a web address that the connection is
-          secure between you and the owner of that address.
-        </Text>
-        <Text>
-          You need a TLS certificate for this box’s hostname ({config.hostname})
-          (TODO) and every other domain name and subdomain that this box is
-          hosting a website for (see the list below).
-        </Text>
-      </BodyPanel>
-      <BodyPanel>
-        {getStatusError && (
-          <MessageBar messageBarType={MessageBarType.error} isMultiline>
-            {getStatusError}
-          </MessageBar>
-        )}
-        {isGettingStatus && (
-          <ProgressIndicator label="Checking certificate status..." />
-        )}
-        {!isGettingStatus && !getStatusError && <CertificateSections />}
-      </BodyPanel>
+      <Stack gap="l1">
+        <BodyPanel>
+          <Text>
+            A TLS (formerly called SSL) certificate is a cryptographic file that
+            proves to anyone connecting to a web address that the connection is
+            secure between you and the owner of that address.
+          </Text>
+          <Text>
+            You need a TLS certificate for this box’s hostname (
+            {config.hostname}) (TODO) and every other domain name and subdomain
+            that this box is hosting a website for (see the list below).
+          </Text>
+        </BodyPanel>
+        <BodyPanel>
+          {getStatusError && (
+            <MessageBar messageBarType={MessageBarType.error} isMultiline>
+              {getStatusError}
+            </MessageBar>
+          )}
+          {isGettingStatus && (
+            <ProgressIndicator label="Checking certificate status..." />
+          )}
+          {!isGettingStatus && !getStatusError && <CertificateSections />}
+        </BodyPanel>
+      </Stack>
     </Body>
   );
 };

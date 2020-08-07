@@ -13,6 +13,7 @@ import {
   mergeStyles,
   MessageBarType,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
   Text,
   TextField,
@@ -20,6 +21,7 @@ import {
 import { MailUserPrivilege } from 'mailinabox-api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { getDump } from '../../../features/dnsSlice';
 import { getSSLStatus } from '../../../features/sslSlice';
 import {
@@ -37,6 +39,7 @@ const theme = getTheme();
 
 const columnClassName = mergeStyles({
   flexBasis: 0,
+  minWidth: 0,
 });
 
 const dialogContentProps: IDialogContentProps = {
@@ -83,6 +86,15 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
   const [user, setUser] = useState<FormState>(initialFormState);
+
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+
+  const nonMobileContainerProps = {
+    horizontal: isMinLargeScreen,
+    gap: isMinLargeScreen ? 'l2' : 'm',
+  };
 
   const onEmailChange = useCallback(
     (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
@@ -194,26 +206,23 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
       </Dialog>
-      <Stack gap="l2" horizontal {...props}>
+      <Stack {...props} {...nonMobileContainerProps}>
         <Stack gap="m" grow={1} className={columnClassName}>
           <Text>
             Add an email address to this system. This will create a new login
             username/password.
           </Text>
-          <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+          <MessageBar
+            messageBarType={MessageBarType.warning}
+            isMultiline={isMinLargeScreen}
+            truncated={!isMinLargeScreen}
+          >
             Passwords must be at least eight characters consisting of English
             letters and numbers only. For best results,
-            <Link href="#">generate a random password</Link>.
-            <br />
-            <br />
-            Use<Link href="#">aliases</Link> to create email addresses that
-            forward to existing accounts.
-            <br />
-            <br />
-            Administrators get access to this control panel.
-            <br />
-            <br />
-            User accounts cannot contain any international (non-ASCII)
+            <Link href="#">generate a random password</Link>. Use
+            <Link href="#">aliases</Link> to create email addresses that forward
+            to existing accounts. Administrators get access to this control
+            panel. User accounts cannot contain any international (non-ASCII)
             characters, but<Link href="#">aliases</Link> can.
           </MessageBar>
         </Stack>

@@ -4,12 +4,14 @@ import {
   Link,
   mergeStyles,
   MessageBarType,
+  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import { WebDomain } from 'mailinabox-api';
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import {
   getDomains,
   selectOrderedAndGroupedStaticEnabledDomains,
@@ -27,8 +29,7 @@ const columns: IColumn[] = [
   {
     key: 'column1',
     name: 'Site',
-    minWidth: 100,
-    maxWidth: 300,
+    minWidth: 300,
     isRowHeader: true,
     onRender: (webDomain: WebDomain): React.ReactElement => (
       <Link href={`https://${webDomain.domain}`}>
@@ -73,6 +74,9 @@ export const WebDomainsList: React.FunctionComponent<
   const [domains, groups] = useSelector(
     selectOrderedAndGroupedStaticEnabledDomains
   );
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
 
   useEffect(() => {
     if (!domains.length && !isGettingDomains && !getDomainsError) {
@@ -83,7 +87,7 @@ export const WebDomainsList: React.FunctionComponent<
     <Stack {...props}>
       <WebDomainActions />
       {getDomainsError && (
-        <MessageBar messageBarType={MessageBarType.error} isMultiline>
+        <MessageBar messageBarType={MessageBarType.error}>
           {getDomainsError}
         </MessageBar>
       )}
@@ -96,7 +100,10 @@ export const WebDomainsList: React.FunctionComponent<
         )}
         {!isGettingDomains && !getDomainsError && (
           <Stack gap="m">
-            <MessageBar>
+            <MessageBar
+              isMultiline={isMinLargeScreen}
+              truncated={!isMinLargeScreen}
+            >
               To add a domain to this table, create a dummy
               <Link href="#users">mail user</Link> or
               <Link href="#aliases">alias</Link> on the domain first and see the

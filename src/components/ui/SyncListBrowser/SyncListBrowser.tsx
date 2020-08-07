@@ -36,6 +36,7 @@ const columns: IColumn[] = [
     minWidth: 50,
     maxWidth: 80,
     isRowHeader: true,
+    isMultiline: true,
     onRender: (item: SyncBrowserItem): React.ReactNode => {
       return (
         <Text>
