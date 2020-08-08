@@ -32,7 +32,9 @@ The demo uses a mock API, you can perform any action.
 ### Instructions
 
 1. Clone the repo
-2. Copy `src/config/config.example.json` to `src/config/config.json` and update the `hostname` field within `index.json` to point to your box
+2. Copy `src/config/config.example.json` to `src/config/config.json` and
+   - Update the `hostname` field, or
+   - If you want to use a mock API, set `mockApi` to `true`
 3. From the root of the project:
    1. Run `npm install`
    2. Run `npm start`
@@ -41,7 +43,9 @@ All API requests sent from the browser are proxied to your box instance via a ba
 
 ## Running in Production
 
-TODO
+Production releases can be found here: https://github.com/badsyntax/mailinabox-ui/releases
+
+The releases assume you're running the UI at url `/admin/`. 
 
 ## Related Projects
 
