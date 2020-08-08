@@ -19,8 +19,6 @@ An experimental SPA user interface for Mail-in-a-Box, using the following tools:
 
 👉 [View Demo](https://badsyntax.github.io/mailinabox-ui/)
 
-Use any email and any password to log in.
-
 The demo uses a mock API, you can perform any action.
 
 ## Running Locally
@@ -45,7 +43,7 @@ All API requests sent from the browser are proxied to your box instance via a ba
 
 Production releases can be found here: https://github.com/badsyntax/mailinabox-ui/releases
 
-The releases assume you're running the UI at url `/admin/`. 
+The releases assume you're running the UI at url `/admin/`.
 
 ## Related Projects
 
