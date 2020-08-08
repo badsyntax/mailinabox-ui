@@ -34,7 +34,17 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-      - name: Build
+      - name: Build dist
+        run: |
+          cat << CONFIG > src/config/config.json
+          {
+            "hostname": "/",
+            "mockApi": false
+          }
+          CONFIG
+          PUBLIC_URL=/admin/ npm run build
+          mv build dist
+      - name: Build demo
         run: |
           cat << CONFIG > src/config/config.json
           {
@@ -43,7 +53,38 @@ jobs:
           }
           CONFIG
           PUBLIC_URL=/mailinabox-ui/ npm run build
-      - name: Publish
+      - name: Create dist archives
+        id: archives
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          tar_archive="$GITHUB_REPO.$tag.tar.gz"
+          zip_archive="$GITHUB_REPO.$tag.zip"
+          tar -czvf "$tar_archive" dist/
+          zip -r9 "$zip_archive" dist/
+          echo "::set-output name=tar_archive::$tar_archive"
+          echo "::set-output name=zip_archive::$zip_archive"
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1
+      - name: Upload release tar archive
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ${{ steps.archives.outputs.tar_archive }}
+          asset_name: ${{ steps.archives.outputs.tar_archive }}
+          asset_content_type: application/tar+gzip
+      - name: Upload release zip archive
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ${{ steps.archives.outputs.zip_archive }}
+          asset_name: ${{ steps.archives.outputs.zip_archive }}
+          asset_content_type: application/zip
+      - name: Publish demo
         run: |
           mv build .build
           tag=${GITHUB_REF#refs/tags/}
