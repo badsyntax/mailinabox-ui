@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1df4b2111743e1cbe6b0a9e72526392b",
+    "revision": "56b80d8b4c26024f46b6d9722f0dac5c",
     "url": "/mailinabox-ui/index.html"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mailinabox-ui/static/js/4.ee367fbc.chunk.js"
   },
   {
-    "revision": "1c96ea80c630ae4d47b5",
-    "url": "/mailinabox-ui/static/js/main.8a82c593.chunk.js"
+    "revision": "dc358e769b3c37de0881",
+    "url": "/mailinabox-ui/static/js/main.16ef14ab.chunk.js"
   },
   {
     "revision": "4ea4d85a71138904956a",
