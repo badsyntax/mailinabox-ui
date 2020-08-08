@@ -2,8 +2,6 @@ import {
   Link,
   MessageBar,
   MessageBarType,
-  PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
   ScreenWidthMinLarge,
   Stack,
@@ -25,22 +23,19 @@ import { PivotRoutes } from '../../../../ui/PivotRoutes/PivotRoutes';
 const ExternalDnsSections: React.FunctionComponent = () => {
   const { path, url } = useRouteMatch();
   const openedGroupsState = useState<string[]>([]);
-  const isMinLargeScreen = useMediaQuery({
-    minWidth: ScreenWidthMinLarge,
-  });
-
-  const pivotProps = {
-    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
-  };
+  const pivotItems = [
+    {
+      itemKey: url,
+      headerText: 'DNS Records',
+    },
+    {
+      itemKey: `${url}/zone-file`,
+      headerText: 'Zone File Generator',
+    },
+  ];
   return (
     <>
-      <PivotRoutes {...pivotProps}>
-        <PivotItem itemKey={url} headerText="DNS Records" />
-        <PivotItem
-          itemKey={`${url}/zone-file`}
-          headerText="Zone File Generator"
-        />
-      </PivotRoutes>
+      <PivotRoutes items={pivotItems} />
       <Switch>
         <Route exact path={path}>
           <DnsDumpList openedGroupsState={openedGroupsState} />

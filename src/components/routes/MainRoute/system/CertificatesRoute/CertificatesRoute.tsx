@@ -1,17 +1,12 @@
 import {
-  IPivotItemProps,
   MessageBar,
   MessageBarType,
-  PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
-  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import {
   Route,
   Switch,
@@ -46,25 +41,16 @@ const CertificateSections: React.FunctionComponent = () => {
   const history = useHistory();
   const { path, url } = useRouteMatch();
 
-  const isMinLargeScreen = useMediaQuery({
-    minWidth: ScreenWidthMinLarge,
-  });
-  const pivotProps = {
-    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
-  };
-  const refs = {
-    [url]: useRef<HTMLDivElement>(null),
-    [`${url}${SectionKeys.install}`]: useRef<HTMLDivElement>(null),
-  };
-
-  const onRenderItemLink = useCallback(
-    (props?: IPivotItemProps): JSX.Element | null => {
-      return props?.itemKey && refs[props.itemKey] ? (
-        <div ref={refs[props.itemKey]}>{props?.headerText}</div>
-      ) : null;
+  const pivotRoutes = [
+    {
+      itemKey: url,
+      headerText: 'Certificate Status',
     },
-    [refs]
-  );
+    {
+      itemKey: `${url}${SectionKeys.install}`,
+      headerText: 'Install Custom Certificate',
+    },
+  ];
 
   useEffect(() => {
     if (sslAction?.type === SSLActionType.install) {
@@ -80,18 +66,7 @@ const CertificateSections: React.FunctionComponent = () => {
 
   return (
     <>
-      <PivotRoutes {...pivotProps} refs={refs}>
-        <PivotItem
-          itemKey={url}
-          headerText="Certificate Status"
-          onRenderItemLink={onRenderItemLink}
-        />
-        <PivotItem
-          itemKey={`${url}${SectionKeys.install}`}
-          headerText="Install Custom Certificate"
-          onRenderItemLink={onRenderItemLink}
-        />
-      </PivotRoutes>
+      <PivotRoutes items={pivotRoutes} />
       <Switch>
         <Route exact path={path}>
           <CertificatesList items={items} />

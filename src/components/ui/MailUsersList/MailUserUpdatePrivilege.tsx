@@ -6,7 +6,7 @@ import {
   PrimaryButton,
   Text,
 } from '@fluentui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addUserAdminPrivilege,
@@ -56,24 +56,24 @@ export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePriv
   const updateSelfError =
     !removeAdminDialogHidden && username === userAction?.user?.email;
 
-  const onModalDismissed = useCallback((): void => {
+  const onModalDismissed = (): void => {
     if (updateUserResponse) {
       dispatch(getUsers());
     }
     dispatch(updateUserReset());
-  }, [dispatch, updateUserResponse]);
+  };
 
-  const onRemoveAdminConfirm = useCallback((): void => {
+  const onRemoveAdminConfirm = (): void => {
     if (userAction?.user) {
       dispatch(removeUserAdminPrivilege(userAction.user));
     }
-  }, [dispatch, userAction]);
+  };
 
-  const onAddAdminConfirm = useCallback((): void => {
+  const onAddAdminConfirm = (): void => {
     if (userAction?.user) {
       dispatch(addUserAdminPrivilege(userAction.user));
     }
-  }, [dispatch, userAction]);
+  };
 
   useEffect(() => {
     setRemoveSelfErrorDialogHidden(!updateSelfError);

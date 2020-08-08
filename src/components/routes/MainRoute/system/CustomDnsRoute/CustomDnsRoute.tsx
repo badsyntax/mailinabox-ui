@@ -1,16 +1,12 @@
 import {
   MessageBar,
   MessageBarType,
-  PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
-  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import {
   getCustomRecords,
@@ -42,12 +38,21 @@ const CustomDnsSections: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const { path, url } = useRouteMatch();
   const openedGroupsState = useState<string[]>([]);
-  const isMinLargeScreen = useMediaQuery({
-    minWidth: ScreenWidthMinLarge,
-  });
-  const pivotProps = {
-    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
-  };
+
+  const pivotItems = [
+    {
+      itemKey: url,
+      headerText: 'DNS Records',
+    },
+    {
+      itemKey: `${url}/add`,
+      headerText: 'Add Custom Record',
+    },
+    {
+      itemKey: `${url}/nameserver`,
+      headerText: 'Secondary Nameserver',
+    },
+  ];
 
   useEffect(() => {
     if (!zones.length) {
@@ -66,14 +71,7 @@ const CustomDnsSections: React.FunctionComponent = () => {
   }, [dispatch]);
   return (
     <>
-      <PivotRoutes {...pivotProps}>
-        <PivotItem itemKey={url} headerText="DNS Records" />
-        <PivotItem itemKey={`${url}/add`} headerText="Add Custom Record" />
-        <PivotItem
-          itemKey={`${url}/nameserver`}
-          headerText="Secondary Nameserver"
-        />
-      </PivotRoutes>
+      <PivotRoutes items={pivotItems} />
       <Switch>
         <Route exact path={path}>
           <LoadingOverlayContainer>

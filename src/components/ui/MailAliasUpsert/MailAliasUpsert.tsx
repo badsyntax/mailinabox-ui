@@ -13,13 +13,15 @@ import {
   Stack,
   TextField,
 } from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
 import { UpsertMailAliasRequest } from 'mailinabox-api';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   upsertAlias,
   upsertAliasResetError,
 } from '../../../features/aliasesSlice';
+import { useFormInputs } from '../../../forms/useFormInputs';
 import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import {
@@ -47,7 +49,7 @@ function getInitialAliasType({
   }
 }
 
-const defaultAlias: UpsertMailAliasRequest = {
+const initialFormState: UpsertMailAliasRequest = {
   address: '',
   forwardsTo: '',
   permittedSenders: '',
@@ -60,7 +62,7 @@ interface MailAliasUpsertProps {
 
 export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   children,
-  updateAlias = defaultAlias,
+  updateAlias = initialFormState,
 }) => {
   const { upsertAliasResponse, upsertAliasError } = useSelector(
     (state: RootState) => state.aliases
@@ -73,7 +75,9 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   const [senderType, setSenderType] = useState<SenderType>(
     updateAlias.permittedSenders ? SenderType.manual : SenderType.any
   );
-  const [alias, setAlias] = useState<UpsertMailAliasRequest>(updateAlias);
+  const { inputs: alias, onInputChange, resetInputs } = useFormInputs<
+    UpsertMailAliasRequest
+  >(updateAlias);
 
   const senderTypeOptions: IChoiceGroupOption[] = [
     { key: SenderType.any, text: formData[aliasType].permittedSenders.any },
@@ -83,7 +87,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
     },
   ];
 
-  const onSenderTypeChange = useCallback(
+  const onSenderTypeChange = useConstCallback(
     (
       _event?: React.FormEvent<HTMLElement | HTMLInputElement>,
       option?: IChoiceGroupOption
@@ -91,55 +95,35 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
       if (option) {
         setSenderType(option.key as SenderType);
       }
-    },
-    [setSenderType]
+    }
   );
 
-  const onPivotLinkClick = useCallback(
+  const onPivotLinkClick = useConstCallback(
     (item?: PivotItem, ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
       if (item && item.props && item.props.itemKey) {
         setAliasType(item.props.itemKey as AliasType);
       }
-    },
-    [setAliasType]
+    }
   );
 
-  const onFieldChange = useCallback(
-    (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ): void => {
-      setAlias({
-        ...alias,
-        [(event.target as HTMLInputElement | HTMLTextAreaElement).name]:
-          newValue || '',
-      });
-    },
-    [alias]
-  );
-
-  const onErrorMessageBarDismiss = useCallback(
+  const onErrorMessageBarDismiss = useConstCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
       dispatch(upsertAliasResetError());
-    },
-    [dispatch]
+    }
   );
 
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      dispatch(
-        upsertAlias({
-          ...alias,
-          permittedSenders:
-            senderType === SenderType.manual ? alias.permittedSenders : '',
-        })
-      );
-    },
-    [alias, dispatch, senderType]
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    dispatch(
+      upsertAlias({
+        ...alias,
+        permittedSenders:
+          senderType === SenderType.manual ? alias.permittedSenders : '',
+      })
+    );
+  };
 
   const onForwardsToRenderLabel = useMemo(
     () =>
@@ -157,9 +141,9 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
 
   useEffect(() => {
     if (upsertAliasResponse) {
-      setAlias(defaultAlias);
+      resetInputs();
     }
-  }, [dispatch, upsertAliasResponse]);
+  }, [resetInputs, upsertAliasResponse]);
 
   return (
     <Stack
@@ -215,7 +199,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
         placeholder={formData[aliasType].alias.placeholder}
         description={formData[aliasType].alias.info}
         styles={{ description: { ...theme.fonts.small } }}
-        onChange={onFieldChange}
+        onChange={onInputChange}
         name="address"
         value={alias.address}
         autoFocus={!updateAlias.address}
@@ -233,7 +217,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
           ...textfieldWithLabelInfoStyles,
         }}
         name="forwardsTo"
-        onChange={onFieldChange}
+        onChange={onInputChange}
         value={alias.forwardsTo}
         onRenderLabel={onForwardsToRenderLabel}
         autoFocus={!!updateAlias.address}
@@ -252,7 +236,7 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
           required
           name="permittedSenders"
           placeholder={formData[aliasType].permittedSenders.placeholder}
-          onChange={onFieldChange}
+          onChange={onInputChange}
           value={alias.permittedSenders ?? ''}
           styles={{
             description: { ...theme.fonts.small },

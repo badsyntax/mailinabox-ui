@@ -1,5 +1,6 @@
 import { DirectionalHint, IconButton } from '@fluentui/react';
-import React, { useCallback } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   setDomainAction,
@@ -11,44 +12,41 @@ interface WebDomainsActionsListProps {
   webDomain: WebDomainWithDomainInfo;
 }
 
-export const WebDomainsActionsList: React.FunctionComponent<WebDomainsActionsListProps> = ({
-  webDomain,
-}) => {
-  const dispatch = useDispatch();
-  const doAction = useCallback(
-    (action: WebDomainActionType): void => {
+export const WebDomainsActionsList: React.FunctionComponent<WebDomainsActionsListProps> = React.memo(
+  ({ webDomain }) => {
+    const dispatch = useDispatch();
+    const doAction = useConstCallback((action: WebDomainActionType): void => {
       dispatch(
         setDomainAction({
           webDomain,
           action,
         })
       );
-    },
-    [dispatch, webDomain]
-  );
-  return (
-    <IconButton
-      menuIconProps={{
-        iconName: 'MoreVertical',
-      }}
-      styles={{
-        menuIcon: {
-          fontWeight: 'bold',
-        },
-      }}
-      role="button"
-      aria-haspopup={true}
-      aria-label="Show actions"
-      menuProps={{
-        directionalHint: DirectionalHint.bottomRightEdge,
-        items: [
-          {
-            key: 'changeroot',
-            text: 'Change Root Directory',
-            onClick: (): void => doAction(WebDomainActionType.update),
+    });
+    return (
+      <IconButton
+        menuIconProps={{
+          iconName: 'MoreVertical',
+        }}
+        styles={{
+          menuIcon: {
+            fontWeight: 'bold',
           },
-        ],
-      }}
-    />
-  );
-};
+        }}
+        role="button"
+        aria-haspopup={true}
+        aria-label="Show actions"
+        menuProps={{
+          directionalHint: DirectionalHint.bottomRightEdge,
+          items: [
+            {
+              key: 'changeroot',
+              text: 'Change Root Directory',
+              onClick: (): void => doAction(WebDomainActionType.update),
+            },
+          ],
+        }}
+      />
+    );
+  }
+);

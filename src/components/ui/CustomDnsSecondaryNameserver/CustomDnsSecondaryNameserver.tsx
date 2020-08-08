@@ -13,7 +13,8 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import {
@@ -47,47 +48,41 @@ export const CustomDnsSecondaryNameserver: React.FunctionComponent<IStackProps> 
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
-  const onDialogDismissed = useCallback((): void => {
+  const onDialogDismissed = (): void => {
     if (addSecondaryNameserverResponse) {
       dispatch(getSecondaryNameserver());
     }
     dispatch(addSecondaryNameserverReset());
-  }, [addSecondaryNameserverResponse, dispatch]);
+  };
 
-  const onDialogClose = useCallback(
+  const onDialogClose = useConstCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
-    },
-    []
+    }
   );
 
-  const onErrorMessageBarDismiss = useCallback(
+  const onErrorMessageBarDismiss = useConstCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
       dispatch(addSecondaryNameserverResetError());
-    },
-    [dispatch]
+    }
   );
 
-  const onHostnameChange = useCallback(
+  const onHostnameChange = useConstCallback(
     (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
       setHostname(newValue || '');
-    },
-    []
+    }
   );
 
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      dispatch(
-        addSecondaryNameserver({
-          hostnames: hostname,
-        })
-      );
-    },
-    [dispatch, hostname]
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    dispatch(
+      addSecondaryNameserver({
+        hostnames: hostname,
+      })
+    );
+  };
 
   useEffect(() => {
     if (addSecondaryNameserverResponse && isDialogHidden && !hasDialogOpened) {

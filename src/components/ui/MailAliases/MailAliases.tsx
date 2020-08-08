@@ -1,13 +1,6 @@
-import {
-  MessageBar,
-  MessageBarType,
-  PivotItem,
-  PivotLinkSize,
-  ScreenWidthMinLarge,
-} from '@fluentui/react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getAliases } from '../../../features/aliasesSlice';
 import { RootState } from '../../../store';
@@ -24,13 +17,17 @@ export const MailAliases: React.FunctionComponent = () => {
   const openedGroupsState = useState<string[]>([]);
   const dispatch = useDispatch();
   const { path, url } = useRouteMatch();
-  const isMinLargeScreen = useMediaQuery({
-    minWidth: ScreenWidthMinLarge,
-  });
 
-  const pivotProps = {
-    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
-  };
+  const pivotItems = [
+    {
+      itemKey: url,
+      headerText: 'Mail Aliases',
+    },
+    {
+      itemKey: `${url}/add`,
+      headerText: 'Add a Mail Alias',
+    },
+  ];
 
   useEffect(() => {
     if (!aliases.length) {
@@ -39,10 +36,7 @@ export const MailAliases: React.FunctionComponent = () => {
   }, [aliases.length, dispatch]);
   return (
     <>
-      <PivotRoutes {...pivotProps}>
-        <PivotItem itemKey={url} headerText="Mail Aliases" />
-        <PivotItem itemKey={`${url}/add`} headerText="Add a Mail Alias" />
-      </PivotRoutes>
+      <PivotRoutes items={pivotItems} />
       <Switch>
         <Route exact path={path}>
           <LoadingOverlayContainer>

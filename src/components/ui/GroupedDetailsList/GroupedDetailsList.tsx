@@ -16,19 +16,42 @@ import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
 const onRenderRow = (props?: IDetailsRowProps): JSX.Element | null => {
   if (props) {
-    return (
-      <DetailsRow
-        {...props}
-        // styles={{
-        //   root: {
-        //     animation: 'none',
-        //   },
-        // }}
-      />
-    );
+    return <DetailsRow {...props} />;
   }
   return null;
 };
+
+interface GroupHeader {
+  props: IDetailsGroupDividerProps;
+  defaultRender: IRenderFunction<IGroupHeaderProps>;
+  onToggleGroupCollapse: (key: string, isCollapsed: boolean) => void;
+}
+
+const GroupHeader: React.FunctionComponent<GroupHeader> = React.memo(
+  ({ props, defaultRender, onToggleGroupCollapse }) => {
+    const toggleCollapse = (): void => {
+      if (props?.group) {
+        onToggleGroupCollapse(props.group.key, !props.group.isCollapsed);
+      }
+    };
+    const onHeaderClick = (
+      event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ): void => {
+      if (props && props.group) {
+        event.preventDefault();
+        toggleCollapse();
+      }
+    };
+    return (
+      <div onClick={onHeaderClick}>
+        {defaultRender({
+          ...props,
+          onToggleCollapse: toggleCollapse,
+        })}
+      </div>
+    );
+  }
+);
 
 interface GroupedDetailsListProps {
   openedGroupsState: [string[], Dispatch<SetStateAction<string[]>>];
@@ -44,7 +67,7 @@ export const GroupedDetailsList: React.FunctionComponent<
   );
 
   const onToggleGroupCollapse = useCallback(
-    (groupKey: string, collapse: boolean) => {
+    (groupKey: string, collapse: boolean): void => {
       if (collapse) {
         openedGroups.splice(openedGroups.indexOf(groupKey), 1);
       } else {
@@ -55,7 +78,7 @@ export const GroupedDetailsList: React.FunctionComponent<
     [openedGroups, setOpenedGroups]
   );
 
-  const onToggleGroupCollapseAll = useCallback((): void => {
+  const onToggleGroupCollapseAll = (): void => {
     const shouldCollapse =
       hasExpandedAllGroups || openedGroups.length === groups.length;
     if (shouldCollapse) {
@@ -65,61 +88,40 @@ export const GroupedDetailsList: React.FunctionComponent<
       setOpenedGroups(groups.map(({ key }) => key));
       setHasExpandedAllGroups(true);
     }
-  }, [groups, hasExpandedAllGroups, openedGroups.length, setOpenedGroups]);
+  };
 
-  const onRenderDetailsHeader = useCallback(
-    (
-      detailsHeaderProps?: IDetailsHeaderProps,
-      defaultRender?: IRenderFunction<IDetailsHeaderProps>
-    ): JSX.Element | null => {
-      return (
-        defaultRender?.({
-          ...detailsHeaderProps,
-          onToggleCollapseAll: onToggleGroupCollapseAll,
-          styles: {
-            root: {
-              paddingTop: 0,
-            },
+  const onRenderDetailsHeader = (
+    detailsHeaderProps?: IDetailsHeaderProps,
+    defaultRender?: IRenderFunction<IDetailsHeaderProps>
+  ): JSX.Element | null => {
+    return (
+      defaultRender?.({
+        ...detailsHeaderProps,
+        onToggleCollapseAll: onToggleGroupCollapseAll,
+        styles: {
+          root: {
+            paddingTop: 0,
           },
-        } as IDetailsHeaderProps) || null
-      );
-    },
-    [onToggleGroupCollapseAll]
-  );
+        },
+      } as IDetailsHeaderProps) || null
+    );
+  };
 
-  const onRenderGroupHeader = useCallback(
-    (
-      props?: IDetailsGroupDividerProps,
-      defaultRender?: IRenderFunction<IGroupHeaderProps>
-    ): JSX.Element | null => {
-      if (defaultRender) {
-        const toggleCollapse = (): void => {
-          if (props?.group) {
-            onToggleGroupCollapse(props.group.key, !props.group.isCollapsed);
-          }
-        };
-        return (
-          <div
-            onClick={(
-              event: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ): void => {
-              if (props && props.group) {
-                event.preventDefault();
-                toggleCollapse();
-              }
-            }}
-          >
-            {defaultRender({
-              ...props,
-              onToggleCollapse: toggleCollapse,
-            })}
-          </div>
-        );
-      }
-      return null;
-    },
-    [onToggleGroupCollapse]
-  );
+  const onRenderGroupHeader = (
+    props?: IDetailsGroupDividerProps,
+    defaultRender?: IRenderFunction<IGroupHeaderProps>
+  ): JSX.Element | null => {
+    if (defaultRender && props) {
+      return (
+        <GroupHeader
+          props={props}
+          defaultRender={defaultRender}
+          onToggleGroupCollapse={onToggleGroupCollapse}
+        />
+      );
+    }
+    return null;
+  };
 
   const groupsWithCollapsedState = groups.map((group) => ({
     ...group,

@@ -18,8 +18,9 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
 import { MailUserPrivilege } from 'mailinabox-api';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { getDump } from '../../../features/dnsSlice';
@@ -30,6 +31,7 @@ import {
   addUserResetError,
   getUsers,
 } from '../../../features/usersSlice';
+import { useFormInputs } from '../../../forms/useFormInputs';
 import { RootState } from '../../../store';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
 import { MessageBar } from '../MessageBar/MessageBar';
@@ -62,11 +64,11 @@ const privilegeOptions: IDropdownOption[] = [
   },
 ];
 
-interface FormState {
+type FormState = {
   email: string;
   password: string;
   privilege: IDropdownOption;
-}
+};
 
 const initialFormState: FormState = {
   email: '',
@@ -77,6 +79,9 @@ const initialFormState: FormState = {
 export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
+  const { inputs, resetInputs, setInputs, onInputChange } = useFormInputs<
+    FormState
+  >(initialFormState);
   const { isAddingUser, addUserResponse, addUserError } = useSelector(
     (state: RootState) => state.users
   );
@@ -84,8 +89,6 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   const dispatch = useDispatch();
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
-
-  const [user, setUser] = useState<FormState>(initialFormState);
 
   const isMinLargeScreen = useMediaQuery({
     minWidth: ScreenWidthMinLarge,
@@ -96,74 +99,47 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
     gap: isMinLargeScreen ? 'l2' : 'm',
   };
 
-  const onEmailChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setUser({
-        ...user,
-        email: newValue ?? '',
+  const onDropdownChange = (name: string) => (
+    _event: React.FormEvent<HTMLDivElement>,
+    option?: IDropdownOption
+  ): void => {
+    if (option) {
+      setInputs({
+        ...inputs,
+        [name]: option,
       });
-    },
-    [user]
-  );
+    }
+  };
 
-  const onPasswordChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setUser({
-        ...user,
-        password: newValue ?? '',
-      });
-    },
-    [user]
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    dispatch(
+      addUser(
+        inputs.email,
+        inputs.password,
+        inputs.privilege.key as MailUserPrivilege
+      )
+    );
+  };
 
-  const onPrivilegeChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLDivElement>,
-      option?: IDropdownOption
-    ): void => {
-      if (option) {
-        setUser({
-          ...user,
-          privilege: option,
-        });
-      }
-    },
-    [user]
-  );
-
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      dispatch(
-        addUser(
-          user.email,
-          user.password,
-          user.privilege.key as MailUserPrivilege
-        )
-      );
-    },
-    [dispatch, user.email, user.password, user.privilege.key]
-  );
-
-  const onDialogClose = useCallback(
+  const onDialogClose = useConstCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
-    },
-    []
+    }
   );
 
-  const onDialogDismissed = useCallback((): void => {
+  const onDialogDismissed = useConstCallback((): void => {
     dispatch(addUserReset());
-    setUser(initialFormState);
-  }, [dispatch]);
+    resetInputs();
+    setHasDialogOpened(false);
+  });
 
-  const onErrorMessageBarDismiss = useCallback(
+  const onErrorMessageBarDismiss = useConstCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
       dispatch(addUserResetError());
-    },
-    [dispatch]
+    }
   );
 
   useEffect(() => {
@@ -245,16 +221,18 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
           <TextField
             label="Email"
             type="email"
+            name="email"
             required
-            onChange={onEmailChange}
-            value={user.email}
+            onChange={onInputChange}
+            value={inputs.email}
           />
           <TextField
             label="Password"
             type="password"
+            name="password"
             required
-            onChange={onPasswordChange}
-            value={user.password}
+            onChange={onInputChange}
+            value={inputs.password}
             description="Passwords must be at least eight characters and may not contain spaces."
             styles={{ description: { ...theme.fonts.small } }}
           />
@@ -262,8 +240,8 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
             label="Privilege"
             required
             options={privilegeOptions}
-            selectedKey={user.privilege.key}
-            onChange={onPrivilegeChange}
+            selectedKey={inputs.privilege.key}
+            onChange={onDropdownChange('privilege')}
           />
           <Stack horizontal>
             <PrimaryButton type="submit" disabled={isAddingUser}>

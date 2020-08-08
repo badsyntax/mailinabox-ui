@@ -6,7 +6,7 @@ import {
   PrimaryButton,
   Stack,
 } from '@fluentui/react';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { DialogFooter } from '../DialogFooter/DialogFooter';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { Pre } from '../Pre/Pre';
@@ -33,18 +33,18 @@ export const ActionConfirmDialog: React.FunctionComponent<
   actionResponse,
   ...rest
 }) => {
-  const onConfirmButtonClick = useCallback(() => {
+  const onConfirmButtonClick = (): void => {
     if (!actionResponse) {
       onConfirm();
     } else if (rest.onDismiss) {
       rest.onDismiss();
     }
-  }, [actionResponse, onConfirm, rest]);
-  const onCancelButtonClick = useCallback(() => {
+  };
+  const onCancelButtonClick = (): void => {
     if (rest.onDismiss) {
       rest.onDismiss();
     }
-  }, [rest]);
+  };
   return (
     <Dialog hidden={hidden} minWidth={380} maxWidth={480} {...rest}>
       <Stack gap="m">

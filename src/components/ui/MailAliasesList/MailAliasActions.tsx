@@ -1,5 +1,6 @@
 import { DialogType, Text } from '@fluentui/react';
-import React, { useCallback } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   AliasActionType,
@@ -24,29 +25,29 @@ export const MailAliasActions: React.FunctionComponent = () => {
 
   const dispatch = useDispatch();
 
-  const onActionDialogDismiss = useCallback((): void => {
+  const onActionDialogDismiss = useConstCallback((): void => {
     dispatch(resetAliasAction());
-  }, [dispatch]);
+  });
 
-  const onConfirmDialogDismissed = useCallback((): void => {
+  const onConfirmDialogDismissed = (): void => {
     if (removeAliasResponse) {
       dispatch(getAliases());
     }
     dispatch(removeAliasReset());
-  }, [dispatch, removeAliasResponse]);
+  };
 
-  const onUpdateAliasDialogDismissed = useCallback((): void => {
+  const onUpdateAliasDialogDismissed = (): void => {
     if (upsertAliasResponse) {
       dispatch(getAliases());
     }
     dispatch(upsertAliasReset());
-  }, [dispatch, upsertAliasResponse]);
+  };
 
-  const onRemoveAliasConfirm = useCallback((): void => {
+  const onRemoveAliasConfirm = (): void => {
     if (aliasAction?.alias) {
       dispatch(removeAlias(aliasAction?.alias.address));
     }
-  }, [aliasAction, dispatch]);
+  };
 
   return (
     <>

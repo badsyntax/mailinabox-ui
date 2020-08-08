@@ -6,8 +6,9 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
 import { StatusEntry, StatusEntryType } from 'mailinabox-api';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 const theme = getTheme();
 
@@ -36,7 +37,7 @@ export const SystemChecksDetailsListItem: React.FunctionComponent<SystemChecksDe
 }) => {
   const { text, extra, type } = item;
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const onLinkClick = useCallback((): void => setIsCollapsed(false), []);
+  const onLinkClick = useConstCallback((): void => setIsCollapsed(false));
   const textColor = getTextColor(type);
   return (
     <>

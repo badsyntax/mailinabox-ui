@@ -62,18 +62,15 @@ export async function handleRequestError(
   dispatch: AppDispatch,
   onErrorAction: ActionCreatorWithPayload<unknown>
 ): Promise<void> {
-  if (!(response instanceof Error)) {
-    const { status } = response;
-    if (status === 403) {
-      dispatch(
-        updateAuth({
-          username: '',
-          password: '',
-          isAuthenticated: false,
-          error: 'Your token is no longer valid.',
-        })
-      );
-    }
+  if (!(response instanceof Error) && response.status === 403) {
+    dispatch(
+      updateAuth({
+        username: '',
+        password: '',
+        isAuthenticated: false,
+        error: 'Your token is no longer valid.',
+      })
+    );
   } else {
     dispatch(onErrorAction(await getRequestFailMessage(response)));
   }

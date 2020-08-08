@@ -5,6 +5,7 @@ import {
   DialogType,
   IDialogContentProps,
   IModalProps,
+  IStackProps,
   MessageBar,
   MessageBarType,
   PrimaryButton,
@@ -13,8 +14,9 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
 import { SSLCertificateInstallRequest } from 'mailinabox-api';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   generateCSR,
@@ -47,10 +49,9 @@ const defaultInstallCertificateRequest: SSLCertificateInstallRequest = {
 
 const installOkRegEx = /^OK($|\n)/;
 
-export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateInstallProps> = ({
-  domain,
-  countryCode,
-}) => {
+export const InstallCertificateWithCSR: React.FunctionComponent<
+  IStackProps & SSLCertificateInstallProps
+> = ({ domain, countryCode, ...props }) => {
   const {
     isGeneratingCSR,
     generateCSRError,
@@ -70,14 +71,13 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
-  const onDialogClose = useCallback(
+  const onDialogClose = useConstCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
-    },
-    []
+    }
   );
 
-  const onDialogDismissed = useCallback((): void => {
+  const onDialogDismissed = (): void => {
     const installCertificateSuccess = installOkRegEx.test(
       installCertificateResponse || ''
     );
@@ -90,35 +90,32 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
     }
     dispatch(installCertificateReset());
     setHasDialogOpened(false);
-  }, [dispatch, domain, installCertificateResponse]);
+  };
 
-  const onCertChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setInstallCertificateRequest({
-        ...installCertificateRequest,
-        cert: newValue ?? '',
-      });
-    },
-    [installCertificateRequest]
-  );
+  const onCertChange = (
+    _event: React.FormEvent<HTMLElement>,
+    newValue?: string
+  ): void => {
+    setInstallCertificateRequest({
+      ...installCertificateRequest,
+      cert: newValue ?? '',
+    });
+  };
 
-  const onChainChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setInstallCertificateRequest({
-        ...installCertificateRequest,
-        chain: newValue ?? '',
-      });
-    },
-    [installCertificateRequest]
-  );
+  const onChainChange = (
+    _event: React.FormEvent<HTMLElement>,
+    newValue?: string
+  ): void => {
+    setInstallCertificateRequest({
+      ...installCertificateRequest,
+      chain: newValue ?? '',
+    });
+  };
 
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      dispatch(installCertificate(installCertificateRequest));
-    },
-    [dispatch, installCertificateRequest]
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    dispatch(installCertificate(installCertificateRequest));
+  };
 
   useEffect(() => {
     if (installCertificateResponse && isDialogHidden && !hasDialogOpened) {
@@ -143,7 +140,7 @@ export const InstallCertificateWithCSR: React.FunctionComponent<SSLCertificateIn
     : installCertificateResponse;
 
   return (
-    <Stack>
+    <Stack {...props}>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={dialogContentProps}

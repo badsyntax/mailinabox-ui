@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getUsers,
@@ -48,18 +48,18 @@ export const MailUserArchiveDialog: React.FunctionComponent<MailUserArchiveDialo
     setArchiveSelfErrorDialogHidden,
   ] = useState<boolean>(true);
 
-  const onModalDismissed = useCallback((): void => {
+  const onModalDismissed = (): void => {
     if (updateUserResponse) {
       dispatch(getUsers());
     }
     dispatch(updateUserReset());
-  }, [dispatch, updateUserResponse]);
+  };
 
-  const onArchiveConfirm = useCallback((): void => {
+  const onArchiveConfirm = (): void => {
     if (userAction?.user) {
       dispatch(removeUser(userAction.user));
     }
-  }, [dispatch, userAction]);
+  };
 
   const modalProps = {
     isBlocking: true,

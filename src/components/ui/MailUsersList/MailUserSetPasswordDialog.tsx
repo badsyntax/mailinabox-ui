@@ -10,7 +10,8 @@ import {
   Text,
   TextField,
 } from '@fluentui/react';
-import React, { useCallback, useState } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getUsers,
@@ -49,30 +50,27 @@ export const MailUserSetPasswordDialog: React.FunctionComponent<MailUserSetPassw
 
   const dispatch = useDispatch();
   const [password, setPassword] = useState<string>('');
-  const onModalDismissed = useCallback((): void => {
+  const onModalDismissed = (): void => {
     setPassword('');
     if (updateUserResponse) {
       dispatch(getUsers());
     }
     dispatch(updateUserReset());
-  }, [dispatch, updateUserResponse]);
+  };
 
-  const onPasswordChange = useCallback(
+  const onPasswordChange = useConstCallback(
     (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
       setPassword(newValue ?? '');
-    },
-    []
+    }
   );
 
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      if (userAction?.user) {
-        dispatch(setUserPassword(userAction.user, password));
-      }
-    },
-    [dispatch, password, userAction]
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    if (userAction?.user) {
+      dispatch(setUserPassword(userAction.user, password));
+    }
+  };
+
   const updateSelf = username === userAction?.user?.email;
   return (
     <Dialog
