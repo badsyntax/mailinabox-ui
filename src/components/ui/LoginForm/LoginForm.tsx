@@ -31,7 +31,7 @@ type FormState = {
 
 const initialFormState: FormState = {
   email: config.mockApi ? 'demo@example.com' : '',
-  password: config.mockApi ? 'password' : '',
+  password: config.mockApi ? 'mailinabox' + Math.random().toString(16) : '',
   remember: true,
 };
 
