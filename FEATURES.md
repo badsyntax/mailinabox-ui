@@ -4,7 +4,7 @@
 
 - [x] List checks
 - [ ] Reboot
-- [ ] Disable new versions
+- [x] Disable new versions
 - [x] Prevent virtual rendering?
 - [ ] Add filter for domain (or group domains?)
 - [x] Add summary
@@ -52,7 +52,7 @@
 - [x] Update mail user password
 - [x] Archive mail user account
 - [x] Add mail user
-- [ ] Fix user actions (eg archive)
+- [x] Fix user actions (eg archive)
 
 ## Mail Aliases
 
@@ -77,7 +77,7 @@
 ## API
 
 - [x] API client
-- [ ] Mock data returned from API client via middleware
+- [x] Mock data returned from API client via middleware
 - [x] Error handling for all requests
 
 ## State
@@ -96,7 +96,7 @@
 
 ## Forms
 
-- [ ] Simplify field data handling - use object instead of separate vars
+- [x] Simplify field data handling - use object instead of separate vars
 - [ ] Add spinners to buttons
 
 ## Auth
@@ -104,7 +104,7 @@
 - [x] Log in
 - [x] Remember me (stored in local/session storage)
 - [x] Log out
-- [ ] Middleware for redirections with 405
+- [x] Middleware for redirections with 403
 
 ## Performance
 
@@ -118,7 +118,7 @@
 
 ## Accessibility
 
-- [ ] Mobile support
+- [x] Mobile support
 - [ ] ARIA labels
 - [ ] Audit
 
@@ -130,4 +130,4 @@
 
 - [x] README updated
 - [x] LICENSE added
-- [ ] Screenshots added to wiki
+- [x] Screenshots added to wiki
