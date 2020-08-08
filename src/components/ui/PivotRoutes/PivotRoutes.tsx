@@ -1,29 +1,68 @@
-import { IPivotProps, Pivot, PivotItem, PivotLinkSize } from '@fluentui/react';
-import React, { useCallback } from 'react';
+import {
+  IPivotItemProps,
+  IPivotProps,
+  mergeStyles,
+  Pivot,
+  PivotItem,
+  PivotLinkSize,
+  ScreenWidthMinLarge,
+} from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React, { createRef, RefObject, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { useHistory, useLocation } from 'react-router-dom';
 
-export const PivotRoutes: React.FunctionComponent<IPivotProps> = ({
-  children,
-  ...props
-}) => {
+const className = mergeStyles({
+  overflowX: 'auto',
+  overflowY: 'hidden',
+});
+
+interface PivotRoutes {
+  items?: IPivotItemProps[];
+}
+
+export const PivotRoutes: React.FunctionComponent<
+  PivotRoutes & IPivotProps
+> = ({ children, items = [], ...props }) => {
   const history = useHistory();
-  const location = useLocation();
-  const onPivotLinkClick = useCallback(
-    (item?: PivotItem, _event?: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      if (item?.props.itemKey) {
-        history.push(item.props.itemKey);
-      }
-    },
-    [history]
-  );
+  const { pathname: selectedKey } = useLocation();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+  const refs = items.map(() => createRef<HTMLDivElement>());
+
+  const onPivotLinkClick = useConstCallback((item?: PivotItem): void => {
+    if (item?.props.itemKey) {
+      history.push(item.props.itemKey);
+    }
+  });
+
+  const onRenderItemLink = (ref: RefObject<HTMLDivElement>) => (
+    props?: IPivotItemProps
+  ): JSX.Element | null => {
+    return props ? <div ref={ref}>{props.headerText}</div> : null;
+  };
+
+  useEffect(() => {
+    const index = items.findIndex((item) => item.itemKey === selectedKey);
+    refs[index]?.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }, [items, refs, selectedKey]);
+
   return (
     <Pivot
-      linkSize={PivotLinkSize.large}
-      selectedKey={location.pathname}
+      className={className}
+      linkSize={isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal}
+      selectedKey={selectedKey}
       onLinkClick={onPivotLinkClick}
       {...props}
     >
-      {children}
+      {items.map((item, i) => (
+        <PivotItem {...item} onRenderItemLink={onRenderItemLink(refs[i])} />
+      ))}
     </Pivot>
   );
 };

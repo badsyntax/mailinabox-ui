@@ -1,11 +1,19 @@
 import { TextField } from '@fluentui/react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { config } from '../../../../config';
+import { useFormInputs } from '../../../../forms/useFormInputs';
 import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,
 } from '../../TextFieldWithInfo/TextFieldWithInfo';
 import { BackupConfigureProps } from '../types';
+
+type FormState = {
+  hostname: string;
+  path: string;
+  username: string;
+  days: string;
+};
 
 export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps> = ({
   backupConfig,
@@ -19,55 +27,13 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
   const targetHostParts = isCurrentType
     ? targetPath.shift()?.split('@') || []
     : [];
-  const initialUsername = isCurrentType ? targetHostParts[0] : '';
-  const initialHostName = isCurrentType ? targetHostParts[1] : '';
-  const initialPath = isCurrentType ? `/${targetPath[0]}` : '';
 
-  const [days, setDays] = useState<string | undefined>(
-    String(backupConfig.minAgeInDays)
-  );
-  const [hostname, setHostname] = useState<string | undefined>(initialHostName);
-  const [path, setPath] = useState<string | undefined>(initialPath);
-  const [username, setUsername] = useState<string | undefined>(initialUsername);
-
-  const onDaysChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string | undefined
-    ): void => {
-      setDays(newValue);
-    },
-    []
-  );
-
-  const onHostnameChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string | undefined
-    ): void => {
-      setHostname(newValue);
-    },
-    []
-  );
-
-  const onPathChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string | undefined
-    ): void => {
-      setPath(newValue);
-    },
-    []
-  );
-  const onUsernameChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string | undefined
-    ): void => {
-      setUsername(newValue);
-    },
-    []
-  );
+  const { inputs, onInputChange } = useFormInputs<FormState>({
+    hostname: isCurrentType ? targetHostParts[1] : '',
+    path: isCurrentType ? `/${targetPath[0]}` : '',
+    username: isCurrentType ? targetHostParts[0] : '',
+    days: String(backupConfig.minAgeInDays),
+  });
 
   const onDaysRenderLabel = useMemo(
     () => onRenderTextFieldLabel(daysDescription),
@@ -89,34 +55,43 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
 
   useEffect(() => {
     onConfigChange({
-      target: `rsync://${username}@${hostname}/${path}`,
+      target: `rsync://${inputs.username}@${inputs.hostname}/${inputs.path}`,
       targetUser: '',
       targetPass: '',
-      minAge: Number(days) || 1,
+      minAge: Number(inputs.days) || 1,
     });
-  }, [days, hostname, onConfigChange, path, username]);
+  }, [
+    inputs.days,
+    inputs.hostname,
+    inputs.path,
+    inputs.username,
+    onConfigChange,
+  ]);
 
   return (
     <>
       <TextField
-        value={hostname}
+        value={inputs.hostname}
         label="Hostname"
+        name="hostname"
         required
         placeholder="hostname.local"
-        onChange={onHostnameChange}
+        onChange={onInputChange}
       />
       <TextField
-        value={path}
+        value={inputs.path}
         label="Path"
+        name="path"
         required
         placeholder={`/backups/${config.hostname}`}
-        onChange={onPathChange}
+        onChange={onInputChange}
       />
       <TextField
-        value={username}
+        value={inputs.username}
         label="Username"
+        name="username"
         required
-        onChange={onUsernameChange}
+        onChange={onInputChange}
       />
       <TextField
         value={backupConfig.sshPubKey}
@@ -127,15 +102,16 @@ export const BackupConfigureRsync: React.FunctionComponent<BackupConfigureProps>
         styles={textfieldWithLabelInfoStyles}
       />
       <TextField
-        value={days}
+        value={inputs.days}
         label="Days"
+        name="days"
         min={1}
         step={1}
         type="number"
         required
         onRenderLabel={onDaysRenderLabel}
         styles={textfieldWithLabelInfoStyles}
-        onChange={onDaysChange}
+        onChange={onInputChange}
       />
     </>
   );

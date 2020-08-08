@@ -10,19 +10,23 @@ import {
   mergeStyles,
   MessageBarType,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
   Text,
   TextField,
 } from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
 import { DNSRecordType } from 'mailinabox-api';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import {
   addCustomRecord,
   addCustomRecordReset,
   addCustomRecordResetError,
   getCustomRecords,
 } from '../../../features/dnsSlice';
+import { useFormInputs } from '../../../forms/useFormInputs';
 import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { Pre } from '../Pre/Pre';
@@ -35,7 +39,15 @@ const recordTypeOptions = Object.keys(recordTypes).map((key) => ({
 
 const columnClassName = mergeStyles({
   flexBasis: 0,
+  minWidth: 0,
 });
+
+type FormState = {
+  type: IDropdownOption;
+  zone: IDropdownOption;
+  name: string;
+  value: string;
+};
 
 export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
   ...props
@@ -51,94 +63,69 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
     key: zone,
     text: zone,
   }));
-  const [type, setType] = useState<IDropdownOption>(recordTypeOptions[0]);
-  const [zone, setZone] = useState<IDropdownOption>(zoneOptions[0]);
-  const [name, setName] = useState<string>('');
-  const [value, setValue] = useState<string>('');
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
+
+  const { inputs, setInputs, resetInputs, onInputChange } = useFormInputs<
+    FormState
+  >({
+    type: recordTypeOptions[0],
+    zone: zoneOptions[0],
+    name: '',
+    value: '',
+  });
+
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
-  const onDialogDismissed = useCallback((): void => {
+  const onDialogDismissed = (): void => {
     if (addCustomRecordResponse) {
       dispatch(getCustomRecords());
     }
     dispatch(addCustomRecordReset());
     setHasDialogOpened(false);
-    setType(recordTypeOptions[0]);
-    setZone(zoneOptions[0]);
-    setName('');
-    setValue('');
-  }, [addCustomRecordResponse, dispatch, zoneOptions]);
+    resetInputs();
+  };
 
-  const onDialogClose = useCallback(
+  const onDialogClose = useConstCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
-    },
-    []
+    }
   );
 
-  const onTypeChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLDivElement>,
-      option?: IDropdownOption
-    ): void => {
-      if (option) {
-        setType(option);
-      }
-    },
-    []
-  );
+  const onDropdownChange = (name: string) => (
+    _event: React.FormEvent<HTMLDivElement>,
+    option?: IDropdownOption
+  ): void => {
+    if (option) {
+      setInputs({
+        ...inputs,
+        [name]: option,
+      });
+    }
+  };
 
-  const onZoneChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLDivElement>,
-      option?: IDropdownOption
-    ): void => {
-      if (option) {
-        setZone(option);
-      }
-    },
-    []
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    const qname = inputs.name
+      ? `${inputs.name}.${inputs.zone.key as string}`
+      : (inputs.zone.key as string);
+    dispatch(
+      addCustomRecord({
+        qname,
+        rtype: inputs.type.key as DNSRecordType,
+        body: inputs.value,
+      })
+    );
+  };
 
-  const onNameChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setName(newValue || '');
-    },
-    []
-  );
-
-  const onValueChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setValue(newValue || '');
-    },
-    []
-  );
-
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      const qname = name
-        ? `${name}.${zone.key as string}`
-        : (zone.key as string);
-      dispatch(
-        addCustomRecord({
-          qname,
-          rtype: type.key as DNSRecordType,
-          body: value,
-        })
-      );
-    },
-    [dispatch, name, type.key, value, zone.key]
-  );
-
-  const onMessageBarDismiss = useCallback(
+  const onMessageBarDismiss = useConstCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
       dispatch(addCustomRecordResetError());
-    },
-    [dispatch]
+    }
   );
 
   useEffect(() => {
@@ -159,9 +146,10 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
     };
   }, [dispatch]);
 
+  console.log('addCustomRecordError', addCustomRecordError);
+
   return (
-    <>
-      {/* TODO: dialog creates a gap when shown*/}
+    <Stack>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={{
@@ -180,7 +168,7 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
           <PrimaryButton text="OK" onClick={onDialogClose} />
         </DialogFooter>
       </Dialog>
-      <Stack as="section" gap="l2" horizontal {...props}>
+      <Stack as="section" gap="l2" horizontal={isMinLargeScreen} {...props}>
         <Stack gap="m" grow={1} className={columnClassName}>
           <Text>
             You can set additional DNS records, such as if you have a website
@@ -209,29 +197,33 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
             label="Domain"
             required
             options={zoneOptions}
-            selectedKey={zone.key}
-            onChange={onZoneChange}
+            selectedKey={inputs.zone.key}
+            onChange={onDropdownChange('zone')}
           />
           <TextField
             label="Name"
             placeholder="subdomain"
-            value={name}
-            onChange={onNameChange}
+            value={inputs.name}
+            name="name"
+            onChange={onInputChange}
           />
           <Dropdown
             label="Type"
             required
             options={recordTypeOptions}
-            selectedKey={type.key}
-            onChange={onTypeChange}
+            selectedKey={inputs.type.key}
+            onChange={onDropdownChange('type')}
           />
           <TextField
             label="Value"
             required
-            value={value}
-            onChange={onValueChange}
+            value={inputs.value}
+            name="value"
+            onChange={onInputChange}
           />
-          <MessageBar>{recordTypes[type.key as DNSRecordType].hint}</MessageBar>
+          <MessageBar>
+            {recordTypes[inputs.type.key as DNSRecordType].hint}
+          </MessageBar>
           <Stack horizontal>
             <PrimaryButton type="submit" disabled={isAddingCustomRecord}>
               Save Record
@@ -239,6 +231,6 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
           </Stack>
         </Stack>
       </Stack>
-    </>
+    </Stack>
   );
 };

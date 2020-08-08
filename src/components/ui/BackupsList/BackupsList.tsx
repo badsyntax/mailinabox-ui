@@ -6,12 +6,14 @@ import {
   IStackProps,
   mergeStyles,
   MessageBarType,
+  ScreenWidthMinLarge,
   SelectionMode,
   Stack,
   Text,
 } from '@fluentui/react';
 import { SystemBackupStatus, SystemBackupStatusResponse } from 'mailinabox-api';
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { MessageBar } from '../MessageBar/MessageBar';
 
 function niceSize(bytes: number): string {
@@ -52,9 +54,9 @@ const columns: IColumn[] = [
   {
     key: 'column1',
     name: 'When',
-    minWidth: 100,
-    maxWidth: 180,
-    isMultiline: false,
+    minWidth: 160,
+    maxWidth: 160,
+    isMultiline: true,
     isRowHeader: true,
     onRender: (item: SystemBackupStatus): React.ReactNode => {
       return (
@@ -67,8 +69,8 @@ const columns: IColumn[] = [
   {
     key: 'column2',
     name: '',
-    minWidth: 100,
-    isMultiline: false,
+    minWidth: 160,
+    isMultiline: true,
     isRowHeader: true,
     onRender: (item: SystemBackupStatus): React.ReactNode => {
       return (
@@ -96,7 +98,7 @@ const columns: IColumn[] = [
     key: 'column4',
     name: 'Size',
     isMultiline: false,
-    minWidth: 100,
+    minWidth: 80,
     onRender: (item: SystemBackupStatus): React.ReactNode => {
       return (
         <Text className={item.full ? strongCellClassName : undefined}>
@@ -109,7 +111,7 @@ const columns: IColumn[] = [
     key: 'column5',
     name: 'Deleted In',
     isMultiline: false,
-    minWidth: 160,
+    minWidth: 100,
     onRender: (item: SystemBackupStatus): React.ReactNode => {
       return (
         <Text className={item.full ? strongCellClassName : undefined}>
@@ -123,16 +125,22 @@ const columns: IColumn[] = [
 export const BackupsList: React.FunctionComponent<
   IStackProps & SystemBackupStatusResponse
 > = ({ backups = [], unmatchedFileSize, ...props }) => {
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
   return (
     <Stack as="section" {...props}>
       {!backups.length && (
-        <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+        <MessageBar messageBarType={MessageBarType.warning}>
           No backups have been made yet.
         </MessageBar>
       )}
       {backups.length && (
         <>
-          <MessageBar>
+          <MessageBar
+            isMultiline={isMinLargeScreen}
+            truncated={!isMinLargeScreen}
+          >
             The backup location currently contains the backups listed below. The
             total size of the backups is currently{' '}
             <strong>{getTotalBackupsSize(backups, unmatchedFileSize)}</strong>.

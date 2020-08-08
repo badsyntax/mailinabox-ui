@@ -1,16 +1,12 @@
 import {
   MessageBar,
   MessageBarType,
-  PivotItem,
-  PivotLinkSize,
   ProgressIndicator,
-  ScreenWidthMinLarge,
   Stack,
   Text,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import {
   Route,
   Switch,
@@ -45,12 +41,16 @@ const CertificateSections: React.FunctionComponent = () => {
   const history = useHistory();
   const { path, url } = useRouteMatch();
 
-  const isMinLargeScreen = useMediaQuery({
-    minWidth: ScreenWidthMinLarge,
-  });
-  const pivotProps = {
-    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
-  };
+  const pivotRoutes = [
+    {
+      itemKey: url,
+      headerText: 'Certificate Status',
+    },
+    {
+      itemKey: `${url}${SectionKeys.install}`,
+      headerText: 'Install Custom Certificate',
+    },
+  ];
 
   useEffect(() => {
     if (sslAction?.type === SSLActionType.install) {
@@ -66,13 +66,7 @@ const CertificateSections: React.FunctionComponent = () => {
 
   return (
     <>
-      <PivotRoutes {...pivotProps}>
-        <PivotItem itemKey={url} headerText="Certificate Status" />
-        <PivotItem
-          itemKey={`${url}${SectionKeys.install}`}
-          headerText="Install Custom Certificate"
-        />
-      </PivotRoutes>
+      <PivotRoutes items={pivotRoutes} />
       <Switch>
         <Route exact path={path}>
           <CertificatesList items={items} />

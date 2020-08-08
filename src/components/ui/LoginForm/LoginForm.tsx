@@ -11,15 +11,28 @@ import {
   TextField,
 } from '@fluentui/react';
 import { MeAuthStatus, MeResponse } from 'mailinabox-api';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { userApi } from '../../../api';
 import { useRequest } from '../../../api/useRequest';
 import { updateAuth } from '../../../features/authSlice';
+import { useFormInputs } from '../../../forms/useFormInputs';
 import { RootState } from '../../../store';
 import { MainRoute } from '../../routes/MainRoute/MainRoute';
 import { MessageBar } from '../MessageBar/MessageBar';
+
+type FormState = {
+  email: string;
+  password: string;
+  remember: boolean;
+};
+
+const initialFormState: FormState = {
+  email: '',
+  password: '',
+  remember: true,
+};
 
 export const LoginForm: React.FunctionComponent = () => {
   const [
@@ -37,57 +50,43 @@ export const LoginForm: React.FunctionComponent = () => {
       }
     }
   );
+  const { inputs, setInputs, onInputChange } = useFormInputs<FormState>(
+    initialFormState
+  );
   const { isAuthenticated, error: authError } = useSelector(
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [remember, setRemember] = useState(true);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const onRememberChange = (
+    _event?: React.FormEvent<HTMLElement>,
+    checked?: boolean
+  ): void => {
+    setInputs({
+      ...inputs,
+      remember: !!checked,
+    });
+  };
 
-  const onRememberChange = useCallback(
-    (_event?: React.FormEvent<HTMLElement>, checked?: boolean): void => {
-      setRemember(!!checked);
-    },
-    []
-  );
-  const onEmailChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setEmail(newValue ?? '');
-    },
-    []
-  );
-  const onPasswordChange = useCallback(
-    (_event: React.FormEvent<HTMLElement>, newValue?: string): void => {
-      setPassword(newValue ?? '');
-    },
-    []
-  );
-  const onMessageBarDismiss = useCallback(
-    (
-      _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
-    ): void => {
-      setError(null);
-      dispatch(
-        updateAuth({
-          username: email,
-          password,
-          error: null,
-        })
-      );
-    },
-    [dispatch, email, password, setError]
-  );
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      setError(null);
-      checkLogin();
-    },
-    [checkLogin, setError]
-  );
+  const onMessageBarDismiss = (
+    _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
+  ): void => {
+    setError(null);
+    dispatch(
+      updateAuth({
+        username: inputs.email,
+        password: inputs.password,
+        error: null,
+      })
+    );
+  };
+
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    setError(null);
+    checkLogin();
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -95,14 +94,21 @@ export const LoginForm: React.FunctionComponent = () => {
     } else {
       dispatch(
         updateAuth({
-          username: email,
-          password,
+          username: inputs.email,
+          password: inputs.password,
           isAuthenticated: false,
           error: authError,
         })
       );
     }
-  }, [authError, dispatch, email, history, isAuthenticated, password]);
+  }, [
+    authError,
+    dispatch,
+    history,
+    inputs.email,
+    inputs.password,
+    isAuthenticated,
+  ]);
 
   useEffect(() => {
     if (response) {
@@ -112,11 +118,11 @@ export const LoginForm: React.FunctionComponent = () => {
           password: response.apiKey,
           isAuthenticated: true,
           authError: null,
-          remember,
+          remember: inputs.remember,
         })
       );
     }
-  }, [dispatch, remember, response]);
+  }, [dispatch, inputs.remember, response]);
 
   const error = requestError || authError;
 
@@ -135,22 +141,24 @@ export const LoginForm: React.FunctionComponent = () => {
       <Stack gap="m">
         <TextField
           label="Email"
-          value={email}
+          value={inputs.email}
           required
           type="email"
+          name="email"
           autoFocus
-          onChange={onEmailChange}
+          onChange={onInputChange}
         />
         <TextField
           label="Password"
-          value={password}
+          value={inputs.password}
+          name="password"
           required
           type="password"
-          onChange={onPasswordChange}
+          onChange={onInputChange}
         />
         <Checkbox
           label="Remember me"
-          checked={remember}
+          checked={inputs.remember}
           onChange={onRememberChange}
         />
       </Stack>

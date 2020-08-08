@@ -10,15 +10,18 @@ import {
   mergeStyles,
   MessageBarType,
   PrimaryButton,
+  ScreenWidthMinLarge,
   Stack,
 } from '@fluentui/react';
+import { useConstCallback } from '@uifabric/react-hooks';
 import {
   SystemBackupConfigResponse,
   SystemBackupConfigUpdateRequest,
   SystemBackupStatusResponse,
 } from 'mailinabox-api';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { config } from '../../../config';
 import {
   getStatus,
@@ -87,6 +90,9 @@ export const BackupConfigure: React.FunctionComponent<
   } = useSelector((state: RootState) => state.system.backups);
 
   const dispatch = useDispatch();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 
@@ -101,54 +107,47 @@ export const BackupConfigure: React.FunctionComponent<
     SystemBackupConfigUpdateRequest | undefined
   >();
 
-  const onDialogDismissed = useCallback((): void => {
+  const onDialogDismissed = (): void => {
     if (updateConfigResponse === 'OK') {
       dispatch(getStatus());
     }
     dispatch(updateConfigReset());
-  }, [dispatch, updateConfigResponse]);
+  };
 
-  const onDialogClose = useCallback(
+  const onDialogClose = useConstCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
-    },
-    []
+    }
   );
 
-  const onBackupOptionChange = useCallback(
+  const onBackupOptionChange = useConstCallback(
     (
       _event: React.FormEvent<HTMLDivElement>,
       option?: IDropdownOption
     ): void => {
       setBackupOption(option);
-    },
-    []
+    }
   );
 
-  const onBackupConfigChange = useCallback(
+  const onBackupConfigChange = useConstCallback(
     (config: SystemBackupConfigUpdateRequest): void => {
       setUpdateBackupConfig(config);
-    },
-    []
+    }
   );
 
-  const onFormSubmit = useCallback(
-    (event: React.FormEvent<HTMLElement>): void => {
-      event.preventDefault();
-      if (updateBackupConfig) {
-        dispatch(updateConfig(updateBackupConfig));
-      }
-    },
-    [dispatch, updateBackupConfig]
-  );
+  const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
+    event.preventDefault();
+    if (updateBackupConfig) {
+      dispatch(updateConfig(updateBackupConfig));
+    }
+  };
 
-  const onMessageBarDismiss = useCallback(
+  const onMessageBarDismiss = useConstCallback(
     (
       _event?: React.MouseEvent<HTMLElement | BaseButton | Button, MouseEvent>
     ): void => {
       dispatch(updateConfigResetError());
-    },
-    [dispatch]
+    }
   );
 
   useEffect(() => {
@@ -181,7 +180,7 @@ export const BackupConfigure: React.FunctionComponent<
   }, [backupConfig.minAgeInDays, backupOption]);
 
   return (
-    <Stack as="section" gap="l2" horizontal {...props}>
+    <Stack as="section" gap="l2" horizontal={isMinLargeScreen} {...props}>
       <Dialog
         hidden={isDialogHidden}
         dialogContentProps={{

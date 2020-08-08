@@ -9,12 +9,14 @@ import {
   IStackProps,
   Link,
   mergeStyles,
+  ScreenWidthMinLarge,
   SelectionMode,
   Stack,
   Text,
 } from '@fluentui/react';
 import { SSLStatus, SSLStatusType } from 'mailinabox-api';
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { CertificateActionsList } from './CertificateActionsList';
 
@@ -37,6 +39,7 @@ const columns: IColumn[] = [
     key: 'column1',
     name: 'Domain',
     minWidth: 300,
+    maxWidth: 300,
     isMultiline: false,
     isRowHeader: true,
     isResizable: true,
@@ -78,9 +81,12 @@ export const CertificatesList: React.FunctionComponent<
     items: Array<SSLStatus>;
   }
 > = ({ items, ...props }) => {
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
   return (
     <Stack as="section" {...props}>
-      <MessageBar>
+      <MessageBar truncated={!isMinLargeScreen} isMultiline={isMinLargeScreen}>
         Certificates expire after a period of time. All certificates will be
         automatically renewed through
         <Link href="https://letsencrypt.org/">Let's Encrypt</Link> 14 days prior

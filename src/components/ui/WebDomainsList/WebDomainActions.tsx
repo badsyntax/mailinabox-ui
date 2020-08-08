@@ -1,5 +1,6 @@
 import { DialogType, Text } from '@fluentui/react';
-import React, { useCallback } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   resetDomainAction,
@@ -19,19 +20,19 @@ export const WebDomainActions: React.FunctionComponent = () => {
   } = useSelector((state: RootState) => state.web);
   const dispatch = useDispatch();
 
-  const onActionDialogDismiss = useCallback((): void => {
+  const onActionDialogDismiss = useConstCallback((): void => {
     dispatch(resetDomainAction());
-  }, [dispatch]);
+  });
 
-  const onActionDialogDismissed = useCallback((): void => {
+  const onActionDialogDismissed = useConstCallback((): void => {
     dispatch(updateWebReset());
-  }, [dispatch]);
+  });
 
-  const update = useCallback((): void => {
+  const update = (): void => {
     if (domainAction?.webDomain) {
       dispatch(updateWeb());
     }
-  }, [dispatch, domainAction]);
+  };
 
   const dialogWidth = updateWebResponse ? 420 : 580;
 

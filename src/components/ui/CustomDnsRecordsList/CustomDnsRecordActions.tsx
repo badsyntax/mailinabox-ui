@@ -1,5 +1,6 @@
 import { DialogType, Text } from '@fluentui/react';
-import React, { useCallback } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DNSActionType,
@@ -21,18 +22,18 @@ export const CustomDnsRecordActions: React.FunctionComponent = () => {
   } = useSelector((state: RootState) => state.dns);
   const dispatch = useDispatch();
 
-  const onActionDialogDismiss = useCallback((): void => {
+  const onActionDialogDismiss = useConstCallback((): void => {
     dispatch(resetDNSAction());
-  }, [dispatch]);
+  });
 
-  const onActionDialogDismissed = useCallback((): void => {
+  const onActionDialogDismissed = (): void => {
     if (removeCustomRecordResponse) {
       dispatch(getCustomRecords());
     }
     dispatch(removeCustomRecordReset());
-  }, [dispatch, removeCustomRecordResponse]);
+  };
 
-  const onRemoveAliasConfirm = useCallback((): void => {
+  const onRemoveAliasConfirm = (): void => {
     if (dnsAction?.dnsRecord) {
       const { qname, rtype, value: body } = dnsAction.dnsRecord;
       dispatch(
@@ -43,7 +44,7 @@ export const CustomDnsRecordActions: React.FunctionComponent = () => {
         })
       );
     }
-  }, [dispatch, dnsAction]);
+  };
 
   return (
     <ActionConfirmDialog

@@ -6,14 +6,17 @@ import {
   IStackProps,
   mergeStyles,
   MessageBarType,
+  ScreenWidthMinLarge,
   Stack,
   VirtualizedComboBox,
 } from '@fluentui/react';
 import { getCodeList } from 'country-list';
 import { SSLStatus } from 'mailinabox-api';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { generateCSRReset } from '../../../features/sslSlice';
+import { useFormInputs } from '../../../forms/useFormInputs';
 import { RootState } from '../../../store';
 import { MessageBar } from '../MessageBar/MessageBar';
 import { InstallCertificateComboBoxLabel } from './InstallCertificateComboBoxLabel';
@@ -54,35 +57,44 @@ const onRenderComboBoxLabel = (calloutText: string) => (
     />
   ) : null;
 
+type FormState = {
+  domain: string;
+  country: string;
+};
+
+const initialFormState: FormState = {
+  domain: '',
+  country: '',
+};
+
 export const InstallCertificate: React.FunctionComponent<
   IStackProps & {
     items: Array<SSLStatus>;
   }
 > = ({ items, ...props }) => {
   const { sslAction } = useSelector((state: RootState) => state.ssl);
-  const dispatch = useDispatch();
-  const [selectedDomain, setSelectedDomain] = useState<IComboBoxOption>({
-    key: sslAction?.sslStatus?.domain || '',
-    text: sslAction?.sslStatus?.domain || '',
+  const { inputs, setInputs } = useFormInputs<FormState>({
+    ...initialFormState,
+    domain: sslAction?.sslStatus?.domain || '',
   });
-  const [selectedCountry, setSelectedCountry] = useState<IComboBoxOption>();
+  const dispatch = useDispatch();
+  const isMinLargeScreen = useMediaQuery({
+    minWidth: ScreenWidthMinLarge,
+  });
 
-  const onDomainChange = useCallback(
-    (_event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
-      if (option) {
-        dispatch(generateCSRReset());
-        setSelectedDomain(option);
-      }
-    },
-    [dispatch]
-  );
-  const onCountryChange = useCallback(
-    (_event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+  const onComboboxChange = (key: keyof FormState) => (
+    _event: React.FormEvent<IComboBox>,
+    option?: IComboBoxOption
+  ): void => {
+    if (option) {
       dispatch(generateCSRReset());
-      setSelectedCountry(option);
-    },
-    [dispatch]
-  );
+      setInputs({
+        ...inputs,
+        [key]: option,
+      });
+    }
+  };
+
   const onDomainRenderLabel = useMemo(
     () =>
       onRenderComboBoxLabel(
@@ -90,6 +102,7 @@ export const InstallCertificate: React.FunctionComponent<
       ),
     []
   );
+
   const onCountryRenderLabel = useMemo(
     () =>
       onRenderComboBoxLabel(
@@ -100,12 +113,16 @@ export const InstallCertificate: React.FunctionComponent<
 
   return (
     <Stack as="section" gap="m" {...props}>
-      <MessageBar messageBarType={MessageBarType.info} isMultiline>
+      <MessageBar
+        messageBarType={MessageBarType.info}
+        isMultiline={isMinLargeScreen}
+        truncated={!isMinLargeScreen}
+      >
         If you don't want to use our automatic Let's Encrypt integration, you
         can give any other certificate provider a try. You can generate the
         needed CSR below.
       </MessageBar>
-      <Stack horizontal gap="l2">
+      <Stack horizontal={isMinLargeScreen} gap={isMinLargeScreen ? 'l2' : 'm'}>
         <Stack gap="m" grow={1} className={columnClassName}>
           <ComboBox
             placeholder="Select a domain"
@@ -117,12 +134,12 @@ export const InstallCertificate: React.FunctionComponent<
             required
             allowFreeform
             autoComplete="on"
-            selectedKey={selectedDomain?.key}
+            selectedKey={inputs.domain}
             onRenderLabel={onDomainRenderLabel}
-            onChange={onDomainChange}
+            onChange={onComboboxChange('domain')}
             styles={comboBoxStyles}
           />
-          {selectedDomain?.key && (
+          {inputs.domain && (
             <VirtualizedComboBox
               placeholder="Select a country"
               label="What country are you in?"
@@ -130,19 +147,19 @@ export const InstallCertificate: React.FunctionComponent<
               onRenderLabel={onCountryRenderLabel}
               allowFreeform
               autoComplete="on"
-              selectedKey={selectedCountry?.key}
-              onChange={onCountryChange}
+              selectedKey={inputs.country}
+              onChange={onComboboxChange('country')}
               styles={comboBoxStyles}
               dropdownMaxWidth={300}
               useComboBoxAsMenuWidth
             />
           )}
         </Stack>
-        <Stack gap="m" grow={2} className={columnClassName}>
-          {selectedDomain && selectedCountry && (
+        <Stack grow={2} className={columnClassName}>
+          {inputs.domain && inputs.country && (
             <InstallCertificateWithCSR
-              domain={selectedDomain.key as string}
-              countryCode={selectedCountry.key as string}
+              domain={inputs.domain as string}
+              countryCode={inputs.country as string}
             />
           )}
         </Stack>

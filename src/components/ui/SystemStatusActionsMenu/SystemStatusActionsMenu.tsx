@@ -8,7 +8,7 @@ import {
   TooltipHost,
 } from '@fluentui/react';
 import { useId } from '@uifabric/react-hooks';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePrivacy } from '../../../features/system/privacySlice';
 import { RootState } from '../../../store';
@@ -65,9 +65,9 @@ export const SystemStatusActionsMenu: React.FunctionComponent = () => {
   );
 
   const dispatch = useDispatch();
-  const onPrivacyButtonClick = useCallback(() => {
+  const onPrivacyButtonClick = (): void => {
     dispatch(updatePrivacy(!privacyStatus));
-  }, [dispatch, privacyStatus]);
+  };
   return (
     <OverflowSet
       role="menubar"

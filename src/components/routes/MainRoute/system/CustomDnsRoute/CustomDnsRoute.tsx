@@ -1,7 +1,6 @@
 import {
   MessageBar,
   MessageBarType,
-  PivotItem,
   ProgressIndicator,
   Stack,
   Text,
@@ -40,6 +39,21 @@ const CustomDnsSections: React.FunctionComponent = () => {
   const { path, url } = useRouteMatch();
   const openedGroupsState = useState<string[]>([]);
 
+  const pivotItems = [
+    {
+      itemKey: url,
+      headerText: 'DNS Records',
+    },
+    {
+      itemKey: `${url}/add`,
+      headerText: 'Add Custom Record',
+    },
+    {
+      itemKey: `${url}/nameserver`,
+      headerText: 'Secondary Nameserver',
+    },
+  ];
+
   useEffect(() => {
     if (!zones.length) {
       dispatch(getZones());
@@ -57,14 +71,7 @@ const CustomDnsSections: React.FunctionComponent = () => {
   }, [dispatch]);
   return (
     <>
-      <PivotRoutes>
-        <PivotItem itemKey={url} headerText="DNS Records" />
-        <PivotItem itemKey={`${url}/add`} headerText="Add Custom Record" />
-        <PivotItem
-          itemKey={`${url}/nameserver`}
-          headerText="Secondary Nameserver"
-        />
-      </PivotRoutes>
+      <PivotRoutes items={pivotItems} />
       <Switch>
         <Route exact path={path}>
           <LoadingOverlayContainer>
@@ -131,17 +138,19 @@ export const CustomDnsRoute: React.FunctionComponent & {
           ]}
         />
       </Stack>
-      <MessageBar messageBarType={MessageBarType.warning} isMultiline>
-        This is an advanced configuration page.
-      </MessageBar>
-      <BodyPanel>
-        <Text>
-          It is possible to set custom DNS records on domains hosted here.
-        </Text>
-      </BodyPanel>
-      <BodyPanel>
-        <CustomDnsSections />
-      </BodyPanel>
+      <Stack gap="l1">
+        <MessageBar messageBarType={MessageBarType.warning} isMultiline>
+          This is an advanced configuration page.
+        </MessageBar>
+        <BodyPanel>
+          <Text>
+            It is possible to set custom DNS records on domains hosted here.
+          </Text>
+        </BodyPanel>
+        <BodyPanel>
+          <CustomDnsSections />
+        </BodyPanel>
+      </Stack>
     </Body>
   );
 };

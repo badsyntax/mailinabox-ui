@@ -17,9 +17,9 @@ const columns: IColumn[] = [
   {
     key: 'column1',
     name: 'Domain Name',
-    minWidth: 140,
+    minWidth: 200,
     maxWidth: 300,
-    isMultiline: false,
+    isMultiline: true,
     isRowHeader: true,
     fieldName: 'qname',
   },
@@ -27,7 +27,7 @@ const columns: IColumn[] = [
     key: 'column2',
     name: 'Record Type',
     minWidth: 100,
-    maxWidth: 120,
+    maxWidth: 100,
     isMultiline: false,
     onRender: (item: DNSCustomRecord): React.ReactNode => {
       return <Text>{item.rtype}</Text>;
@@ -37,6 +37,7 @@ const columns: IColumn[] = [
     key: 'column3',
     name: 'Value',
     minWidth: 180,
+    isMultiline: true,
     onRender: (item: DNSCustomRecord): React.ReactNode => {
       return <Text>{item.value}</Text>;
     },

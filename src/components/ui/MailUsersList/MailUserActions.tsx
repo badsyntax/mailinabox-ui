@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetUserAction, UserActionType } from '../../../features/usersSlice';
 import { RootState } from '../../../store';
@@ -16,15 +17,10 @@ export const MailUserActions: React.FunctionComponent = () => {
 
   const dispatch = useDispatch();
 
-  const onDialogDismiss = useCallback((): void => {
+  const onDialogDismiss = useConstCallback((): void => {
     dispatch(resetUserAction());
-  }, [dispatch]);
+  });
 
-  // useEffect(() => {
-  //   if (updateUserResponse) {
-  //     dispatch(getUsers());
-  //   }
-  // }, [dispatch, updateUserResponse]);
   return (
     <>
       <MailUserUpdatePrivilege

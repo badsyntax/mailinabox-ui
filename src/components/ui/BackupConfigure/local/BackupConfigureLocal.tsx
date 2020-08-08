@@ -1,5 +1,5 @@
 import { TextField } from '@fluentui/react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   onRenderTextFieldLabel,
   textfieldWithLabelInfoStyles,
@@ -14,15 +14,14 @@ export const BackupConfigureLocal: React.FunctionComponent<BackupConfigureProps>
   const [days, setDays] = useState<string | undefined>(
     String(backupConfig.minAgeInDays)
   );
-  const onDaysChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string | undefined
-    ): void => {
-      setDays(newValue);
-    },
-    []
-  );
+
+  const onDaysChange = (
+    _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    newValue?: string | undefined
+  ): void => {
+    setDays(newValue);
+  };
+
   const onDaysRenderLabel = useMemo(
     () => onRenderTextFieldLabel(daysDescription),
     [daysDescription]

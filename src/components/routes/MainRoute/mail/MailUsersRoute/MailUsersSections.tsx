@@ -1,13 +1,6 @@
-import {
-  MessageBar,
-  MessageBarType,
-  PivotItem,
-  PivotLinkSize,
-  ScreenWidthMinLarge,
-} from '@fluentui/react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { getUsers } from '../../../../../features/usersSlice';
 import { RootState } from '../../../../../store';
@@ -26,13 +19,16 @@ export const MailUsersSections: React.FunctionComponent = () => {
 
   const dispatch = useDispatch();
 
-  const isMinLargeScreen = useMediaQuery({
-    minWidth: ScreenWidthMinLarge,
-  });
-
-  const pivotProps = {
-    linkSize: isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal,
-  };
+  const pivotItems = [
+    {
+      itemKey: url,
+      headerText: 'Mail Users',
+    },
+    {
+      itemKey: `${url}/add`,
+      headerText: 'Add a Mail User',
+    },
+  ];
 
   useEffect(() => {
     if (!users.length) {
@@ -41,10 +37,7 @@ export const MailUsersSections: React.FunctionComponent = () => {
   }, [dispatch, users.length]);
   return (
     <>
-      <PivotRoutes {...pivotProps}>
-        <PivotItem itemKey={url} headerText="Mail Users" />
-        <PivotItem itemKey={`${url}/add`} headerText="Add a Mail User" />
-      </PivotRoutes>
+      <PivotRoutes items={pivotItems} />
       <Switch>
         <Route exact path={path}>
           <LoadingOverlayContainer>

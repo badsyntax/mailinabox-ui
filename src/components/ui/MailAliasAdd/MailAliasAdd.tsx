@@ -13,7 +13,8 @@ import {
   Stack,
   Text,
 } from '@fluentui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useConstCallback } from '@uifabric/react-hooks';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { getAliases, upsertAliasReset } from '../../../features/aliasesSlice';
@@ -57,16 +58,15 @@ export const MailAliasAdd: React.FunctionComponent<IStackProps> = ({
     gap: isMinLargeScreen ? 'l2' : 'm',
   };
 
-  const onDialogDismissed = useCallback((): void => {
+  const onDialogDismissed = useConstCallback((): void => {
     dispatch(upsertAliasReset());
     setHasDialogOpened(false);
-  }, [dispatch]);
+  });
 
-  const onDialogClose = useCallback(
+  const onDialogClose = useConstCallback(
     (_event: React.MouseEvent<BaseButton, MouseEvent>): void => {
       setIsDialogHidden(true);
-    },
-    []
+    }
   );
 
   useEffect(() => {
