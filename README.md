@@ -41,7 +41,7 @@ All API requests sent from the browser are proxied to your box instance via a ba
 
 ## Running in Production
 
-Download the latest production releases here: https://github.com/badsyntax/mailinabox-ui/releases/latest
+Download the latest production release here: https://github.com/badsyntax/mailinabox-ui/releases/latest
 
 (I'll add instructions on how to deploy to a Mail-in-a-Box instance in the future.)
 
