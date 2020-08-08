@@ -2,7 +2,7 @@
 
 ![Build and Publish](https://github.com/badsyntax/mailinabox-ui/workflows/Build%20and%20Publish/badge.svg)
 
-An experimental SPA user interface for Mail-in-a-Box, using the following tools:
+An experimental SPA user interface for [Mail-in-a-Box](https://mailinabox.email/), using the following tools:
 
 - React & Redux
 - TypeScript
@@ -41,9 +41,9 @@ All API requests sent from the browser are proxied to your box instance via a ba
 
 ## Running in Production
 
-Production releases can be found here: https://github.com/badsyntax/mailinabox-ui/releases
+Download the latest production releases here: https://github.com/badsyntax/mailinabox-ui/releases/latest
 
-The releases assume you're running the UI at url `/admin/`.
+(I'll add instructions on how to deploy to a Mail-in-a-Box instance in the future.)
 
 ## Related Projects
 
