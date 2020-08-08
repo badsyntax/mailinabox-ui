@@ -59,13 +59,15 @@ jobs:
           tag=${GITHUB_REF#refs/tags/}
           tar_archive="mailinabox-ui.$tag.tar.gz"
           zip_archive="mailinabox-ui.$tag.zip"
-          tar -czvf "$tar_archive" dist/
+          tar -czf "$tar_archive" dist/
           zip -r9 "$zip_archive" dist/
           echo "::set-output name=tar_archive::$tar_archive"
           echo "::set-output name=zip_archive::$zip_archive"
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload release tar archive
         uses: actions/upload-release-asset@v1
         env:
