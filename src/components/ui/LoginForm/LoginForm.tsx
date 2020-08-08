@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { userApi } from '../../../api';
 import { useRequest } from '../../../api/useRequest';
+import { config } from '../../../config';
 import { updateAuth } from '../../../features/authSlice';
 import { useFormInputs } from '../../../forms/useFormInputs';
 import { RootState } from '../../../store';
@@ -29,8 +30,8 @@ type FormState = {
 };
 
 const initialFormState: FormState = {
-  email: '',
-  password: '',
+  email: config.mockApi ? 'demo@example.com' : '',
+  password: config.mockApi ? 'password' : '',
   remember: true,
 };
 
