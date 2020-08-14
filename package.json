@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@fluentui/react": "^7.126.1",
+    "@fluentui/react": "^7.128.0",
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5.11.2",
     "@testing-library/react": "^10.4.8",
