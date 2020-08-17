@@ -19,7 +19,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
-    "@uifabric/charting": "^3.0.3",
+    "@uifabric/charting": "^3.0.9",
     "@uifabric/react-hooks": "^7.7.2",
     "country-list": "^2.2.0",
     "eslint-config-prettier": "^6.11.0",
