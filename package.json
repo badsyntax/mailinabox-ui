@@ -46,7 +46,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:fix": "npm run lint:fix:prettier && npm run lint:eslint -- --fix",
     "lint:prettier": "prettier --check \"**/*.{ts,js,json,svg,md,yml}\"",
+    "lint:fix:prettier": "prettier --write '**/*.{ts,js,json,svg,md,yml}'",
     "lint:eslint": "eslint . --ext .js,.ts",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
