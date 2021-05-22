@@ -21,13 +21,13 @@ const onRenderRow = (props?: IDetailsRowProps): JSX.Element | null => {
   return null;
 };
 
-interface GroupHeader {
+interface GroupHeaderProps {
   props: IDetailsGroupDividerProps;
   defaultRender: IRenderFunction<IGroupHeaderProps>;
   onToggleGroupCollapse: (key: string, isCollapsed: boolean) => void;
 }
 
-const GroupHeader: React.FunctionComponent<GroupHeader> = React.memo(
+const GroupHeader: React.FunctionComponent<GroupHeaderProps> = React.memo(
   ({ props, defaultRender, onToggleGroupCollapse }) => {
     const toggleCollapse = (): void => {
       if (props?.group) {
