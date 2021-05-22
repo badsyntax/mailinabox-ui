@@ -62,12 +62,11 @@ export const InstallCertificateWithCSR: React.FunctionComponent<
   } = useSelector((state: RootState) => state.ssl);
   const dispatch = useDispatch();
 
-  const [installCertificateRequest, setInstallCertificateRequest] = useState<
-    SSLCertificateInstallRequest
-  >({
-    ...defaultInstallCertificateRequest,
-    domain,
-  });
+  const [installCertificateRequest, setInstallCertificateRequest] =
+    useState<SSLCertificateInstallRequest>({
+      ...defaultInstallCertificateRequest,
+      domain,
+    });
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
 

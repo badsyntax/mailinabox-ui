@@ -67,14 +67,13 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
     minWidth: ScreenWidthMinLarge,
   });
 
-  const { inputs, setInputs, resetInputs, onInputChange } = useFormInputs<
-    FormState
-  >({
-    type: recordTypeOptions[0],
-    zone: zoneOptions[0],
-    name: '',
-    value: '',
-  });
+  const { inputs, setInputs, resetInputs, onInputChange } =
+    useFormInputs<FormState>({
+      type: recordTypeOptions[0],
+      zone: zoneOptions[0],
+      name: '',
+      value: '',
+    });
 
   const [isDialogHidden, setIsDialogHidden] = useState<boolean>(true);
   const [hasDialogOpened, setHasDialogOpened] = useState<boolean>(false);
@@ -94,17 +93,19 @@ export const CustomDnsAdd: React.FunctionComponent<IStackProps> = ({
     }
   );
 
-  const onDropdownChange = (name: string) => (
-    _event: React.FormEvent<HTMLDivElement>,
-    option?: IDropdownOption
-  ): void => {
-    if (option) {
-      setInputs({
-        ...inputs,
-        [name]: option,
-      });
-    }
-  };
+  const onDropdownChange =
+    (name: string) =>
+    (
+      _event: React.FormEvent<HTMLDivElement>,
+      option?: IDropdownOption
+    ): void => {
+      if (option) {
+        setInputs({
+          ...inputs,
+          [name]: option,
+        });
+      }
+    };
 
   const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
     event.preventDefault();

@@ -79,9 +79,8 @@ const initialFormState: FormState = {
 export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
   ...props
 }) => {
-  const { inputs, resetInputs, setInputs, onInputChange } = useFormInputs<
-    FormState
-  >(initialFormState);
+  const { inputs, resetInputs, setInputs, onInputChange } =
+    useFormInputs<FormState>(initialFormState);
   const { isAddingUser, addUserResponse, addUserError } = useSelector(
     (state: RootState) => state.users
   );
@@ -99,17 +98,19 @@ export const MailUserAdd: React.FunctionComponent<IStackProps> = ({
     gap: isMinLargeScreen ? 'l2' : 'm',
   };
 
-  const onDropdownChange = (name: string) => (
-    _event: React.FormEvent<HTMLDivElement>,
-    option?: IDropdownOption
-  ): void => {
-    if (option) {
-      setInputs({
-        ...inputs,
-        [name]: option,
-      });
-    }
-  };
+  const onDropdownChange =
+    (name: string) =>
+    (
+      _event: React.FormEvent<HTMLDivElement>,
+      option?: IDropdownOption
+    ): void => {
+      if (option) {
+        setInputs({
+          ...inputs,
+          [name]: option,
+        });
+      }
+    };
 
   const onFormSubmit = (event: React.FormEvent<HTMLElement>): void => {
     event.preventDefault();

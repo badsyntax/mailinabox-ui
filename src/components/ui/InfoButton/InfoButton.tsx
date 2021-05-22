@@ -24,9 +24,8 @@ export const InfoButton: React.FunctionComponent<Props> = ({
   iconButtonClassName,
   iconButtonStyles,
 }) => {
-  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(
-    false
-  );
+  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] =
+    useBoolean(false);
   const iconButtonId: string = useId('iconButton');
   return (
     <>

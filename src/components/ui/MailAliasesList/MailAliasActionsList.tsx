@@ -12,8 +12,8 @@ interface MailAliasActionsListProps {
   alias: MailAlias;
 }
 
-export const MailAliasActionsList: React.FunctionComponent<MailAliasActionsListProps> = React.memo(
-  ({ alias }) => {
+export const MailAliasActionsList: React.FunctionComponent<MailAliasActionsListProps> =
+  React.memo(({ alias }) => {
     const dispatch = useDispatch();
     const doAction = useConstCallback((type: AliasActionType): void => {
       dispatch(
@@ -53,5 +53,4 @@ export const MailAliasActionsList: React.FunctionComponent<MailAliasActionsListP
         }}
       />
     );
-  }
-);
+  });

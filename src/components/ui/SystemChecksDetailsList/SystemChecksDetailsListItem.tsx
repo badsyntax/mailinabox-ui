@@ -32,51 +32,50 @@ const extrasClassName = mergeStyles({
   ...AnimationStyles.fadeIn500,
 });
 
-export const SystemChecksDetailsListItem: React.FunctionComponent<SystemChecksDetailsListItemProps> = ({
-  item,
-}) => {
-  const { text, extra, type } = item;
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const onLinkClick = useConstCallback((): void => setIsCollapsed(false));
-  const textColor = getTextColor(type);
-  return (
-    <>
-      <Text styles={{ root: { color: textColor } }}>{text}</Text>
-      {!!(extra && extra.length) && (
-        <>
-          {isCollapsed && (
-            <>
-              <br />
-              <Link onClick={onLinkClick}>Show more</Link>
-            </>
-          )}
-          {!isCollapsed && (
-            <Stack padding="m 0" className={extrasClassName}>
-              {extra.map((extraItem) => {
-                return (
-                  <>
-                    {extraItem.monospace ? (
-                      <Text
-                        block
-                        styles={{
-                          root: {
-                            padding: theme.spacing.m,
-                            fontFamily: 'monospace',
-                          },
-                        }}
-                      >
-                        {extraItem.text}
-                      </Text>
-                    ) : (
-                      <Text block>{extraItem.text}</Text>
-                    )}
-                  </>
-                );
-              })}
-            </Stack>
-          )}
-        </>
-      )}
-    </>
-  );
-};
+export const SystemChecksDetailsListItem: React.FunctionComponent<SystemChecksDetailsListItemProps> =
+  ({ item }) => {
+    const { text, extra, type } = item;
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const onLinkClick = useConstCallback((): void => setIsCollapsed(false));
+    const textColor = getTextColor(type);
+    return (
+      <>
+        <Text styles={{ root: { color: textColor } }}>{text}</Text>
+        {!!(extra && extra.length) && (
+          <>
+            {isCollapsed && (
+              <>
+                <br />
+                <Link onClick={onLinkClick}>Show more</Link>
+              </>
+            )}
+            {!isCollapsed && (
+              <Stack padding="m 0" className={extrasClassName}>
+                {extra.map((extraItem) => {
+                  return (
+                    <>
+                      {extraItem.monospace ? (
+                        <Text
+                          block
+                          styles={{
+                            root: {
+                              padding: theme.spacing.m,
+                              fontFamily: 'monospace',
+                            },
+                          }}
+                        >
+                          {extraItem.text}
+                        </Text>
+                      ) : (
+                        <Text block>{extraItem.text}</Text>
+                      )}
+                    </>
+                  );
+                })}
+              </Stack>
+            )}
+          </>
+        )}
+      </>
+    );
+  };

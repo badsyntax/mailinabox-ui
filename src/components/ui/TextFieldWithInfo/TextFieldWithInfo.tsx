@@ -26,9 +26,8 @@ export const TextFieldWithInfo: React.FunctionComponent<Props> = (
   props
 ): JSX.Element => {
   const { maxWidth = 320, defaultRender, ...rest } = props;
-  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(
-    false
-  );
+  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] =
+    useBoolean(false);
   const iconButtonId: string = useId('iconButton');
   return (
     <>
@@ -63,16 +62,19 @@ export const TextFieldWithInfo: React.FunctionComponent<Props> = (
   );
 };
 
-export const onRenderTextFieldLabel = (calloutText: React.ReactNode) => (
-  props?: ITextFieldProps,
-  defaultRender?: (props?: ITextFieldProps) => JSX.Element | null
-): React.ReactElement | null => (
-  <TextFieldWithInfo
-    {...props}
-    calloutText={calloutText}
-    defaultRender={defaultRender}
-  />
-);
+export const onRenderTextFieldLabel =
+  (calloutText: React.ReactNode) =>
+  (
+    props?: ITextFieldProps,
+    defaultRender?: (props?: ITextFieldProps) => JSX.Element | null
+  ): React.ReactElement | null =>
+    (
+      <TextFieldWithInfo
+        {...props}
+        calloutText={calloutText}
+        defaultRender={defaultRender}
+      />
+    );
 
 export const textfieldWithLabelInfoStyles = {
   subComponentStyles: {

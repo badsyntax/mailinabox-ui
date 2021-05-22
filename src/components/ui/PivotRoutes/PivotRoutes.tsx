@@ -4,7 +4,6 @@ import {
   mergeStyles,
   Pivot,
   PivotItem,
-  PivotLinkSize,
   ScreenWidthMinLarge,
 } from '@fluentui/react';
 import { useConstCallback } from '@uifabric/react-hooks';
@@ -17,12 +16,12 @@ const className = mergeStyles({
   overflowY: 'hidden',
 });
 
-interface PivotRoutes {
+interface PivotRoutesProps {
   items?: IPivotItemProps[];
 }
 
 export const PivotRoutes: React.FunctionComponent<
-  PivotRoutes & IPivotProps
+  PivotRoutesProps & IPivotProps
 > = ({ children, items = [], ...props }) => {
   const history = useHistory();
   const { pathname: selectedKey } = useLocation();
@@ -37,11 +36,11 @@ export const PivotRoutes: React.FunctionComponent<
     }
   });
 
-  const onRenderItemLink = (ref: RefObject<HTMLDivElement>) => (
-    props?: IPivotItemProps
-  ): JSX.Element | null => {
-    return props ? <div ref={ref}>{props.headerText}</div> : null;
-  };
+  const onRenderItemLink =
+    (ref: RefObject<HTMLDivElement>) =>
+    (props?: IPivotItemProps): JSX.Element | null => {
+      return props ? <div ref={ref}>{props.headerText}</div> : null;
+    };
 
   useEffect(() => {
     const index = items.findIndex((item) => item.itemKey === selectedKey);
@@ -55,7 +54,7 @@ export const PivotRoutes: React.FunctionComponent<
   return (
     <Pivot
       className={className}
-      linkSize={isMinLargeScreen ? PivotLinkSize.large : PivotLinkSize.normal}
+      linkSize={isMinLargeScreen ? 'large' : 'normal'}
       selectedKey={selectedKey}
       onLinkClick={onPivotLinkClick}
       {...props}

@@ -107,36 +107,40 @@ export const {
 
 export const { reducer: systemBackupsReducer } = systemBackups;
 
-export const getStatus = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(getStatusStart());
-  try {
-    const result = await systemApi.getSystemBackupStatus();
-    dispatch(getStatusSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getStatusError);
-  }
-};
+export const getStatus =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getStatusStart());
+    try {
+      const result = await systemApi.getSystemBackupStatus();
+      dispatch(getStatusSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getStatusError);
+    }
+  };
 
-export const getConfig = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(getConfigStart());
-  try {
-    const result = await systemApi.getSystemBackupConfig();
-    dispatch(getConfigSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getConfigError);
-  }
-};
+export const getConfig =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getConfigStart());
+    try {
+      const result = await systemApi.getSystemBackupConfig();
+      dispatch(getConfigSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getConfigError);
+    }
+  };
 
-export const updateConfig = (
-  config: SystemBackupConfigUpdateRequest
-): ThunkAction<void, RootState, unknown, Action<string>> => async (
-  dispatch
-): Promise<void> => {
-  dispatch(updateConfigStart());
-  try {
-    const result = await systemApi.updateSystemBackupConfig(config);
-    dispatch(updateConfigSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, updateConfigError);
-  }
-};
+export const updateConfig =
+  (
+    config: SystemBackupConfigUpdateRequest
+  ): ThunkAction<void, RootState, unknown, Action<string>> =>
+  async (dispatch): Promise<void> => {
+    dispatch(updateConfigStart());
+    try {
+      const result = await systemApi.updateSystemBackupConfig(config);
+      dispatch(updateConfigSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, updateConfigError);
+    }
+  };

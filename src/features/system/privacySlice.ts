@@ -64,36 +64,33 @@ export const {
 
 export const { reducer: systemPrivacyReducer } = systemPrivacy;
 
-export const systemPrivacyCheck = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(getPrivacyStart());
-  try {
-    const result = await systemApi.getSystemPrivacyStatus();
-    dispatch(getPrivacySuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getPrivacyError);
-  }
-};
+export const systemPrivacyCheck =
+  (): ThunkAction<void, RootState, unknown, Action<string>> =>
+  async (dispatch): Promise<void> => {
+    dispatch(getPrivacyStart());
+    try {
+      const result = await systemApi.getSystemPrivacyStatus();
+      dispatch(getPrivacySuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getPrivacyError);
+    }
+  };
 
-export const updatePrivacy = (privacy: boolean): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(updatePrivacyStart());
-  try {
-    const result = await systemApi.updateSystemPrivacy({
-      value: privacy ? SystemPrivacyStatus.Private : SystemPrivacyStatus.Off,
-    });
-    dispatch(
-      updatePrivacySuccess({
-        result,
-        privacy,
-      })
-    );
-  } catch (err) {
-    await handleRequestError(err, dispatch, updatePrivacyError);
-  }
-};
+export const updatePrivacy =
+  (privacy: boolean): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(updatePrivacyStart());
+    try {
+      const result = await systemApi.updateSystemPrivacy({
+        value: privacy ? SystemPrivacyStatus.Private : SystemPrivacyStatus.Off,
+      });
+      dispatch(
+        updatePrivacySuccess({
+          result,
+          privacy,
+        })
+      );
+    } catch (err) {
+      await handleRequestError(err, dispatch, updatePrivacyError);
+    }
+  };

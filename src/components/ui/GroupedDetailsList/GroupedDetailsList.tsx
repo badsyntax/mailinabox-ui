@@ -21,13 +21,13 @@ const onRenderRow = (props?: IDetailsRowProps): JSX.Element | null => {
   return null;
 };
 
-interface GroupHeader {
+interface GroupHeaderProps {
   props: IDetailsGroupDividerProps;
   defaultRender: IRenderFunction<IGroupHeaderProps>;
   onToggleGroupCollapse: (key: string, isCollapsed: boolean) => void;
 }
 
-const GroupHeader: React.FunctionComponent<GroupHeader> = React.memo(
+const GroupHeader: React.FunctionComponent<GroupHeaderProps> = React.memo(
   ({ props, defaultRender, onToggleGroupCollapse }) => {
     const toggleCollapse = (): void => {
       if (props?.group) {
@@ -62,9 +62,8 @@ export const GroupedDetailsList: React.FunctionComponent<
   IDetailsListProps & GroupedDetailsListProps
 > = ({ openedGroupsState, groups, ...props }) => {
   const [openedGroups, setOpenedGroups] = openedGroupsState;
-  const [hasExpandedAllGroups, setHasExpandedAllGroups] = useState<boolean>(
-    false
-  );
+  const [hasExpandedAllGroups, setHasExpandedAllGroups] =
+    useState<boolean>(false);
 
   const onToggleGroupCollapse = useCallback(
     (groupKey: string, collapse: boolean): void => {

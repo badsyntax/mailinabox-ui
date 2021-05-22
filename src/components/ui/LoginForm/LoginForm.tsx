@@ -51,9 +51,8 @@ export const LoginForm: React.FunctionComponent = () => {
       }
     }
   );
-  const { inputs, setInputs, onInputChange } = useFormInputs<FormState>(
-    initialFormState
-  );
+  const { inputs, setInputs, onInputChange } =
+    useFormInputs<FormState>(initialFormState);
   const { isAuthenticated, error: authError } = useSelector(
     (state: RootState) => state.auth
   );

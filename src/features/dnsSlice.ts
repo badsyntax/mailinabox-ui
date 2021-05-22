@@ -318,84 +318,88 @@ export const selectDumpWithGroups = (
   return [records, groups];
 };
 
-export const getSecondaryNameserver = (): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(getSecondaryNameserverStart());
-  try {
-    const result = await dnsApi.getDnsSecondaryNameserver();
-    dispatch(getSecondaryNameserverSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getSecondaryNameserverError);
-  }
-};
+export const getSecondaryNameserver =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getSecondaryNameserverStart());
+    try {
+      const result = await dnsApi.getDnsSecondaryNameserver();
+      dispatch(getSecondaryNameserverSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getSecondaryNameserverError);
+    }
+  };
 
-export const getZones = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(getZonesStart());
-  try {
-    const result = await dnsApi.getDnsZones();
-    dispatch(getZonesSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getZonesError);
-  }
-};
+export const getZones =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getZonesStart());
+    try {
+      const result = await dnsApi.getDnsZones();
+      dispatch(getZonesSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getZonesError);
+    }
+  };
 
-export const getCustomRecords = (): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(getCustomRecordsStart());
-  try {
-    const result = await dnsApi.getDnsCustomRecords();
-    dispatch(getCustomRecordsSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getCustomRecordsError);
-  }
-};
+export const getCustomRecords =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getCustomRecordsStart());
+    try {
+      const result = await dnsApi.getDnsCustomRecords();
+      dispatch(getCustomRecordsSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getCustomRecordsError);
+    }
+  };
 
-export const getDump = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(getDumpStart());
-  try {
-    const result = await dnsApi.getDnsDump();
-    dispatch(getDumpSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getDumpError);
-  }
-};
+export const getDump =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getDumpStart());
+    try {
+      const result = await dnsApi.getDnsDump();
+      dispatch(getDumpSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getDumpError);
+    }
+  };
 
-export const addCustomRecord = (
-  customRecordRequest: AddDnsCustomRecordRequest
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(addCustomRecordStart());
-  try {
-    const result = await dnsApi.addDnsCustomRecord(customRecordRequest);
-    dispatch(addCustomRecordSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, addCustomRecordError);
-  }
-};
+export const addCustomRecord =
+  (customRecordRequest: AddDnsCustomRecordRequest): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(addCustomRecordStart());
+    try {
+      const result = await dnsApi.addDnsCustomRecord(customRecordRequest);
+      dispatch(addCustomRecordSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, addCustomRecordError);
+    }
+  };
 
-export const removeCustomRecord = (
-  customRecordRequest: RemoveDnsCustomRecordRequest
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(removeCustomRecordStart());
-  try {
-    const result = await dnsApi.removeDnsCustomRecord(customRecordRequest);
-    dispatch(removeCustomRecordSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, removeCustomRecordError);
-  }
-};
+export const removeCustomRecord =
+  (customRecordRequest: RemoveDnsCustomRecordRequest): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(removeCustomRecordStart());
+    try {
+      const result = await dnsApi.removeDnsCustomRecord(customRecordRequest);
+      dispatch(removeCustomRecordSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, removeCustomRecordError);
+    }
+  };
 
-export const addSecondaryNameserver = (
-  secondaryNameserverRequest: AddDnsSecondaryNameserverRequest
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(addSecondaryNameserverStart());
-  try {
-    const result = await dnsApi.addDnsSecondaryNameserver(
-      secondaryNameserverRequest
-    );
-    dispatch(addSecondaryNameserverSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, addSecondaryNameserverError);
-  }
-};
+export const addSecondaryNameserver =
+  (secondaryNameserverRequest: AddDnsSecondaryNameserverRequest): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(addSecondaryNameserverStart());
+    try {
+      const result = await dnsApi.addDnsSecondaryNameserver(
+        secondaryNameserverRequest
+      );
+      dispatch(addSecondaryNameserverSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, addSecondaryNameserverError);
+    }
+  };

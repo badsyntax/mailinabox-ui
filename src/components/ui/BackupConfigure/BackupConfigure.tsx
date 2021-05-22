@@ -100,12 +100,10 @@ export const BackupConfigure: React.FunctionComponent<
   const selectedBackupOption = backupOptions.find(
     (option) => option.key === backupType
   );
-  const [backupOption, setBackupOption] = useState<IDropdownOption | undefined>(
-    selectedBackupOption
-  );
-  const [updateBackupConfig, setUpdateBackupConfig] = useState<
-    SystemBackupConfigUpdateRequest | undefined
-  >();
+  const [backupOption, setBackupOption] =
+    useState<IDropdownOption | undefined>(selectedBackupOption);
+  const [updateBackupConfig, setUpdateBackupConfig] =
+    useState<SystemBackupConfigUpdateRequest | undefined>();
 
   const onDialogDismissed = (): void => {
     if (updateConfigResponse === 'OK') {

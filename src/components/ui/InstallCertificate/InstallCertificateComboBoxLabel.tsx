@@ -14,9 +14,8 @@ export const InstallCertificateComboBoxLabel: React.FunctionComponent<
     calloutText: string;
   }
 > = (props?): JSX.Element => {
-  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(
-    false
-  );
+  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] =
+    useBoolean(false);
   const descriptionId: string = useId('description');
   const iconButtonId: string = useId('iconButton');
 

@@ -155,92 +155,91 @@ export const selectUsersWithGroups = (
   return [users, groups];
 };
 
-export const getUsers = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(getUsersStart());
-  try {
-    const result = await mailApi.getMailUsers({
-      format: MailUsersResponseFormat.Json,
-    });
-    dispatch(getUsersSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getUsersError);
-  }
-};
+export const getUsers =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getUsersStart());
+    try {
+      const result = await mailApi.getMailUsers({
+        format: MailUsersResponseFormat.Json,
+      });
+      dispatch(getUsersSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getUsersError);
+    }
+  };
 
-export const addUserAdminPrivilege = (user: MailUser): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(updateUserStart());
-  try {
-    const result = await mailApi.addMailUserPrivilege({
-      email: user.email,
-      privilege: MailUserPrivilege.Admin,
-    });
-    dispatch(updateUserSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, updateUserError);
-  }
-};
+export const addUserAdminPrivilege =
+  (user: MailUser): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(updateUserStart());
+    try {
+      const result = await mailApi.addMailUserPrivilege({
+        email: user.email,
+        privilege: MailUserPrivilege.Admin,
+      });
+      dispatch(updateUserSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, updateUserError);
+    }
+  };
 
-export const removeUserAdminPrivilege = (user: MailUser): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(updateUserStart());
-  try {
-    const result = await mailApi.removeMailUserPrivilege({
-      email: user.email,
-      privilege: MailUserPrivilege.Admin,
-    });
-    dispatch(updateUserSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, updateUserError);
-  }
-};
+export const removeUserAdminPrivilege =
+  (user: MailUser): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(updateUserStart());
+    try {
+      const result = await mailApi.removeMailUserPrivilege({
+        email: user.email,
+        privilege: MailUserPrivilege.Admin,
+      });
+      dispatch(updateUserSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, updateUserError);
+    }
+  };
 
-export const setUserPassword = (
-  user: MailUser,
-  password: string
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(updateUserStart());
-  try {
-    const result = await mailApi.setMailUserPassword({
-      email: user.email,
-      password: password,
-    });
-    dispatch(updateUserSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, updateUserError);
-  }
-};
+export const setUserPassword =
+  (user: MailUser, password: string): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(updateUserStart());
+    try {
+      const result = await mailApi.setMailUserPassword({
+        email: user.email,
+        password: password,
+      });
+      dispatch(updateUserSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, updateUserError);
+    }
+  };
 
-export const removeUser = (user: MailUser): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(updateUserStart());
-  try {
-    const result = await mailApi.removeMailUser({
-      email: user.email,
-    });
-    dispatch(updateUserSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, updateUserError);
-  }
-};
+export const removeUser =
+  (user: MailUser): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(updateUserStart());
+    try {
+      const result = await mailApi.removeMailUser({
+        email: user.email,
+      });
+      dispatch(updateUserSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, updateUserError);
+    }
+  };
 
-export const addUser = (
-  email: string,
-  password: string,
-  privilege: MailUserPrivilege
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(addUserStart());
-  try {
-    const result = await mailApi.addMailUser({
-      email,
-      password,
-      privileges: privilege,
-    });
-    dispatch(addUserSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, addUserError);
-  }
-};
+export const addUser =
+  (email: string, password: string, privilege: MailUserPrivilege): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(addUserStart());
+    try {
+      const result = await mailApi.addMailUser({
+        email,
+        password,
+        privileges: privilege,
+      });
+      dispatch(addUserSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, addUserError);
+    }
+  };

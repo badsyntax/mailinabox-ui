@@ -8,8 +8,6 @@ import {
   MessageBarType,
   Pivot,
   PivotItem,
-  PivotLinkFormat,
-  PivotLinkSize,
   Stack,
   TextField,
 } from '@fluentui/react';
@@ -75,9 +73,11 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
   const [senderType, setSenderType] = useState<SenderType>(
     updateAlias.permittedSenders ? SenderType.manual : SenderType.any
   );
-  const { inputs: alias, onInputChange, resetInputs } = useFormInputs<
-    UpsertMailAliasRequest
-  >(updateAlias);
+  const {
+    inputs: alias,
+    onInputChange,
+    resetInputs,
+  } = useFormInputs<UpsertMailAliasRequest>(updateAlias);
 
   const senderTypeOptions: IChoiceGroupOption[] = [
     { key: SenderType.any, text: formData[aliasType].permittedSenders.any },
@@ -165,8 +165,8 @@ export const MailAliasUpsert: React.FunctionComponent<MailAliasUpsertProps> = ({
       )}
       <Stack gap="s2">
         <Pivot
-          linkSize={PivotLinkSize.normal}
-          linkFormat={PivotLinkFormat.tabs}
+          linkSize={'normal'}
+          linkFormat={'tabs'}
           onLinkClick={onPivotLinkClick}
           selectedKey={aliasType}
         >

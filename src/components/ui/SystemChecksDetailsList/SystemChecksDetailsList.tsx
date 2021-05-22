@@ -40,38 +40,36 @@ const columns: IColumn[] = [
   },
 ];
 
-export const SystemChecksDetailsList: React.FunctionComponent<SystemChecksDetailsListProps> = ({
-  items,
-  groups,
-}) => {
-  return (
-    <DetailsList
-      items={items}
-      columns={columns}
-      groups={groups}
-      layoutMode={DetailsListLayoutMode.justified}
-      isHeaderVisible={false}
-      onShouldVirtualize={(): boolean => false}
-      groupProps={{
-        onRenderHeader: (
-          headerProps?: IDetailsGroupDividerProps,
-          defaultRender?: IRenderFunction<IGroupHeaderProps>
-        ): JSX.Element | null => {
-          if (defaultRender) {
-            return defaultRender({
-              ...headerProps,
-              styles: {
-                headerCount: { display: 'none' },
-              },
-            });
-          }
-          return null;
-        },
-        isAllGroupsCollapsed: false,
-        collapseAllVisibility: CollapseAllVisibility.hidden,
-      }}
-      selectionMode={SelectionMode.none}
-      constrainMode={ConstrainMode.horizontalConstrained}
-    />
-  );
-};
+export const SystemChecksDetailsList: React.FunctionComponent<SystemChecksDetailsListProps> =
+  ({ items, groups }) => {
+    return (
+      <DetailsList
+        items={items}
+        columns={columns}
+        groups={groups}
+        layoutMode={DetailsListLayoutMode.justified}
+        isHeaderVisible={false}
+        onShouldVirtualize={(): boolean => false}
+        groupProps={{
+          onRenderHeader: (
+            headerProps?: IDetailsGroupDividerProps,
+            defaultRender?: IRenderFunction<IGroupHeaderProps>
+          ): JSX.Element | null => {
+            if (defaultRender) {
+              return defaultRender({
+                ...headerProps,
+                styles: {
+                  headerCount: { display: 'none' },
+                },
+              });
+            }
+            return null;
+          },
+          isAllGroupsCollapsed: false,
+          collapseAllVisibility: CollapseAllVisibility.hidden,
+        }}
+        selectionMode={SelectionMode.none}
+        constrainMode={ConstrainMode.horizontalConstrained}
+      />
+    );
+  };

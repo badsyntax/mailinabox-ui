@@ -35,8 +35,7 @@ export const formData: FormData = {
     text: 'Regular',
     alias: {
       placeholder: 'you@yourdomain.com (incoming email address)',
-      info:
-        'You may use international (non-ASCII) characters for the domain part of the email address only.',
+      info: 'You may use international (non-ASCII) characters for the domain part of the email address only.',
     },
     forwardsTo: {
       placeholder: 'you@yourdomain.com (forward to email address)',
@@ -45,20 +44,17 @@ export const formData: FormData = {
     permittedSenders: {
       placeholder: 'you@yourdomain.com',
       info: 'One address per line or separated by commas.',
-      any:
-        'Any mail user listed in the Forwards To box can send mail claiming to be from the alias address.',
+      any: 'Any mail user listed in the Forwards To box can send mail claiming to be from the alias address.',
       manual:
         'I’ll enter the mail users that can send mail claiming to be from the alias address.',
     },
   },
   [AliasType.catchAll]: {
     text: 'Catch-All',
-    info:
-      'A catch-all alias captures all otherwise unmatched email to a domain.',
+    info: 'A catch-all alias captures all otherwise unmatched email to a domain.',
     alias: {
       placeholder: '@yourdomain.com (incoming catch-all domain)',
-      info:
-        'Enter just the part of an email address starting with the @-sign. You may use international (non-ASCII) characters for the domain part of the email address only.',
+      info: 'Enter just the part of an email address starting with the @-sign. You may use international (non-ASCII) characters for the domain part of the email address only.',
     },
     forwardsTo: {
       placeholder: 'you@yourdomain.com (forward to email address)',
@@ -67,20 +63,17 @@ export const formData: FormData = {
     permittedSenders: {
       placeholder: 'you@yourdomain.com',
       info: 'One address per line or separated by commas.',
-      any:
-        'Any mail user listed in the Forwards To box can send mail claiming to be from any address on the alias domain.',
+      any: 'Any mail user listed in the Forwards To box can send mail claiming to be from any address on the alias domain.',
       manual:
         'I’ll enter the mail users that can send mail claiming to be from any address on the alias domain.',
     },
   },
   [AliasType.domainAlias]: {
     text: 'Domain Alias',
-    info:
-      'A domain alias forwards all otherwise unmatched email from one domain to another domain, preserving the part before the @-sign.',
+    info: 'A domain alias forwards all otherwise unmatched email from one domain to another domain, preserving the part before the @-sign.',
     alias: {
       placeholder: '@yourdomain.com (incoming catch-all domain)',
-      info:
-        'Enter just the part of an email address starting with the @-sign. You may use international (non-ASCII) characters for the domain part of the email address only.',
+      info: 'Enter just the part of an email address starting with the @-sign. You may use international (non-ASCII) characters for the domain part of the email address only.',
     },
     forwardsTo: {
       placeholder: '@otherdomain.com (forward to other domain)',
@@ -89,8 +82,7 @@ export const formData: FormData = {
     permittedSenders: {
       placeholder: 'you@yourdomain.com',
       info: 'One address per line or separated by commas.',
-      any:
-        'Any mail user listed in the Forwards To box can send mail claiming to be from any address on the alias domain.',
+      any: 'Any mail user listed in the Forwards To box can send mail claiming to be from any address on the alias domain.',
       manual:
         'I’ll enter the mail users that can send mail claiming to be from any address on the alias domain.',
     },

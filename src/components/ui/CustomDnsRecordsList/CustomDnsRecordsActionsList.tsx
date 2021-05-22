@@ -9,8 +9,8 @@ interface CustomDnsRecordsActionsListProps {
   dnsRecord: DNSCustomRecord;
 }
 
-export const CustomDnsRecordsActionsList: React.FunctionComponent<CustomDnsRecordsActionsListProps> = React.memo(
-  ({ dnsRecord }) => {
+export const CustomDnsRecordsActionsList: React.FunctionComponent<CustomDnsRecordsActionsListProps> =
+  React.memo(({ dnsRecord }) => {
     const dispatch = useDispatch();
     const doAction = useConstCallback((type: DNSActionType): void => {
       dispatch(
@@ -45,5 +45,4 @@ export const CustomDnsRecordsActionsList: React.FunctionComponent<CustomDnsRecor
         }}
       />
     );
-  }
-);
+  });

@@ -32,105 +32,104 @@ interface MailUserUpdatePrivilegeProps {
   updateUserResponse: string | null;
 }
 
-export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePrivilegeProps> = ({
-  onDialogDismiss,
-  userAction,
-  isUpdatingUser,
-  updateUserError,
-  updateUserResponse,
-}) => {
-  const dispatch = useDispatch();
+export const MailUserUpdatePrivilege: React.FunctionComponent<MailUserUpdatePrivilegeProps> =
+  ({
+    onDialogDismiss,
+    userAction,
+    isUpdatingUser,
+    updateUserError,
+    updateUserResponse,
+  }) => {
+    const dispatch = useDispatch();
 
-  const { username } = useSelector((state: RootState) => state.auth);
-  const [
-    removeSelfErrorDialogHidden,
-    setRemoveSelfErrorDialogHidden,
-  ] = useState<boolean>(true);
+    const { username } = useSelector((state: RootState) => state.auth);
+    const [removeSelfErrorDialogHidden, setRemoveSelfErrorDialogHidden] =
+      useState<boolean>(true);
 
-  const removeAdminDialogHidden =
-    userAction?.type !== UserActionType.removeAdminPrivilege;
+    const removeAdminDialogHidden =
+      userAction?.type !== UserActionType.removeAdminPrivilege;
 
-  const addAdminDialogHidden =
-    userAction?.type !== UserActionType.addAdminPrivilege;
+    const addAdminDialogHidden =
+      userAction?.type !== UserActionType.addAdminPrivilege;
 
-  const updateSelfError =
-    !removeAdminDialogHidden && username === userAction?.user?.email;
+    const updateSelfError =
+      !removeAdminDialogHidden && username === userAction?.user?.email;
 
-  const onModalDismissed = (): void => {
-    if (updateUserResponse) {
-      dispatch(getUsers());
-    }
-    dispatch(updateUserReset());
+    const onModalDismissed = (): void => {
+      if (updateUserResponse) {
+        dispatch(getUsers());
+      }
+      dispatch(updateUserReset());
+    };
+
+    const onRemoveAdminConfirm = (): void => {
+      if (userAction?.user) {
+        dispatch(removeUserAdminPrivilege(userAction.user));
+      }
+    };
+
+    const onAddAdminConfirm = (): void => {
+      if (userAction?.user) {
+        dispatch(addUserAdminPrivilege(userAction.user));
+      }
+    };
+
+    useEffect(() => {
+      setRemoveSelfErrorDialogHidden(!updateSelfError);
+    }, [updateSelfError]);
+
+    const modalProps = {
+      isBlocking: true,
+      onDismissed: onModalDismissed,
+    };
+    return (
+      <>
+        <Dialog
+          hidden={removeSelfErrorDialogHidden}
+          dialogContentProps={modifyPrivilegesDialogContentProps}
+          modalProps={modalProps}
+        >
+          <Text>You cannot remove the admin privilege from yourself.</Text>
+          <DialogFooter>
+            <PrimaryButton text="OK" onClick={onDialogDismiss} />
+          </DialogFooter>
+        </Dialog>
+        {!updateSelfError && (
+          <>
+            <ActionConfirmDialog
+              dialogContentProps={modifyPrivilegesDialogContentProps}
+              modalProps={modalProps}
+              onDismiss={onDialogDismiss}
+              isLoading={isUpdatingUser}
+              error={updateUserError}
+              hidden={removeAdminDialogHidden}
+              onConfirm={onRemoveAdminConfirm}
+              confirmButtonText="Remove"
+              actionResponse={updateUserResponse}
+            >
+              <Text>
+                Are you sure you want to remove the admin privilege for{' '}
+                <strong>{userAction?.user?.email}?</strong>
+              </Text>
+            </ActionConfirmDialog>
+            <ActionConfirmDialog
+              dialogContentProps={modifyPrivilegesDialogContentProps}
+              modalProps={modalProps}
+              onDismiss={onDialogDismiss}
+              isLoading={isUpdatingUser}
+              error={updateUserError}
+              hidden={addAdminDialogHidden}
+              onConfirm={onAddAdminConfirm}
+              confirmButtonText="Add"
+              actionResponse={updateUserResponse}
+            >
+              <Text>
+                Are you sure you want to add the admin privilege for{' '}
+                <strong>{userAction?.user?.email}?</strong>
+              </Text>
+            </ActionConfirmDialog>
+          </>
+        )}
+      </>
+    );
   };
-
-  const onRemoveAdminConfirm = (): void => {
-    if (userAction?.user) {
-      dispatch(removeUserAdminPrivilege(userAction.user));
-    }
-  };
-
-  const onAddAdminConfirm = (): void => {
-    if (userAction?.user) {
-      dispatch(addUserAdminPrivilege(userAction.user));
-    }
-  };
-
-  useEffect(() => {
-    setRemoveSelfErrorDialogHidden(!updateSelfError);
-  }, [updateSelfError]);
-
-  const modalProps = {
-    isBlocking: true,
-    onDismissed: onModalDismissed,
-  };
-  return (
-    <>
-      <Dialog
-        hidden={removeSelfErrorDialogHidden}
-        dialogContentProps={modifyPrivilegesDialogContentProps}
-        modalProps={modalProps}
-      >
-        <Text>You cannot remove the admin privilege from yourself.</Text>
-        <DialogFooter>
-          <PrimaryButton text="OK" onClick={onDialogDismiss} />
-        </DialogFooter>
-      </Dialog>
-      {!updateSelfError && (
-        <>
-          <ActionConfirmDialog
-            dialogContentProps={modifyPrivilegesDialogContentProps}
-            modalProps={modalProps}
-            onDismiss={onDialogDismiss}
-            isLoading={isUpdatingUser}
-            error={updateUserError}
-            hidden={removeAdminDialogHidden}
-            onConfirm={onRemoveAdminConfirm}
-            confirmButtonText="Remove"
-            actionResponse={updateUserResponse}
-          >
-            <Text>
-              Are you sure you want to remove the admin privilege for{' '}
-              <strong>{userAction?.user?.email}?</strong>
-            </Text>
-          </ActionConfirmDialog>
-          <ActionConfirmDialog
-            dialogContentProps={modifyPrivilegesDialogContentProps}
-            modalProps={modalProps}
-            onDismiss={onDialogDismiss}
-            isLoading={isUpdatingUser}
-            error={updateUserError}
-            hidden={addAdminDialogHidden}
-            onConfirm={onAddAdminConfirm}
-            confirmButtonText="Add"
-            actionResponse={updateUserResponse}
-          >
-            <Text>
-              Are you sure you want to add the admin privilege for{' '}
-              <strong>{userAction?.user?.email}?</strong>
-            </Text>
-          </ActionConfirmDialog>
-        </>
-      )}
-    </>
-  );
-};
