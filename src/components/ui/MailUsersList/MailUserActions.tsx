@@ -8,12 +8,8 @@ import { MailUserSetPasswordDialog } from './MailUserSetPasswordDialog';
 import { MailUserUpdatePrivilege } from './MailUserUpdatePrivilege';
 
 export const MailUserActions: React.FunctionComponent = () => {
-  const {
-    isUpdatingUser,
-    updateUserError,
-    updateUserResponse,
-    userAction,
-  } = useSelector((state: RootState) => state.users);
+  const { isUpdatingUser, updateUserError, updateUserResponse, userAction } =
+    useSelector((state: RootState) => state.users);
 
   const dispatch = useDispatch();
 

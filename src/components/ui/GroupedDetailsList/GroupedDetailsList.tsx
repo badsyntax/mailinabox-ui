@@ -62,9 +62,8 @@ export const GroupedDetailsList: React.FunctionComponent<
   IDetailsListProps & GroupedDetailsListProps
 > = ({ openedGroupsState, groups, ...props }) => {
   const [openedGroups, setOpenedGroups] = openedGroupsState;
-  const [hasExpandedAllGroups, setHasExpandedAllGroups] = useState<boolean>(
-    false
-  );
+  const [hasExpandedAllGroups, setHasExpandedAllGroups] =
+    useState<boolean>(false);
 
   const onToggleGroupCollapse = useCallback(
     (groupKey: string, collapse: boolean): void => {

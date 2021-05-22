@@ -153,22 +153,26 @@ export const selectOrderedAndGroupedStaticEnabledDomains = (
 export const selectGetDomainsError = (state: RootState): string | null =>
   state.web.getDomainsError;
 
-export const getDomains = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(getDomainsStart());
-  try {
-    const result = await webApi.getWebDomains();
-    dispatch(getDomainsSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getDomainsError);
-  }
-};
+export const getDomains =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getDomainsStart());
+    try {
+      const result = await webApi.getWebDomains();
+      dispatch(getDomainsSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getDomainsError);
+    }
+  };
 
-export const updateWeb = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(updateWebStart());
-  try {
-    const result = await webApi.updateWeb();
-    dispatch(updateWebSuccess(result || 'Nothing changed.'));
-  } catch (err) {
-    await handleRequestError(err, dispatch, updateWebError);
-  }
-};
+export const updateWeb =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(updateWebStart());
+    try {
+      const result = await webApi.updateWeb();
+      dispatch(updateWebSuccess(result || 'Nothing changed.'));
+    } catch (err) {
+      await handleRequestError(err, dispatch, updateWebError);
+    }
+  };

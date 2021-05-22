@@ -148,44 +148,44 @@ export const selectAliasesWithGroups = (
   return [aliases, groups];
 };
 
-export const getAliases = (showProgress = true): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  if (showProgress) {
-    dispatch(getAliasesStart());
-  }
-  try {
-    const result = await mailApi.getMailAliases({
-      format: MailAliasesResponseFormat.Json,
-    });
-    dispatch(getAliasesSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getAliasesError);
-  }
-};
+export const getAliases =
+  (showProgress = true): AppThunk =>
+  async (dispatch): Promise<void> => {
+    if (showProgress) {
+      dispatch(getAliasesStart());
+    }
+    try {
+      const result = await mailApi.getMailAliases({
+        format: MailAliasesResponseFormat.Json,
+      });
+      dispatch(getAliasesSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getAliasesError);
+    }
+  };
 
-export const upsertAlias = (alias: UpsertMailAliasRequest): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(upsertAliasStart());
-  try {
-    const result = await mailApi.upsertMailAlias(alias);
-    dispatch(upsertAliasSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, upsertAliasError);
-  }
-};
+export const upsertAlias =
+  (alias: UpsertMailAliasRequest): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(upsertAliasStart());
+    try {
+      const result = await mailApi.upsertMailAlias(alias);
+      dispatch(upsertAliasSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, upsertAliasError);
+    }
+  };
 
-export const removeAlias = (address: string): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(removeAliasStart());
-  try {
-    const result = await mailApi.removeMailAlias({
-      address,
-    });
-    dispatch(removeAliasSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, removeAliasError);
-  }
-};
+export const removeAlias =
+  (address: string): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(removeAliasStart());
+    try {
+      const result = await mailApi.removeMailAlias({
+        address,
+      });
+      dispatch(removeAliasSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, removeAliasError);
+    }
+  };

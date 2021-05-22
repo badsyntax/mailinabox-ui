@@ -12,12 +12,8 @@ import { RootState } from '../../../store';
 import { ActionConfirmDialog } from '../ActionConfirmDialog/ActionConfirmDialog';
 
 export const WebDomainActions: React.FunctionComponent = () => {
-  const {
-    domainAction,
-    updateWebError,
-    updateWebResponse,
-    isUpdatingWeb,
-  } = useSelector((state: RootState) => state.web);
+  const { domainAction, updateWebError, updateWebResponse, isUpdatingWeb } =
+    useSelector((state: RootState) => state.web);
   const dispatch = useDispatch();
 
   const onActionDialogDismiss = useConstCallback((): void => {

@@ -1,4 +1,4 @@
-import { ScreenWidthMinMedium, Stack } from '@fluentui/react';
+import { IStackProps, ScreenWidthMinMedium, Stack } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
@@ -33,7 +33,7 @@ export const MainRoute: React.FunctionComponent & { path: string } = () => {
     minWidth: ScreenWidthMinMedium,
   });
 
-  const nonMobileContainerProps = {
+  const nonMobileContainerProps: IStackProps = {
     ...(isMinMediumScreen && {
       gap: 'l1',
       horizontalAlign: 'center',

@@ -112,12 +112,8 @@ const BackupSections: React.FunctionComponent = () => {
 export const BackupsRoute: React.FunctionComponent & {
   path: string;
 } = () => {
-  const {
-    isGettingStatus,
-    isGettingConfig,
-    getStatusError,
-    getConfigError,
-  } = useSelector((state: RootState) => state.system.backups);
+  const { isGettingStatus, isGettingConfig, getStatusError, getConfigError } =
+    useSelector((state: RootState) => state.system.backups);
 
   const dispatch = useDispatch();
 

@@ -45,17 +45,19 @@ const comboBoxStyles = {
   },
 };
 
-const onRenderComboBoxLabel = (calloutText: string) => (
-  props?: IOnRenderComboBoxLabelProps,
-  defaultRender?: (props?: IOnRenderComboBoxLabelProps) => JSX.Element | null
-): React.ReactElement | null =>
-  props && defaultRender ? (
-    <InstallCertificateComboBoxLabel
-      {...props}
-      calloutText={calloutText}
-      defaultRender={defaultRender}
-    />
-  ) : null;
+const onRenderComboBoxLabel =
+  (calloutText: string) =>
+  (
+    props?: IOnRenderComboBoxLabelProps,
+    defaultRender?: (props?: IOnRenderComboBoxLabelProps) => JSX.Element | null
+  ): React.ReactElement | null =>
+    props && defaultRender ? (
+      <InstallCertificateComboBoxLabel
+        {...props}
+        calloutText={calloutText}
+        defaultRender={defaultRender}
+      />
+    ) : null;
 
 type FormState = {
   domain: string;
@@ -82,18 +84,17 @@ export const InstallCertificate: React.FunctionComponent<
     minWidth: ScreenWidthMinLarge,
   });
 
-  const onComboboxChange = (key: keyof FormState) => (
-    _event: React.FormEvent<IComboBox>,
-    option?: IComboBoxOption
-  ): void => {
-    if (option) {
-      dispatch(generateCSRReset());
-      setInputs({
-        ...inputs,
-        [key]: option,
-      });
-    }
-  };
+  const onComboboxChange =
+    (key: keyof FormState) =>
+    (_event: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+      if (option) {
+        dispatch(generateCSRReset());
+        setInputs({
+          ...inputs,
+          [key]: option,
+        });
+      }
+    };
 
   const onDomainRenderLabel = useMemo(
     () =>

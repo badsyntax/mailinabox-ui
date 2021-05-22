@@ -122,45 +122,41 @@ export const {
 
 export const { reducer: sslReducer } = ssl;
 
-export const getSSLStatus = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => async (dispatch): Promise<void> => {
-  dispatch(getSSLStatusStart());
-  try {
-    const result = await sslApi.getSSLStatus();
-    dispatch(getSSLStatusSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getSSLStatusError);
-  }
-};
+export const getSSLStatus =
+  (): ThunkAction<void, RootState, unknown, Action<string>> =>
+  async (dispatch): Promise<void> => {
+    dispatch(getSSLStatusStart());
+    try {
+      const result = await sslApi.getSSLStatus();
+      dispatch(getSSLStatusSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getSSLStatusError);
+    }
+  };
 
-export const generateCSR = (
-  domain: string,
-  countrycode: string
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(generateCSRStart());
-  try {
-    const result = await sslApi.generateSSLCSR({
-      domain,
-      countrycode,
-    });
-    dispatch(generateCSRSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, generateCSRError);
-  }
-};
+export const generateCSR =
+  (domain: string, countrycode: string): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(generateCSRStart());
+    try {
+      const result = await sslApi.generateSSLCSR({
+        domain,
+        countrycode,
+      });
+      dispatch(generateCSRSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, generateCSRError);
+    }
+  };
 
-export const installCertificate = (
-  request: SSLCertificateInstallRequest
-): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(installCertificateStart());
-  try {
-    const result = await sslApi.installSSLCertificate(request);
-    dispatch(installCertificateSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, installCertificateError);
-  }
-};
+export const installCertificate =
+  (request: SSLCertificateInstallRequest): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(installCertificateStart());
+    try {
+      const result = await sslApi.installSSLCertificate(request);
+      dispatch(installCertificateSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, installCertificateError);
+    }
+  };

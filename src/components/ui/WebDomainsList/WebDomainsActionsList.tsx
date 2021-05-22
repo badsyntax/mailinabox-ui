@@ -12,8 +12,8 @@ interface WebDomainsActionsListProps {
   webDomain: WebDomainWithDomainInfo;
 }
 
-export const WebDomainsActionsList: React.FunctionComponent<WebDomainsActionsListProps> = React.memo(
-  ({ webDomain }) => {
+export const WebDomainsActionsList: React.FunctionComponent<WebDomainsActionsListProps> =
+  React.memo(({ webDomain }) => {
     const dispatch = useDispatch();
     const doAction = useConstCallback((action: WebDomainActionType): void => {
       dispatch(
@@ -48,5 +48,4 @@ export const WebDomainsActionsList: React.FunctionComponent<WebDomainsActionsLis
         }}
       />
     );
-  }
-);
+  });

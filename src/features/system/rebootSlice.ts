@@ -41,14 +41,14 @@ export const {
 
 export const { reducer: systemRebootReducer } = systemReboot;
 
-export const systemRebootCheck = (): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(getRebootStatusStart());
-  try {
-    const result = await systemApi.getSystemRebootStatus();
-    dispatch(getRebootStatusSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getRebootStatusError);
-  }
-};
+export const systemRebootCheck =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getRebootStatusStart());
+    try {
+      const result = await systemApi.getSystemRebootStatus();
+      dispatch(getRebootStatusSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getRebootStatusError);
+    }
+  };

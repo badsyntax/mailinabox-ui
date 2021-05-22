@@ -9,8 +9,8 @@ interface MailUserActionsListProps {
   user: MailUser;
 }
 
-export const MailUserActionsList: React.FunctionComponent<MailUserActionsListProps> = React.memo(
-  ({ user }) => {
+export const MailUserActionsList: React.FunctionComponent<MailUserActionsListProps> =
+  React.memo(({ user }) => {
     const dispatch = useDispatch();
     const doAction = useConstCallback((type: UserActionType): void => {
       dispatch(
@@ -63,5 +63,4 @@ export const MailUserActionsList: React.FunctionComponent<MailUserActionsListPro
         }}
       />
     );
-  }
-);
+  });

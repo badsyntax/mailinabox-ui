@@ -35,25 +35,22 @@ const systemStatus = createSlice({
   },
 });
 
-export const {
-  getStatusSuccess,
-  getStatusStart,
-  getStatusError,
-} = systemStatus.actions;
+export const { getStatusSuccess, getStatusStart, getStatusError } =
+  systemStatus.actions;
 
 export const { reducer: systemStatusReducer } = systemStatus;
 
-export const systemStatusCheck = (): AppThunk => async (
-  dispatch
-): Promise<void> => {
-  dispatch(getStatusStart());
-  try {
-    const result = await systemApi.getSystemStatus();
-    dispatch(getStatusSuccess(result));
-  } catch (err) {
-    await handleRequestError(err, dispatch, getStatusError);
-  }
-};
+export const systemStatusCheck =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(getStatusStart());
+    try {
+      const result = await systemApi.getSystemStatus();
+      dispatch(getStatusSuccess(result));
+    } catch (err) {
+      await handleRequestError(err, dispatch, getStatusError);
+    }
+  };
 
 type StatusGroup = IGroup;
 

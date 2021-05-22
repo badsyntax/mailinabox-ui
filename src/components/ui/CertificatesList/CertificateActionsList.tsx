@@ -9,8 +9,8 @@ interface CertificateActionsListProps {
   sslStatus: SSLStatus;
 }
 
-export const CertificateActionsList: React.FunctionComponent<CertificateActionsListProps> = React.memo(
-  ({ sslStatus }) => {
+export const CertificateActionsList: React.FunctionComponent<CertificateActionsListProps> =
+  React.memo(({ sslStatus }) => {
     const dispatch = useDispatch();
     const doAction = useConstCallback((type: SSLActionType): void => {
       dispatch(
@@ -49,5 +49,4 @@ export const CertificateActionsList: React.FunctionComponent<CertificateActionsL
         }}
       />
     );
-  }
-);
+  });
