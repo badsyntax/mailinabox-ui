@@ -71,7 +71,7 @@ jobs:
           echo "::set-output name=zip_archive::$zip_archive"
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.3.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload release tar archive
